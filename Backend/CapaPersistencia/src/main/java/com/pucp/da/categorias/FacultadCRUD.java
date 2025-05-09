@@ -4,9 +4,11 @@
  */
 package com.pucp.da.categorias;
 
+import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Facultad;
 import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.FacultadDAO;
+import java.sql.CallableStatement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,92 +20,8 @@ import java.util.ArrayList;
  *
  * @author SEBASTIAN
  */
-public class FacultadCRUD implements FacultadDAO{
+public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
 
-    @Override
-    public void insertar(Facultad facultad) {
-        String query = "INSERT INTO Facultad(nombre,activo)"
-                + "values(?,?)";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);) {        
-            setParametrosFacultad(ps, facultad);
-            ps.executeUpdate(); 
-            //Traer el ultimo ID autogenerado
-            try(Statement st = con.createStatement();
-                ResultSet rskeys = st.executeQuery("select @@last_insert_id");){            
-                if(rskeys.next()){
-                    facultad.setIdFacultad(rskeys.getInt(1));
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        
-    }
-
-    @Override
-    public ArrayList<Facultad> listarTodos() {
-        
-        ArrayList<Facultad> facultades = new ArrayList<>();
-        String query = "SELECT id_facultad,nombre,activo FROM Facultad WHERE activo = 1";
-        try(Connection con  =DBManager.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);){
-            while(rs.next()){
-                Facultad facultad= mapaFacultad(rs);
-                facultades.add(facultad);
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return facultades;
-    }
-
-    @Override
-    public Facultad obtenerPorId(int id) {
-        String query = "SELECT id_facultad,nombre,activo FROM Facultad WHERE id_facultad = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapaFacultad(rs);
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return null;
-        
-    }
-
-    @Override
-    public void actualizar(Facultad facultad) {
-        String query = "UPDATE Facultad SET nombre = ?, activo = ? WHERE id_facultad = ?";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);){
-            setParametrosFacultad(ps,facultad);
-            ps.setInt(3,facultad.getIdFacultad());
-            ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        
-    }
-
-    @Override
-    public void eliminar(int id) {
-        //Eliminar lógico
-        String query = "UPDATE Facultad SET activo = 0 WHERE id_facultad = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {            
-             ps.setInt(1, id);
-             ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        
-    }
     
     private void setParametrosFacultad(PreparedStatement ps, Facultad facu) throws SQLException{
         ps.setString(1, facu.getNombre());
@@ -116,6 +34,63 @@ public class FacultadCRUD implements FacultadDAO{
         facu.setNombre(rs.getString("nombre"));
         facu.setActivo(rs.getBoolean("activo"));
         return facu;
+    }
+
+    @Override
+    protected CallableStatement getInsertCS(Connection conn, Facultad facultad) throws SQLException {
+        String sql = "{CALL INSERTAR_FACULTAD(?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, facultad.getIdFacultad());
+        cs.setString(2, facultad.getNombre());
+        cs.setBoolean(3, facultad.isActivo());
+        return cs;
+    }
+
+    @Override
+    protected CallableStatement getUpdateCS(Connection conn, Facultad facultad) throws SQLException {
+        String sql = "{CALL MODIFICAR_FACULTAD(?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, facultad.getIdFacultad());
+        cs.setString(2, facultad.getNombre());
+        cs.setBoolean(3, facultad.isActivo());
+        return cs; 
+    }
+
+    @Override
+    protected CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException {
+        String sql = "{CALL ELIMINAR_FACULTAD(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
+    }
+
+    @Override
+    protected CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException {
+        String sql = "{CALL OBTENER_FACULTAD_X_ID(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
+    }
+
+    @Override
+    protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
+        String sql = "{CALL LISTAR_FACULTAD_TODOS(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        return cs;
+    }
+
+    @Override
+    protected Facultad createFromResultSet(ResultSet rs) throws SQLException {
+        Facultad facu = new Facultad();
+        facu.setIdFacultad(rs.getInt("id_facultad"));
+        facu.setNombre(rs.getString("nombre"));
+        facu.setActivo(rs.getBoolean("activo"));
+        return facu;
+    }
+
+    @Override
+    protected void setId(Facultad facultad, Integer id) {
+        facultad.setIdFacultad(id);
     }
     
 }

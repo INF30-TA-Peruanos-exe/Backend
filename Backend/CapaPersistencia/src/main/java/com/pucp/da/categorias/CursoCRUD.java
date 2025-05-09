@@ -4,122 +4,76 @@
  */
 package com.pucp.da.categorias;
 
+import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Curso;
-import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.CursoDAO;
+import java.sql.CallableStatement;
 
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
-public class CursoCRUD implements CursoDAO{
-
+public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
+  
     @Override
-    public void insertar(Curso curso) {
-        String query = "INSERT INTO Curso(nombre,activo)"
-                + "values(?,?)";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);) {        
-            setParametrosCurso(ps, curso);
-            ps.executeUpdate(); 
-            //Traer el ultimo ID autogenerado
-            try(Statement st = con.createStatement();
-                ResultSet rskeys = st.executeQuery("select @@last_insert_id");){            
-                if(rskeys.next()){
-                    curso.setIdCurso(rskeys.getInt(1));
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        
+    protected CallableStatement getInsertCS(Connection conn, Curso curso) throws SQLException {
+        String sql = "{CALL INSERTAR_CURSO(?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, curso.getIdCurso());
+        cs.setString(2, curso.getNombre());
+        cs.setBoolean(3, curso.isActivo());
+        return cs;    
     }
 
     @Override
-    public ArrayList<Curso> listarTodos() {
-        
-        ArrayList<Curso> cursos = new ArrayList<>();
-        String query = "SELECT id_curso,nombre,activo FROM Curso WHERE activo = 1";
-        try(Connection con  =DBManager.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);){
-            while(rs.next()){
-                Curso curso = mapaCurso(rs);
-                cursos.add(curso);
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return cursos;
-        
+    protected CallableStatement getUpdateCS(Connection conn, Curso curso) throws SQLException {
+        String sql = "{CALL MODIFICAR_CURSO(?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, curso.getIdCurso());
+        cs.setString(2, curso.getNombre());
+        cs.setBoolean(3, curso.isActivo());
+        return cs;
     }
 
     @Override
-    public Curso obtenerPorId(int id) {
-        String query = "SELECT id_curso,nombre,activo FROM Curso WHERE id_curso = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapaCurso(rs);
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return null;
-        
+    protected CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException {
+        String sql = "{CALL ELIMINAR_CURSO(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
     }
 
     @Override
-    public void actualizar(Curso curso) {
-        String query = "UPDATE Curso SET nombre = ?, activo = ? WHERE id_curso = ?";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);){
-            setParametrosCurso(ps,curso);
-            ps.setInt(3,curso.getIdCurso());
-            ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
+    protected CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException {
+        String sql = "{CALL OBTENER_CURSO_X_ID(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
     }
 
     @Override
-    public void eliminar(int id) {
-        //Eliminar lógico
-        String query = "UPDATE Curso SET activo = 0 WHERE id_curso = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {            
-             ps.setInt(1, id);
-             ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        
+    protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
+        String sql = "{CALL LISTAR_CURSO_TODOS(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        return cs;
     }
-    
-    private void setParametrosCurso(PreparedStatement ps, Curso cur) throws SQLException{
-        ps.setString(1, cur.getNombre());
-        ps.setBoolean(2, cur.isActivo());
-    }
-    
-    private Curso mapaCurso(ResultSet rs) throws SQLException{
+
+    @Override
+    protected Curso createFromResultSet(ResultSet rs) throws SQLException {
         Curso cur = new Curso();
         cur.setIdCurso(rs.getInt("id_curso"));
         cur.setNombre(rs.getString("nombre"));
         cur.setActivo(rs.getBoolean("activo"));
-        return cur;
-    }    
-    
-    
+        return cur;    }
+
+    @Override
+    protected void setId(Curso curso, Integer id) {
+        curso.setIdCurso(id);
+    }
     
 }

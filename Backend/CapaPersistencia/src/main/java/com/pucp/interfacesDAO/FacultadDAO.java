@@ -4,17 +4,11 @@
  */
 package com.pucp.interfacesDAO;
 import com.pucp.capadominio.categorias.Facultad;
-import java.util.ArrayList;
 /**
  *
  * @author SEBASTIAN
  */
-public interface FacultadDAO {
+public interface FacultadDAO extends BaseDAO<Facultad>{
     
-    void insertar(Facultad facultad);
-    ArrayList<Facultad> listarTodos();
-    Facultad obtenerPorId(int id);
-    void actualizar(Facultad facultad);
-    void eliminar(int id);
     
 }
