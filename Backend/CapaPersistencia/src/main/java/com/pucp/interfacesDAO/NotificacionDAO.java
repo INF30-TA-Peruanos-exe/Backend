@@ -3,19 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.pucp.interfacesDAO;
+
+
 import com.pucp.capadominio.notificacion.Notificacion;
-import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
-public interface NotificacionDAO {
-    
-    void insertar(Notificacion notificacion);
-    ArrayList<Notificacion> listarTodos();
-    Notificacion obtenerPorId(int id);
-    void actualizar(Notificacion notificacion);
-    void eliminar(int id);
+public interface NotificacionDAO extends BaseDAO<Notificacion>{
+
     
 }
