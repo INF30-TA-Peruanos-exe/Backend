@@ -39,6 +39,22 @@ public class Usuario {
         denuncias = new ArrayList<>();
     }
     
+    public Usuario(Usuario user){
+        this.idUsuario = user.idUsuario;
+        this.codigoPUCP = user.codigoPUCP;
+        this.nombreUsuario = user.nombreUsuario;
+        this.contrasena = user.contrasena;
+        this.nombre = user.nombre;
+        this.correo = user.correo;
+        this.estado = user.estado;
+        this.publicaciones = new ArrayList<>(user.publicaciones);
+        this.favoritos = new ArrayList<>(user.favoritos);
+        this.comentarios = new ArrayList<>(user.comentarios);
+        this.notificaciones = new ArrayList<>(user.notificaciones);
+        this.denuncias = new ArrayList<>(user.denuncias);
+        this.activo = user.activo;
+    }
+    
     public Usuario(int idUsuario, int codigoPUCP, String nombreUsuario, 
             String contrasena, String nombre, String correo, EstadoUsuario estado, boolean activo){
         this.idUsuario = idUsuario;
@@ -187,7 +203,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "idUsuario=" + idUsuario + ", codigoPUCP=" + codigoPUCP + ", nombreUsuario=" + nombreUsuario + ", contrasena=" + contrasena + ", nombre=" + nombre + ", correo=" + correo + ", publicaciones=" + publicaciones + ", favoritos=" + favoritos + ", comentarios=" + comentarios + ", notificaciones=" + notificaciones + ", denuncias=" + denuncias + ", estado=" + estado + ", activo=" + activo + '}';
+        return "Usuario{" + "idUsuario=" + idUsuario + ", codigoPUCP=" + codigoPUCP + ", nombreUsuario=" + nombreUsuario + ", contrasena=" + contrasena + ", nombre=" + nombre + ", correo=" + correo + ", estado=" + estado + ", activo=" + activo + '}';
     }
     
     

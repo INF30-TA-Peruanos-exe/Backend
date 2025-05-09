@@ -108,7 +108,7 @@ public class Notificacion {
 
     @Override
     public String toString() {
-        return "Notificacion{" + "idNotificacion=" + idNotificacion + ", mensaje=" + mensaje + ", tipoNotificacion=" + tipoNotificacion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", activo=" + activo + ", notificador=" + notificador + ", autor=" + autor + '}';
+        return "Notificacion{" + "idNotificacion=" + idNotificacion + ", mensaje=" + mensaje + ", tipoNotificacion=" + tipoNotificacion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", activo=" + activo + ", notificador=" + notificador.getIdUsuario()+ ", autor=" + autor.getIdPublicacion()+ '}';
     }
     
     

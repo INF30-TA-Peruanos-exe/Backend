@@ -18,6 +18,7 @@ public class Administrador extends Usuario{
 	
     //CONSTRUCTORES
     public Administrador() {
+        super();
         this.adminDenuncias = new ArrayList<>();
     }
     
@@ -52,7 +53,7 @@ public class Administrador extends Usuario{
 
     @Override
     public String toString() {
-        return "Administrador{" + "claveMaestra=" + claveMaestra + ", idAdministrador=" + super.getIdUsuario() + ", adminDenuncias=" + adminDenuncias + '}';
+        return "Administrador{" + "claveMaestra=" + claveMaestra + ", idAdministrador=" + super.getIdUsuario() + ", Nombre: " + super.getNombre() + '}';
     }
     
     

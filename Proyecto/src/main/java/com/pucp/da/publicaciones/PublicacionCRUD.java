@@ -23,7 +23,7 @@ public class PublicacionCRUD implements PublicacionDAO{
 
     @Override
     public void insertar(Publicacion publicacion) {
-        String query = "INSERT INTO Publicacion(titulo,descripcion,estado,fecha_publicacion,url_imagen,activo)"
+        String query = "INSERT INTO Publicacion(titulo,descripcion,estado,fechaPublicacion,url_imagen,activo)"
                 + "values(?,?,?,?,?,?)";
         try(Connection con = DBManager.getConnection();
             PreparedStatement ps = con.prepareStatement(query);) {        
@@ -45,7 +45,7 @@ public class PublicacionCRUD implements PublicacionDAO{
     public ArrayList<Publicacion> listarTodos() {
         
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
-        String query = "SELECT id_publicacion,titulo,descripcion,estado,fecha_publicacion,url_imagen,activo FROM Publicacion WHERE activo = 1";
+        String query = "SELECT idPublicacion,titulo,descripcion,estado,fechaPublicacion,url_imagen,activo FROM Publicacion WHERE activo = 1";
         try(Connection con = DBManager.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(query);){
@@ -62,7 +62,7 @@ public class PublicacionCRUD implements PublicacionDAO{
 
     @Override
     public Publicacion obtenerPorId(int id) {
-        String query = "SELECT id_publicacion,titulo,descripcion,estado,fecha_publicacion,url_imagen,activo FROM Publicacion WHERE id_publicacion = ?";
+        String query = "SELECT idPublicacion,titulo,descripcion,estado,fechaPublicacion,url_imagen,activo FROM Publicacion WHERE idPublicacion = ?";
         try (Connection conn = DBManager.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
@@ -79,7 +79,7 @@ public class PublicacionCRUD implements PublicacionDAO{
 
     @Override
     public void actualizar(Publicacion publicacion) {
-        String query = "UPDATE Publicacion SET titulo = ?, descripcion = ?, estado = ?, fecha_publicacion = ?, url_imagen = ?, activo = ? WHERE id_publicacion = ?";
+        String query = "UPDATE Publicacion SET titulo = ?, descripcion = ?, estado = ?, fechaPublicacion = ?, url_imagen = ?, activo = ? WHERE idPublicacion = ?";
         try(Connection con = DBManager.getConnection();
             PreparedStatement ps = con.prepareStatement(query);){
             setParametrosPublicacion(ps,publicacion);
@@ -93,7 +93,7 @@ public class PublicacionCRUD implements PublicacionDAO{
     @Override
     public void eliminar(int id) {
         //Eliminar lógico
-        String query = "UPDATE Publicacion SET activo = 0 WHERE id_publicacion = ?";
+        String query = "UPDATE Publicacion SET activo = 0 WHERE idPublicacion = ?";
         try (Connection conn = DBManager.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(query)) {            
              ps.setInt(1, id);
@@ -115,11 +115,11 @@ public class PublicacionCRUD implements PublicacionDAO{
     
     private Publicacion mapaPublicacion(ResultSet rs) throws SQLException{
         Publicacion publi = new Publicacion();
-        publi.setIdPublicacion(rs.getInt("id_publicacion"));
+        publi.setIdPublicacion(rs.getInt("idPublicacion"));
         publi.setTitulo(rs.getString("titulo"));
         publi.setDescripcion(rs.getString("descripcion"));
         publi.setEstado(EstadoPublicacion.valueOf(rs.getString("estado")));
-        publi.setFechaPublicacion(rs.getDate("fecha_publicacion"));
+        publi.setFechaPublicacion(rs.getDate("fechaPublicacion"));
         publi.setRutaImagen(rs.getString("url_imagen"));
         publi.setActivo(rs.getBoolean("activo"));
         return publi;

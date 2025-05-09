@@ -230,7 +230,7 @@ public class Publicacion {
 
     @Override
     public String toString() {
-        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado + ", comentarios=" + comentarios + ", publicacionesCursos=" + publicacionesCursos + ", publicacionesEspecialidades=" + publicacionesEspecialidades + ", publicacionesFacultades=" + publicacionesFacultades + ", notificaciones=" + notificaciones + ", publicacionDenuncias=" + publicacionDenuncias + ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo + ", imagen=" + imagen + ", rutaImagen=" + rutaImagen + '}';
+        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado +  ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo  + ", rutaImagen=" + rutaImagen + '}';
     }
     
     

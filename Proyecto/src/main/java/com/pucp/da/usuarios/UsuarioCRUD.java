@@ -23,7 +23,7 @@ public class UsuarioCRUD implements UsuarioDAO{
 
     @Override
     public void insertar(Usuario usuario) {
-        String query = "INSERT INTO Usuario(codigo_PUCP,nombre_usuario,contrasena,nombre,correo,estado,activo)"
+        String query = "INSERT INTO Usuario(codigo_PUCP,nombreUsuario,contrasena,nombre,correo,estado,activo)"
                 + "values(?,?,?,?,?,?,?)";
         try(Connection con = DBManager.getConnection();
             PreparedStatement ps = con.prepareStatement(query);) {        
@@ -46,7 +46,7 @@ public class UsuarioCRUD implements UsuarioDAO{
     public ArrayList<Usuario> listarTodos() {
         
         ArrayList<Usuario> usuarios = new ArrayList<>();
-        String query = "SELECT id_usuario,codigo_PUCP,nombre_usuario,contrasena,nombre,correo,estado,activo FROM Usuario WHERE activo = 1";
+        String query = "SELECT id_usuario,codigo_PUCP,nombreUsuario,contrasena,nombre,correo,estado,activo FROM Usuario WHERE activo = 1";
         try(Connection con  =DBManager.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(query);){
@@ -63,7 +63,7 @@ public class UsuarioCRUD implements UsuarioDAO{
 
     @Override
     public Usuario obtenerPorId(int id) {
-        String query = "SELECT id_usuario,codigo_PUCP,nombre_usuario,contrasena,nombre,correo,estado,activo FROM Usuario WHERE id_usuario = ?";
+        String query = "SELECT id_usuario,codigo_PUCP,nombreUsuario,contrasena,nombre,correo,estado,activo FROM Usuario WHERE id_usuario = ?";
         try (Connection conn = DBManager.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
@@ -81,7 +81,7 @@ public class UsuarioCRUD implements UsuarioDAO{
 
     @Override
     public void actualizar(Usuario usuario) {
-        String query = "UPDATE Usuario SET codigo_PUCP = ?, nombre_usuario = ?, contrasena = ?, nombre = ?, correo = ?, estado = ? ,activo = ? WHERE id_usuario = ?";
+        String query = "UPDATE Usuario SET codigo_PUCP = ?, nombreUsuario = ?, contrasena = ?, nombre = ?, correo = ?, estado = ? ,activo = ? WHERE id_usuario = ?";
         try(Connection con = DBManager.getConnection();
             PreparedStatement ps = con.prepareStatement(query);){
             setParametrosUsuario(ps,usuario);
@@ -121,7 +121,7 @@ public class UsuarioCRUD implements UsuarioDAO{
         Usuario usu = new Usuario();
         usu.setIdUsuario(rs.getInt("id_usuario"));
         usu.setCodigoPUCP(rs.getInt("codigo_PUCP"));
-        usu.setNombreUsuario(rs.getString("nombre_usuario"));
+        usu.setNombreUsuario(rs.getString("nombreUsuario"));
         usu.setContrasena(rs.getString("contrasena"));
         usu.setNombre(rs.getString("nombre"));
         usu.setCorreo(rs.getString("correo"));

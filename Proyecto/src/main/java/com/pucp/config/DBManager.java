@@ -24,9 +24,14 @@ public class DBManager {
     private static String password;
     
     static{
-        String pathFile = "main/java/com/pucp/config/config.properties";
+        String pathFile = "com/pucp/config/config.properties";
         try{
             InputStream input = DBManager.class.getClassLoader().getResourceAsStream(pathFile);
+
+            if (input == null) {
+                throw new RuntimeException("Archivo config.properties no encontrado en el classpath.");
+            }
+            
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             String linea;
 

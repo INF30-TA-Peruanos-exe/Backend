@@ -24,7 +24,7 @@ public class AdministradorCRUD implements AdministradorDAO{
     @Override
     public void insertar(Administrador administrador) {
         
-        String query1 = "INSERT INTO Usuario(codigo_PUCP,nombre_usuario,contrasena,nombre,correo,estado,activo)"
+        String query1 = "INSERT INTO Usuario(codigo_PUCP,nombreUsuario,contrasena,nombre,correo,estado,activo)"
                 + "values(?,?,?,?,?,?,?)";
         String query2 = "INSERT INTO Administrador(id_Administrador,clave_Maestra)"
                 + "values(?,?)";
@@ -55,7 +55,7 @@ public class AdministradorCRUD implements AdministradorDAO{
     public ArrayList<Administrador> listarTodos() {
         
         ArrayList<Administrador> administradores = new ArrayList<>();
-        String query = "SELECT u.id_usuario,u.codigo_PUCP,u.nombre_usuario,u.contrasena,u.nombre,u.correo,u.estado,u.activo,a.clave_Maestra "
+        String query = "SELECT u.id_usuario,u.codigo_PUCP,u.nombreUsuario,u.contrasena,u.nombre,u.correo,u.estado,u.activo,a.clave_Maestra "
                 + "FROM Usuario u, Administrador a WHERE u.id_usuario = a.id_Administrador AND u.activo = 1 ";
         try(Connection con  =DBManager.getConnection();
             Statement st = con.createStatement();
@@ -73,7 +73,7 @@ public class AdministradorCRUD implements AdministradorDAO{
     @Override
     public Administrador obtenerPorId(int id) {
         
-        String query = "SELECT u.id_usuario,u.codigo_PUCP,u.nombre_usuario,u.contrasena,u.nombre,u.correo,u.estado,u.activo,a.clave_Maestra "
+        String query = "SELECT u.id_usuario,u.codigo_PUCP,u.nombreUsuario,u.contrasena,u.nombre,u.correo,u.estado,u.activo,a.clave_Maestra "
                 + "FROM Usuario u, Administrador a WHERE u.id_usuario = a.id_Administrador AND u.id_usuario = ? ";
         try (Connection conn = DBManager.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -93,7 +93,7 @@ public class AdministradorCRUD implements AdministradorDAO{
     @Override
     public void actualizar(Administrador administrador) {
         
-        String query1 = "UPDATE Usuario SET codigo_PUCP = ?, nombre_usuario = ?, contrasena = ?, nombre = ?, correo = ?, estado = ? ,activo = ? WHERE id_usuario = ?";
+        String query1 = "UPDATE Usuario SET codigo_PUCP = ?, nombreUsuario = ?, contrasena = ?, nombre = ?, correo = ?, estado = ? ,activo = ? WHERE id_usuario = ?";
         String query2 = "UPDATE Administrador SET clave_Maestra = ? WHERE id_Administrador = ?";
         try(Connection con = DBManager.getConnection();
             PreparedStatement ps1 = con.prepareStatement(query1);
@@ -143,7 +143,7 @@ public class AdministradorCRUD implements AdministradorDAO{
         Administrador admin = new Administrador();
         admin.setIdUsuario(rs.getInt("id_usuario"));
         admin.setCodigoPUCP(rs.getInt("codigo_PUCP"));
-        admin.setNombreUsuario(rs.getString("nombre_usuario"));
+        admin.setNombreUsuario(rs.getString("nombreUsuario"));
         admin.setContrasena(rs.getString("contrasena"));
         admin.setNombre(rs.getString("nombre"));
         admin.setCorreo(rs.getString("correo"));

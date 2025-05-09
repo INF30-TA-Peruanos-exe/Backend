@@ -1,0 +1,4 @@
+user: admin
+password: admin1234
+port: 3306
+url: ta-programacion3.c3kaoyec2cbj.us-east-1.rds.amazonaws.com

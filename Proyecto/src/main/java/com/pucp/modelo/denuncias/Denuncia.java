@@ -64,7 +64,7 @@ public class Denuncia {
     }
 
     public void setDenunciante(Usuario denunciante) {
-        this.denunciante = denunciante;
+        this.denunciante = new Usuario(denunciante);
     }
 
     public String getMotivo() {
@@ -102,7 +102,7 @@ public class Denuncia {
     
     @Override
     public String toString() {
-        return "Denuncia{" + "idDenuncia=" + idDenuncia + ", autor=" + autor + ", denunciante=" + denunciante + ", motivo=" + motivo + ", fechaDenuncia=" + fechaDenuncia + '}';
+        return "Denuncia{" + "idDenuncia=" + idDenuncia + ", autor=" + autor.getIdPublicacion()+ ", denunciante=" + denunciante.getIdUsuario() + ", motivo=" + motivo + ", fechaDenuncia=" + fechaDenuncia + '}';
     }
     
 }
