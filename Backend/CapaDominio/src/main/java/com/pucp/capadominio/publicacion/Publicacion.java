@@ -239,7 +239,7 @@ public class Publicacion {
 
     @Override
     public String toString() {
-        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado + ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo + ", usuario=" + ", rutaImagen=" + rutaImagen + '}';
+        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado + ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo + ", usuario=" + usuario.getIdUsuario() + ", rutaImagen=" + rutaImagen + '}';
     }
     
 
