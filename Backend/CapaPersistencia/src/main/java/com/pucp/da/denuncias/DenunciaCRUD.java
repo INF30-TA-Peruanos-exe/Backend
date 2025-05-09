@@ -4,6 +4,7 @@
  */
 package com.pucp.da.denuncias;
 
+import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.denuncia.Denuncia;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Administrador;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author Axel
  */
-public class DenunciaCRUD implements DenunciaDAO{
+public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
 
     @Override
     public void insertar(Denuncia denuncia) {

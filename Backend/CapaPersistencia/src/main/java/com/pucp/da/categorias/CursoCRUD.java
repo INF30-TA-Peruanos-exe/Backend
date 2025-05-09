@@ -41,7 +41,7 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
     }
 
     @Override
-    protected CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getDeleteCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL ELIMINAR_CURSO(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -49,7 +49,7 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
     }
 
     @Override
-    protected CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getSelectByIdCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL OBTENER_CURSO_X_ID(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -58,7 +58,7 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
 
     @Override
     protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
-        String sql = "{CALL LISTAR_CURSO_TODOS(?)}";
+        String sql = "{CALL LISTAR_CURSO_TODOS()}";
         CallableStatement cs = conn.prepareCall(sql);
         return cs;
     }
@@ -72,7 +72,7 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
         return cur;    }
 
     @Override
-    protected void setId(Curso curso, Integer id) {
+    protected void setId(Curso curso, int id) {
         curso.setIdCurso(id);
     }
     

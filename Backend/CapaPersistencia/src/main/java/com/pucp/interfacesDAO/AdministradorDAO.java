@@ -7,18 +7,11 @@ package com.pucp.interfacesDAO;
 
 
 import com.pucp.capadominio.usuarios.Administrador;
-import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
-public interface AdministradorDAO {
-    
-    void insertar(Administrador administrador);
-    ArrayList<Administrador> listarTodos();
-    Administrador obtenerPorId(int id);
-    void actualizar(Administrador administrador);
-    void eliminar(int id);
+public interface AdministradorDAO extends BaseDAO<Administrador>{
     
 }

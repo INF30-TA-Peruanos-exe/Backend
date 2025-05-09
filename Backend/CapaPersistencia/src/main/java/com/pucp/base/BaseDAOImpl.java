@@ -17,11 +17,11 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
     
     protected abstract CallableStatement getInsertCS(Connection conn, T entity) throws SQLException;
     protected abstract CallableStatement getUpdateCS(Connection conn, T entity) throws SQLException;
-    protected abstract CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException;
-    protected abstract CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException;
+    protected abstract CallableStatement getDeleteCS(Connection conn, int id) throws SQLException;
+    protected abstract CallableStatement getSelectByIdCS(Connection conn, int id) throws SQLException;
     protected abstract CallableStatement getSelectAllCS(Connection conn) throws SQLException;
     protected abstract T createFromResultSet(ResultSet rs) throws SQLException;
-    protected abstract void setId(T entity, Integer id);
+    protected abstract void setId(T entity, int id);
     
     @Override
     public void insertar(T entidad) {

@@ -40,7 +40,7 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
     }
 
     @Override
-    protected CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getDeleteCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL ELIMINAR_ESPECIALIDAD(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -48,7 +48,7 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
     }
 
     @Override
-    protected CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getSelectByIdCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL OBTENER_ESPECIALIDAD_X_ID(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -57,7 +57,7 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
 
     @Override
     protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
-        String sql = "{CALL LISTAR_ESPECIALIDAD_TODOS(?)}";
+        String sql = "{CALL LISTAR_ESPECIALIDAD_TODOS()}";
         CallableStatement cs = conn.prepareCall(sql);
         return cs;
     }
@@ -72,7 +72,7 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
     }
 
     @Override
-    protected void setId(Especialidad especialidad, Integer id) {
+    protected void setId(Especialidad especialidad, int id) {
         especialidad.setIdEspecialidad(id);
     }
     

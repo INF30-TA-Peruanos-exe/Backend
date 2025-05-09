@@ -6,35 +6,17 @@ package com.pucp.da.categorias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Facultad;
-import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.FacultadDAO;
 import java.sql.CallableStatement;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 /**
  *
  * @author SEBASTIAN
  */
 public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
-
-    
-    private void setParametrosFacultad(PreparedStatement ps, Facultad facu) throws SQLException{
-        ps.setString(1, facu.getNombre());
-        ps.setBoolean(2, facu.isActivo());
-    }
-    
-    private Facultad mapaFacultad(ResultSet rs) throws SQLException{
-        Facultad facu = new Facultad();
-        facu.setIdFacultad(rs.getInt("id_facultad"));
-        facu.setNombre(rs.getString("nombre"));
-        facu.setActivo(rs.getBoolean("activo"));
-        return facu;
-    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Facultad facultad) throws SQLException {
@@ -57,7 +39,7 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
     }
 
     @Override
-    protected CallableStatement getDeleteCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getDeleteCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL ELIMINAR_FACULTAD(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -65,7 +47,7 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
     }
 
     @Override
-    protected CallableStatement getSelectByIdCS(Connection conn, Integer id) throws SQLException {
+    protected CallableStatement getSelectByIdCS(Connection conn, int id) throws SQLException {
         String sql = "{CALL OBTENER_FACULTAD_X_ID(?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, id);
@@ -74,7 +56,7 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
 
     @Override
     protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
-        String sql = "{CALL LISTAR_FACULTAD_TODOS(?)}";
+        String sql = "{CALL LISTAR_FACULTAD_TODOS()}";
         CallableStatement cs = conn.prepareCall(sql);
         return cs;
     }
@@ -89,7 +71,7 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
     }
 
     @Override
-    protected void setId(Facultad facultad, Integer id) {
+    protected void setId(Facultad facultad, int id) {
         facultad.setIdFacultad(id);
     }
     
