@@ -6,136 +6,97 @@ package com.pucp.da.denuncias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.denuncia.Denuncia;
-import com.pucp.capadominio.publicacion.Publicacion;
-import com.pucp.capadominio.usuarios.Administrador;
-import com.pucp.capadominio.usuarios.Usuario;
-import com.pucp.config.DBManager;
+import com.pucp.da.publicaciones.PublicacionCRUD;
+import com.pucp.da.usuarios.AdministradorCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.DenunciaDAO;
+import java.sql.CallableStatement;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 /**
  *
  * @author Axel
  */
 public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
-
-    @Override
-    public void insertar(Denuncia denuncia) {
-        
-        String query = "INSERT INTO Denuncia(autor,reportante,motivo,fecha_reporte,id_administrador,activo)"
-                + "values(?,?,?,?,?,?)";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);) {        
-            setParametrosDenuncia(ps, denuncia);
-            ps.executeUpdate(); 
-            //Traer el ultimo ID autogenerado
-            try(Statement st = con.createStatement();
-                ResultSet rskeys = st.executeQuery("select @@last_insert_id");){            
-                if(rskeys.next()){
-                    denuncia.setIdDenuncia(rskeys.getInt(1));
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public ArrayList<Denuncia> listarTodos() {
-        
-        ArrayList<Denuncia> denuncias = new ArrayList<>();
-        String query = "SELECT id_reporte,autor,reportante,motivo,fecha_reporte,id_administrador,activo FROM Denuncia WHERE activo = 1";
-        try(Connection con = DBManager.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);){
-            while(rs.next()){
-                Denuncia denuncia = mapaDenuncia(rs);
-                denuncias.add(denuncia);
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return denuncias;
-    }
-
-    @Override
-    public Denuncia obtenerPorId(int id) {
-        
-        String query = "SELECT id_reporte,autor,reportante,motivo,fecha_reporte,id_administrador,activo FROM Denuncia WHERE id_reporte = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapaDenuncia(rs);
-                }
-            }
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return null; 
-
-    }
-
-    @Override
-    public void actualizar(Denuncia denuncia) {
-        
-        String query = "UPDATE Denuncia SET autor = ?, reportante = ?, motivo = ?, fecha_reporte = ?, id_administrador = ?, activo = ? WHERE id_reporte = ?";
-        try(Connection con = DBManager.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);){
-            setParametrosDenuncia(ps,denuncia);
-            ps.setInt(7,denuncia.getIdDenuncia());
-            ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void eliminar(int id) {
-        //Eliminar lógico
-        String query = "UPDATE Denuncia SET activo = 0 WHERE id_reporte = ?";
-        try (Connection conn = DBManager.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {            
-             ps.setInt(1, id);
-             ps.executeUpdate();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-
-    }
     
-    private void setParametrosDenuncia(PreparedStatement ps, Denuncia denun) throws SQLException{
-        ps.setInt(1, denun.getAutor().getIdPublicacion());
-        ps.setInt(2, denun.getDenunciante().getIdUsuario());
-        ps.setString(3, denun.getMotivo());
-        ps.setDate(4, denun.getFechaDenuncia());
-        ps.setInt(5,denun.getAdmin().getIdUsuario());
-        ps.setBoolean(6, denun.isActivo());
-    }
+    private final UsuarioCRUD usuarioDAO;
+    private final PublicacionCRUD publicacionDAO;
+    private final AdministradorCRUD administradorDAO;
     
-    private Denuncia mapaDenuncia(ResultSet rs) throws SQLException{
+    public DenunciaCRUD(){
+        usuarioDAO = new UsuarioCRUD();
+        publicacionDAO = new PublicacionCRUD();
+        administradorDAO = new AdministradorCRUD();
+    }
+
+    @Override
+    protected CallableStatement getInsertCS(Connection conn, Denuncia denuncia) throws SQLException {
+        String sql = "{CALL INSERTAR_DENUNCIA(?, ?, ?, ?, ?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, denuncia.getIdDenuncia());
+        cs.setInt(2, denuncia.getAutor().getIdPublicacion());
+        cs.setInt(3, denuncia.getDenunciante().getIdUsuario());
+        cs.setString(4, denuncia.getMotivo());
+        cs.setDate(5, denuncia.getFechaDenuncia());
+        cs.setInt(6,denuncia.getAdmin().getIdUsuario());
+        cs.setBoolean(7, denuncia.isActivo());
+        return cs; 
+    }
+
+    @Override
+    protected CallableStatement getUpdateCS(Connection conn, Denuncia denuncia) throws SQLException {
+        String sql = "{CALL MODIFICAR_DENUNCIA(?, ?, ?, ?, ?, ?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, denuncia.getIdDenuncia());
+        cs.setInt(2, denuncia.getAutor().getIdPublicacion());
+        cs.setInt(3, denuncia.getDenunciante().getIdUsuario());
+        cs.setString(4, denuncia.getMotivo());
+        cs.setDate(5, denuncia.getFechaDenuncia());
+        cs.setInt(6,denuncia.getAdmin().getIdUsuario());
+        cs.setBoolean(7, denuncia.isActivo());
+        return cs; 
+    }
+
+    @Override
+    protected CallableStatement getDeleteCS(Connection conn, int id) throws SQLException {
+        String sql = "{CALL ELIMINAR_DENUNCIA(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
+    }
+
+    @Override
+    protected CallableStatement getSelectByIdCS(Connection conn, int id) throws SQLException {
+        String sql = "{CALL OBTENER_DENUNCIA_X_ID(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, id);
+        return cs;
+    }
+
+    @Override
+    protected CallableStatement getSelectAllCS(Connection conn) throws SQLException {
+        String sql = "{CALL LISTAR_DENUNCIA_TODOS()}";
+        CallableStatement cs = conn.prepareCall(sql);
+        return cs;
+    }
+
+    @Override
+    protected Denuncia createFromResultSet(ResultSet rs) throws SQLException {
         Denuncia denun = new Denuncia();
-        Publicacion autor = new Publicacion();
-        Usuario usu = new Usuario();
-        Administrador admin = new Administrador();
-        
         denun.setIdDenuncia(rs.getInt("id_reporte"));
-        autor.setIdPublicacion(rs.getInt("autor"));
-        denun.setAutor(autor);
-        usu.setIdUsuario(rs.getInt("reportante"));
-        denun.setDenunciante(usu);
+        denun.setAutor(publicacionDAO.obtenerPorId(rs.getInt("autor")));
+        denun.setDenunciante(usuarioDAO.obtenerPorId(rs.getInt("reportante")));
         denun.setMotivo(rs.getString("motivo"));
         denun.setFechaDenuncia(rs.getDate("fecha_reporte"));
-        admin.setIdUsuario(rs.getInt("id_administrador"));
-        denun.setAdmin(admin);
+        denun.setAdmin(administradorDAO.obtenerPorId(rs.getInt("id_administrador")));
         denun.setActivo(rs.getBoolean("activo"));
         return denun;
+    }
+
+    @Override
+    protected void setId(Denuncia denuncia, int id) {
+        denuncia.setIdDenuncia(id);
     }
 }
