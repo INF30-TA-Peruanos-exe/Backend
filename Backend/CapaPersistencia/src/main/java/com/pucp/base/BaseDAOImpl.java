@@ -79,7 +79,8 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
             cs.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar entidad", e);
-        }    }
+        }    
+    }
 
     @Override
     public void eliminar(int id) {
@@ -89,7 +90,7 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
             cs.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al eliminar entidad", e);
-        }    }
-    
-    
+        }    
+    }
+     
 }
