@@ -9,6 +9,7 @@ import com.pucp.capadominio.categorias.Especialidad;
 import com.pucp.capadominio.categorias.Facultad;
 import com.pucp.capadominio.denuncia.Denuncia;
 import com.pucp.capadominio.notificacion.Notificacion;
+import com.pucp.capadominio.usuarios.Usuario;
 
 import java.awt.Image;
 import java.io.File;
@@ -35,6 +36,7 @@ public class Publicacion {
     private ArrayList<Denuncia> publicacionDenuncias;
     private Date fechaPublicacion;
     private boolean activo;
+    private Usuario usuario;
     //Nuevo
     private Image imagen;
     private String rutaImagen;
@@ -50,7 +52,7 @@ public class Publicacion {
     
     
     public Publicacion(int idPublicacion, String titulo, String descripcion, 
-            EstadoPublicacion estado, Date fechaPublicacion, String rutaImagen, boolean activo) {
+            EstadoPublicacion estado, Date fechaPublicacion, Usuario usuario, String rutaImagen, boolean activo) {
         
         this.idPublicacion = idPublicacion;
         this.titulo = titulo;
@@ -63,6 +65,7 @@ public class Publicacion {
         this.notificaciones = new ArrayList<>();
         this.publicacionDenuncias = new ArrayList<>();
         this.fechaPublicacion = fechaPublicacion;
+        this.usuario = usuario;
         this.activo = activo;
         
         //Nuevo
@@ -226,8 +229,18 @@ public class Publicacion {
         this.activo = activo;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
-        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado +  ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo  + ", rutaImagen=" + rutaImagen + '}';
+        return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado + ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo + ", usuario=" + usuario.getIdUsuario() + ", rutaImagen=" + rutaImagen + '}';
     }
+    
+
 }
