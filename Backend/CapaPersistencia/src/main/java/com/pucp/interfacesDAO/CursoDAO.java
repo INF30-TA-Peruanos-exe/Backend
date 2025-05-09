@@ -5,19 +5,18 @@
 package com.pucp.interfacesDAO;
 
 
-
+import com.pucp.capadominio.categorias.Curso;
 import java.util.ArrayList;
-
 /**
  *
  * @author SEBASTIAN
  */
-public interface DenunciaDAO {
+public interface CursoDAO {
     
-    void insertar(Denuncia denuncia);
-    ArrayList<Denuncia> listarTodos();
-    Denuncia obtenerPorId(int id);
-    void actualizar(Denuncia denuncia);
+    void insertar(Curso curso);
+    ArrayList<Curso> listarTodos();
+    Curso obtenerPorId(int id);
+    void actualizar(Curso curso);
     void eliminar(int id);
     
 }

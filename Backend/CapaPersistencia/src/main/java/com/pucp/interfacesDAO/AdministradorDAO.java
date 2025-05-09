@@ -6,18 +6,19 @@ package com.pucp.interfacesDAO;
 
 
 
+import com.pucp.capadominio.usuarios.Administrador;
 import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
-public interface DenunciaDAO {
+public interface AdministradorDAO {
     
-    void insertar(Denuncia denuncia);
-    ArrayList<Denuncia> listarTodos();
-    Denuncia obtenerPorId(int id);
-    void actualizar(Denuncia denuncia);
+    void insertar(Administrador administrador);
+    ArrayList<Administrador> listarTodos();
+    Administrador obtenerPorId(int id);
+    void actualizar(Administrador administrador);
     void eliminar(int id);
     
 }

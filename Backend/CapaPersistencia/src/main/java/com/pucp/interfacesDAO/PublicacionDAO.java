@@ -3,21 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.pucp.interfacesDAO;
-
-
-
+import com.pucp.capadominio.publicacion.Publicacion;
 import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
-public interface DenunciaDAO {
+public interface PublicacionDAO {
     
-    void insertar(Denuncia denuncia);
-    ArrayList<Denuncia> listarTodos();
-    Denuncia obtenerPorId(int id);
-    void actualizar(Denuncia denuncia);
+    void insertar(Publicacion publicacion);
+    ArrayList<Publicacion> listarTodos();
+    Publicacion obtenerPorId(int id);
+    void actualizar(Publicacion publicacion);
     void eliminar(int id);
     
 }

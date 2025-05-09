@@ -4,9 +4,10 @@
  */
 package com.pucp.da.usuarios;
 
+import com.pucp.capadominio.usuarios.Administrador;
+import com.pucp.capadominio.usuarios.EstadoUsuario;
 import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.AdministradorDAO;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
