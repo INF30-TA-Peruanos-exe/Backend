@@ -4,7 +4,9 @@
  */
 package com.pucp.base;
 
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.BaseDAO;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +17,19 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
 
     @Override
     public void insertar(T entidad) {
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+             PreparedStatement ps = getInsertPS(conn, entidad)) {
 
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    setId(entidad, rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al agregar entidad", e);
+        }
     }
 
     @Override

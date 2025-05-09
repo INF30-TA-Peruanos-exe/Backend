@@ -4,52 +4,76 @@
  */
 package com.pucp.config;
 
-import java.io.BufferedReader;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Properties;
 
-/**
- *
- * @author Axel
- */
 public class DBManager {
-    
-    private static String url;
-    private static String user;
-    private static String password;
-    
-    static{
-        String pathFile = "com/pucp/config/config.properties";
-        try{
-            InputStream input = DBManager.class.getClassLoader().getResourceAsStream(pathFile);
+    private static DBManager instance;
+    private HikariDataSource dataSource;
 
+    // Constructor privado para evitar instanciación externa
+    private DBManager() {
+        configurar();
+    }
+
+    // Método para obtener la instancia del Singleton
+    public static synchronized DBManager getInstance() {
+        if (instance == null) {
+            instance = new DBManager();
+        }
+        return instance;
+    }
+
+    // Método para configurar el pool de conexiones
+    private void configurar() {
+        Properties properties = new Properties();
+        String propertiesFile = "db.properties";
+
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(propertiesFile)) {
             if (input == null) {
-                throw new RuntimeException("Archivo config.properties no encontrado en el classpath.");
+                throw new IOException("No se pudo encontrar el archivo de propiedades: " + propertiesFile);
             }
-            
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            String linea;
+            properties.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar el archivo de propiedades", e);
+        }
 
-            linea = reader.readLine();
-            url = linea.split("=")[1];
-            linea = reader.readLine();
-            user = linea.split("=")[1];
-            linea = reader.readLine();
-            password = linea.split("=")[1];
-            //cargar driver de mysql
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (Exception ex) {
-            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null,ex);
-        }   
+        HikariConfig config = new HikariConfig();
+        String dbType = properties.getProperty("db.type").toLowerCase();
+        config.setJdbcUrl(properties.getProperty(dbType + ".jdbcUrl"));
+        config.setUsername(properties.getProperty(dbType + ".username"));
+        config.setPassword(properties.getProperty(dbType + ".password"));
+
+        // Configuración del pool
+        config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("db.maxPoolSize")));
+        config.setMinimumIdle(Integer.parseInt(properties.getProperty("db.minIdle")));  
+        config.setIdleTimeout(Integer.parseInt(properties.getProperty("db.idleTimeout")));
+        config.setConnectionTimeout(Integer.parseInt(properties.getProperty("db.connectionTimeout")));
+
+        // Configuraciones específicas según el tipo de base de datos
+        if ("mysql".equals(dbType)) {
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        } else if ("postgresql".equals(dbType)) {
+            // Configuraciones específicas para PostgreSQL (si es necesario)
+        }
+        dataSource = new HikariDataSource(config);
     }
-    
-    public static Connection getConnection() throws SQLException{
-        return DriverManager.getConnection(url, user, password);
+
+    public Connection obtenerConexion() throws SQLException {
+        return dataSource.getConnection();
     }
-    
+
+    public void cerrarPool() {
+        if (dataSource != null) {
+            dataSource.close();
+        }
+    }
 }
