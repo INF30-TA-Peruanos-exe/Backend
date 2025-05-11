@@ -105,12 +105,14 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
         String sql = "{CALL LISTAR_PUBLICACION_X_FACULTAD_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
-             CallableStatement cs = conn.prepareCall(sql);
-             ResultSet rs = cs.executeQuery()) {
-
-            while (rs.next()) {
+             CallableStatement cs = conn.prepareCall(sql);) {
+            
+            cs.setString(1,facultad);
+                try (ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
                 publicaciones.add(createFromResultSet(rs));
-            }
+                    }
+                }
         } catch (SQLException e) {
             throw new RuntimeException("Error al listar publicacion por facultad", e);
         }
