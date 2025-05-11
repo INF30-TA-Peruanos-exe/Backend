@@ -22,17 +22,16 @@ public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements Adm
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Administrador administrador) throws SQLException {
-        String sql = "{CALL INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, administrador.getIdUsuario());
-        cs.setInt(2, administrador.getCodigoPUCP());
-        cs.setString(3, administrador.getNombreUsuario());
-        cs.setString(4, administrador.getContrasena());
-        cs.setString(5, administrador.getNombre());
-        cs.setString(6, administrador.getCorreo());
-        cs.setString(7, administrador.getEstado().name());
-        cs.setBoolean(8, administrador.isActivo());
-        cs.setString(9, administrador.getClaveMaestra());
+        cs.setInt(1, administrador.getCodigoPUCP());
+        cs.setString(2, administrador.getNombreUsuario());
+        cs.setString(3, administrador.getContrasena());
+        cs.setString(4, administrador.getNombre());
+        cs.setString(5, administrador.getCorreo());
+        cs.setString(6, administrador.getEstado().name());
+        cs.setBoolean(7, administrador.isActivo());
+        cs.setString(8, administrador.getClaveMaestra());
         return cs; 
     }
 

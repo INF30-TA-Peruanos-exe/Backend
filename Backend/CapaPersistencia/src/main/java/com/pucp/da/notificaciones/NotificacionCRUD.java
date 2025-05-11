@@ -31,31 +31,29 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Notificacion notificacion) throws SQLException {
-        String sql = "{CALL INSERTAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, notificacion.getIdNotificacion());
-        cs.setString(2, notificacion.getMensaje());
-        cs.setString(3, notificacion.getTipoNotificacion().name());
-        cs.setInt(4, notificacion.getCantidad());
-        cs.setDate(5, notificacion.getFecha());
-        cs.setInt(6, notificacion.getAutor().getIdPublicacion());
-        cs.setInt(7, notificacion.getNotificador().getIdUsuario());
-        cs.setBoolean(8, notificacion.isActivo());
+        cs.setString(1, notificacion.getMensaje());
+        cs.setString(2, notificacion.getTipoNotificacion().name());
+        cs.setInt(3, notificacion.getCantidad());
+        cs.setDate(4, notificacion.getFecha());
+        cs.setInt(5, notificacion.getAutor().getIdPublicacion());
+        cs.setInt(6, notificacion.getNotificador().getIdUsuario());
+        cs.setBoolean(7, notificacion.isActivo());
         return cs; 
     }
 
     @Override
     protected CallableStatement getUpdateCS(Connection conn, Notificacion notificacion) throws SQLException {
-        String sql = "{CALL MODIFICAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL MODIFICAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, notificacion.getIdNotificacion());
-        cs.setString(2, notificacion.getMensaje());
-        cs.setString(3, notificacion.getTipoNotificacion().name());
-        cs.setInt(4, notificacion.getCantidad());
-        cs.setDate(5, notificacion.getFecha());
-        cs.setInt(6, notificacion.getAutor().getIdPublicacion());
-        cs.setInt(7, notificacion.getNotificador().getIdUsuario());
-        cs.setBoolean(8, notificacion.isActivo());
+        cs.setString(1, notificacion.getMensaje());
+        cs.setString(2, notificacion.getTipoNotificacion().name());
+        cs.setInt(3, notificacion.getCantidad());
+        cs.setDate(4, notificacion.getFecha());
+        cs.setInt(5, notificacion.getAutor().getIdPublicacion());
+        cs.setInt(6, notificacion.getNotificador().getIdUsuario());
+        cs.setBoolean(7, notificacion.isActivo());
         return cs; 
     }
 

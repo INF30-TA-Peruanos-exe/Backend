@@ -22,21 +22,19 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
   
     @Override
     protected CallableStatement getInsertCS(Connection conn, Curso curso) throws SQLException {
-        String sql = "{CALL INSERTAR_CURSO(?, ?, ?)}";
+        String sql = "{CALL INSERTAR_CURSO(?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, curso.getIdCurso());
-        cs.setString(2, curso.getNombre());
-        cs.setBoolean(3, curso.isActivo());
+        cs.setString(1, curso.getNombre());
+        cs.setBoolean(2, curso.isActivo());
         return cs;    
     }
 
     @Override
     protected CallableStatement getUpdateCS(Connection conn, Curso curso) throws SQLException {
-        String sql = "{CALL MODIFICAR_CURSO(?, ?, ?)}";
+        String sql = "{CALL MODIFICAR_CURSO(?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, curso.getIdCurso());
-        cs.setString(2, curso.getNombre());
-        cs.setBoolean(3, curso.isActivo());
+        cs.setString(1, curso.getNombre());
+        cs.setBoolean(2, curso.isActivo());
         return cs;
     }
 

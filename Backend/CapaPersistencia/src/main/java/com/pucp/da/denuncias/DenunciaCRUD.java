@@ -33,29 +33,27 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Denuncia denuncia) throws SQLException {
-        String sql = "{CALL INSERTAR_DENUNCIA(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_DENUNCIA(?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, denuncia.getIdDenuncia());
-        cs.setInt(2, denuncia.getAutor().getIdPublicacion());
-        cs.setInt(3, denuncia.getDenunciante().getIdUsuario());
-        cs.setString(4, denuncia.getMotivo());
-        cs.setDate(5, denuncia.getFechaDenuncia());
-        cs.setInt(6,denuncia.getAdmin().getIdUsuario());
-        cs.setBoolean(7, denuncia.isActivo());
+        cs.setInt(1, denuncia.getAutor().getIdPublicacion());
+        cs.setInt(2, denuncia.getDenunciante().getIdUsuario());
+        cs.setString(3, denuncia.getMotivo());
+        cs.setDate(4, denuncia.getFechaDenuncia());
+        cs.setInt(5,denuncia.getAdmin().getIdUsuario());
+        cs.setBoolean(6, denuncia.isActivo());
         return cs; 
     }
 
     @Override
     protected CallableStatement getUpdateCS(Connection conn, Denuncia denuncia) throws SQLException {
-        String sql = "{CALL MODIFICAR_DENUNCIA(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL MODIFICAR_DENUNCIA(?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, denuncia.getIdDenuncia());
-        cs.setInt(2, denuncia.getAutor().getIdPublicacion());
-        cs.setInt(3, denuncia.getDenunciante().getIdUsuario());
-        cs.setString(4, denuncia.getMotivo());
-        cs.setDate(5, denuncia.getFechaDenuncia());
-        cs.setInt(6,denuncia.getAdmin().getIdUsuario());
-        cs.setBoolean(7, denuncia.isActivo());
+        cs.setInt(1, denuncia.getAutor().getIdPublicacion());
+        cs.setInt(2, denuncia.getDenunciante().getIdUsuario());
+        cs.setString(3, denuncia.getMotivo());
+        cs.setDate(4, denuncia.getFechaDenuncia());
+        cs.setInt(5,denuncia.getAdmin().getIdUsuario());
+        cs.setBoolean(6, denuncia.isActivo());
         return cs; 
     }
 

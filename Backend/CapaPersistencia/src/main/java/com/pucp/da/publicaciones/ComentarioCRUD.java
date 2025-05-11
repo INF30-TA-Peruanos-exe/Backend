@@ -30,15 +30,14 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Comentario comentario) throws SQLException {
-        String sql = "{CALL INSERTAR_COMENTARIO(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_COMENTARIO(?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, comentario.getIdComentario());
-        cs.setString(2, comentario.getContenido());
-        cs.setInt(3, comentario.getValoracion());
-        cs.setDate(4, comentario.getFecha());
-        cs.setInt(5, comentario.getPublicacion().getIdPublicacion());
-        cs.setInt(6, comentario.getComentador().getIdUsuario());
-        cs.setBoolean(7, comentario.isActivo());
+        cs.setString(1, comentario.getContenido());
+        cs.setInt(2, comentario.getValoracion());
+        cs.setDate(3, comentario.getFecha());
+        cs.setInt(4, comentario.getPublicacion().getIdPublicacion());
+        cs.setInt(5, comentario.getComentador().getIdUsuario());
+        cs.setBoolean(6, comentario.isActivo());
         return cs; 
     }
 

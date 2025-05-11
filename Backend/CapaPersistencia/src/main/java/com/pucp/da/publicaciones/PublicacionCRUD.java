@@ -31,31 +31,29 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Publicacion publicacion) throws SQLException {
-        String sql = "{CALL INSERTAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, publicacion.getIdPublicacion());
-        cs.setString(2, publicacion.getTitulo());
-        cs.setString(3, publicacion.getDescripcion());
-        cs.setString(4, publicacion.getEstado().name());
-        cs.setDate(5, publicacion.getFechaPublicacion());
-        cs.setString(6, publicacion.getRutaImagen());
-        cs.setInt(7, publicacion.getUsuario().getIdUsuario());
-        cs.setBoolean(8, publicacion.isActivo());
+        cs.setString(1, publicacion.getTitulo());
+        cs.setString(2, publicacion.getDescripcion());
+        cs.setString(3, publicacion.getEstado().name());
+        cs.setDate(4, publicacion.getFechaPublicacion());
+        cs.setString(5, publicacion.getRutaImagen());
+        cs.setInt(6, publicacion.getUsuario().getIdUsuario());
+        cs.setBoolean(7, publicacion.isActivo());
         return cs; 
     }
 
     @Override
     protected CallableStatement getUpdateCS(Connection conn, Publicacion publicacion) throws SQLException {
-        String sql = "{CALL MODIFICAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL MODIFICAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, publicacion.getIdPublicacion());
-        cs.setString(2, publicacion.getTitulo());
-        cs.setString(3, publicacion.getDescripcion());
-        cs.setString(4, publicacion.getEstado().name());
-        cs.setDate(5, publicacion.getFechaPublicacion());
-        cs.setString(6, publicacion.getRutaImagen());
-        cs.setInt(7, publicacion.getUsuario().getIdUsuario());
-        cs.setBoolean(8, publicacion.isActivo());
+        cs.setString(1, publicacion.getTitulo());
+        cs.setString(2, publicacion.getDescripcion());
+        cs.setString(3, publicacion.getEstado().name());
+        cs.setDate(4, publicacion.getFechaPublicacion());
+        cs.setString(5, publicacion.getRutaImagen());
+        cs.setInt(6, publicacion.getUsuario().getIdUsuario());
+        cs.setBoolean(7, publicacion.isActivo());
         return cs;  
     }
 

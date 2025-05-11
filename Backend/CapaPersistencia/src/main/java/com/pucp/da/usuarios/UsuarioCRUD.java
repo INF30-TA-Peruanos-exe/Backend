@@ -22,16 +22,15 @@ public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Usuario usuario) throws SQLException {
-        String sql = "{CALL INSERTAR_USUARIO(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_USUARIO(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setInt(1, usuario.getIdUsuario());
-        cs.setInt(2, usuario.getCodigoPUCP());
-        cs.setString(3, usuario.getNombreUsuario());
-        cs.setString(4, usuario.getContrasena());
-        cs.setString(5, usuario.getNombre());
-        cs.setString(6, usuario.getCorreo());
-        cs.setString(7, usuario.getEstado().name());
-        cs.setBoolean(8, usuario.isActivo());
+        cs.setInt(1, usuario.getCodigoPUCP());
+        cs.setString(2, usuario.getNombreUsuario());
+        cs.setString(3, usuario.getContrasena());
+        cs.setString(4, usuario.getNombre());
+        cs.setString(5, usuario.getCorreo());
+        cs.setString(6, usuario.getEstado().name());
+        cs.setBoolean(7, usuario.isActivo());
         return cs; 
     }
 
