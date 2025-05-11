@@ -10,12 +10,12 @@ import java.util.ArrayList;
  *
  * @author SEBASTIAN
  */
-public interface DenunciaDAO {
+public interface DenunciaDAO extends BaseDAO<Denuncia>{
     
-    void insertar(Denuncia denuncia);
-    ArrayList<Denuncia> listarTodos();
-    Denuncia obtenerPorId(int id);
-    void actualizar(Denuncia denuncia);
-    void eliminar(int id);
+//    void insertar(Denuncia denuncia);
+//    ArrayList<Denuncia> listarTodos();
+//    Denuncia obtenerPorId(int id);
+//    void actualizar(Denuncia denuncia);
+//    void eliminar(int id);
     
 }
