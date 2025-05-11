@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.pucp.interfacesDAO;
+
+
 import com.pucp.capadominio.denuncia.Denuncia;
-import java.util.ArrayList;
 
 /**
  *
@@ -12,10 +13,5 @@ import java.util.ArrayList;
  */
 public interface DenunciaDAO extends BaseDAO<Denuncia>{
     
-//    void insertar(Denuncia denuncia);
-//    ArrayList<Denuncia> listarTodos();
-//    Denuncia obtenerPorId(int id);
-//    void actualizar(Denuncia denuncia);
-//    void eliminar(int id);
     
 }
