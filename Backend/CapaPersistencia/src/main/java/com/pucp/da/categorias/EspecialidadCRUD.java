@@ -30,8 +30,9 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
 
     @Override
     protected CallableStatement getUpdateCS(Connection conn, Especialidad especialidad) throws SQLException {
-        String sql = "{CALL MODIFICAR_ESPECIALIDAD(?, ?)}";
+        String sql = "{CALL MODIFICAR_ESPECIALIDAD(?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
+        cs.setInt(1, especialidad.getIdEspecialidad());
         cs.setString(1, especialidad.getNombre());
         cs.setBoolean(2, especialidad.isActivo());
         return cs;    

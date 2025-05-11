@@ -31,8 +31,9 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
     protected CallableStatement getUpdateCS(Connection conn, Facultad facultad) throws SQLException {
         String sql = "{CALL MODIFICAR_FACULTAD(?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
-        cs.setString(1, facultad.getNombre());
-        cs.setBoolean(2, facultad.isActivo());
+        cs.setInt(1, facultad.getIdFacultad());
+        cs.setString(2, facultad.getNombre());
+        cs.setBoolean(3, facultad.isActivo());
         return cs; 
     }
 
