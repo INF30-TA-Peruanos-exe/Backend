@@ -100,37 +100,35 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         publicacion.setIdPublicacion(id);
     }
 
-    @Override 
-    public ArrayList<Publicacion> listarporFacultad(String facultad) {
-    ArrayList<Publicacion> publicaciones = new ArrayList<>();
-    String sql = "{CALL LISTAR_PUBLICACION_X_FACULTAD_TODOS(?)}"; // Aquí va el parámetro
-    try (Connection conn = DBManager.getInstance().obtenerConexion();
-         CallableStatement cs = conn.prepareCall(sql)) {
-         
-        cs.setString(1, facultad);
-        try (ResultSet rs = cs.executeQuery()) {
-            while (rs.next()) {
-                publicaciones.add(createFromResultSet(rs));
-            }
-        }
-    } catch (SQLException e) {
-        throw new RuntimeException("Error al listar publicación por facultad", e);
-    }
-    return publicaciones;
-}
-
-    
-
     @Override
-    public ArrayList<Publicacion> listarporEspecialidad(String especialidad) {
+    public ArrayList<Publicacion> listarporFacultad(String facultad) {
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
-        String sql = "{CALL LISTAR_PUBLICACION_X_ESPECIALIDAD_TODOS()}";
+        String sql = "{CALL LISTAR_PUBLICACION_X_FACULTAD_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
              CallableStatement cs = conn.prepareCall(sql);
              ResultSet rs = cs.executeQuery()) {
 
             while (rs.next()) {
                 publicaciones.add(createFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar publicacion por facultad", e);
+        }
+        return publicaciones;
+    }
+
+    @Override
+    public ArrayList<Publicacion> listarporEspecialidad(String especialidad) {
+        ArrayList<Publicacion> publicaciones = new ArrayList<>();
+        String sql = "{CALL LISTAR_PUBLICACION_X_ESPECIALIDAD_TODOS(?)}";
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = conn.prepareCall(sql);) {
+
+            cs.setString(1,especialidad);
+            try (ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
+                    publicaciones.add(createFromResultSet(rs));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error al listar publicacion por especialidad", e);
@@ -141,13 +139,15 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     @Override
     public ArrayList<Publicacion> listarporCurso(String curso) {
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
-        String sql = "{CALL LISTAR_PUBLICACION_X_CURSO_TODOS()}";
+        String sql = "{CALL LISTAR_PUBLICACION_X_CURSO_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
-             CallableStatement cs = conn.prepareCall(sql);
-             ResultSet rs = cs.executeQuery()) {
-
-            while (rs.next()) {
-                publicaciones.add(createFromResultSet(rs));
+             CallableStatement cs = conn.prepareCall(sql);) {
+            
+            cs.setString(1,curso);
+            try(ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
+                    publicaciones.add(createFromResultSet(rs));
+                }      
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error al listar publicacion por curso", e);
