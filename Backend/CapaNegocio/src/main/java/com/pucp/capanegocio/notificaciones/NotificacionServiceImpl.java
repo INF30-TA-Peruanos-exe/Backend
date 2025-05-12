@@ -24,11 +24,12 @@ public class NotificacionServiceImpl implements NotificacionService{
     @Override
     public void registrarNotificacion(Notificacion notificacion) throws Exception {
         if(notificacion.getAutor() == null){
-            throw new Exception("La notificacion debe tener un autor");
+            throw new Exception("La notificacion debe tener un autor"); 
         }
         if(notificacion.getCantidad() <= 0){
             throw new Exception("La cantidad debe ser un número positivo");
         }
+        //Se puede validar para que no sea antigua a la fecha actual o una futura
         if(notificacion.getFecha() == null){
             throw new Exception("La fecha no puede ser nula");
         }
@@ -45,22 +46,56 @@ public class NotificacionServiceImpl implements NotificacionService{
 
     @Override
     public void actualizarNotificacion(Notificacion notificacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(notificacionDAO.obtenerPorId(notificacion.getIdNotificacion()) == null){
+            throw new Exception("La notificacion no existe");
+        }
+        
+        if(notificacion.getAutor() == null){
+            throw new Exception("La notificacion debe tener un autor"); 
+        }
+        if(notificacion.getCantidad() <= 0){
+            throw new Exception("La cantidad debe ser un número positivo");
+        }
+        //Se puede validar para que no sea antigua a la fecha actual o una futura
+        if(notificacion.getFecha() == null){
+            throw new Exception("La fecha no puede ser nula");
+        }
+        if(notificacion.getMensaje() == null || notificacion.getMensaje().trim().isEmpty()){
+            throw new Exception("El mensaje no puede estar vacío");
+        }
+        if(notificacion.getNotificador() == null){
+            throw new Exception("La notificacion debe tener un notificador");
+        }
+        if(notificacion.getTipoNotificacion() == null){
+            throw new Exception("La notificacion debe tener un tipo de notificacion");
+        }
+        
+        notificacionDAO.actualizar(notificacion);
     }
 
     @Override
     public void eliminarNotificacion(int idNotificacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Notificacion notificacion = notificacionDAO.obtenerPorId(idNotificacion);
+        if(notificacion == null){
+            throw new Exception("La notificacion no existe");
+        }
+        
+        notificacionDAO.eliminar(idNotificacion);
     }
 
     @Override
     public Notificacion obtenerNotificacion(int idNotificacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Notificacion notificacion = notificacionDAO.obtenerPorId(idNotificacion);
+        if(notificacion == null){
+            throw new Exception("La notificacion no existe");
+        }
+        
+        return notificacion;
     }
 
     @Override
     public ArrayList<Notificacion> listarNotificacion() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return notificacionDAO.listarTodos();
     }
     
 }

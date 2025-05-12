@@ -15,35 +15,121 @@ import java.util.ArrayList;
  * @author Axel
  */
 public class PublicacionServiceImpl implements PublicacionService{
-    private final PublicacionDAO PublicacionDAO;
+    private final PublicacionDAO publicacionDAO;
     
     public PublicacionServiceImpl(){
-        this.PublicacionDAO = new PublicacionCRUD();
+        this.publicacionDAO = new PublicacionCRUD();
     }
 
     @Override
     public void registrarPublicacion(Publicacion publicacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(publicacion.getDescripcion()==null || publicacion.getDescripcion().trim().isEmpty()){
+            throw new Exception("La descripcion no puede estar vacia");
+        }
+        if(publicacion.getEstado()==null){
+            throw new Exception("El estado no puede estar vacia");
+        }
+        if(publicacion.getFechaPublicacion()==null){
+            throw new Exception("La fecha no puede ser nula");
+        }
+        //Validaciones de rutas
+        if(publicacion.getRutaImagen()==null || publicacion.getRutaImagen().trim().isEmpty()){
+            throw new Exception("La ruta de imagen no puede estar vacía");
+        }
+        if(!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg") ||
+                publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))){
+            throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
+        }
+        
+        if(publicacion.getImagen()==null){
+            throw new Exception("La imagen no puede estar vacía");
+        }
+        if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
+            throw new Exception("El titulo no puede estar vacio");
+        }
+        if(publicacion.getUsuario()==null){
+            throw new Exception("El usuario no puede estar vacio");
+        }
+        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
+            throw new Exception("La lista de cursos no puede estar vacia");
+        }
+        if(publicacion.getPublicacionesEspecialidades()==null || publicacion.getPublicacionesEspecialidades().isEmpty()){
+            throw new Exception("La lista de especialidades no puede estar vacia");
+        }
+        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
+            throw new Exception("La lista de facultades no puede estar vacia");
+        }
+        
+        publicacionDAO.insertar(publicacion);
     }
 
     @Override
     public void actualizarPublicacion(Publicacion publicacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(publicacionDAO.obtenerPorId(publicacion.getIdPublicacion())==null){
+            throw new Exception("La publicacion no existe");
+        }
+        
+        if(publicacion.getDescripcion()==null || publicacion.getDescripcion().trim().isEmpty()){
+            throw new Exception("La descripcion no puede estar vacia");
+        }
+        if(publicacion.getEstado()==null){
+            throw new Exception("El estado no puede estar vacia");
+        }
+        if(publicacion.getFechaPublicacion()==null){
+            throw new Exception("La fecha no puede ser nula");
+        }
+        //Validaciones de rutas
+        if(publicacion.getRutaImagen()==null || publicacion.getRutaImagen().trim().isEmpty()){
+            throw new Exception("La ruta de imagen no puede estar vacía");
+        }
+        if(!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg") ||
+                publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))){
+            throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
+        }
+        
+        if(publicacion.getImagen()==null){
+            throw new Exception("La imagen no puede estar vacía");
+        }
+        if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
+            throw new Exception("El titulo no puede estar vacio");
+        }
+        if(publicacion.getUsuario()==null){
+            throw new Exception("El usuario no puede estar vacio");
+        }
+        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
+            throw new Exception("La lista de cursos no puede estar vacia");
+        }
+        if(publicacion.getPublicacionesEspecialidades()==null || publicacion.getPublicacionesEspecialidades().isEmpty()){
+            throw new Exception("La lista de especialidades no puede estar vacia");
+        }
+        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
+            throw new Exception("La lista de facultades no puede estar vacia");
+        }
+        
+        publicacionDAO.actualizar(publicacion);
     }
 
     @Override
     public void eliminarPublicacion(int idPublicacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+        if(publicacion == null){
+            throw new Exception("La publicacion no existe");
+        }
+        publicacionDAO.eliminar(idPublicacion);
     }
 
     @Override
     public Publicacion obtenerPublicacion(int idPublicacion) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+        if(publicacion == null){
+            throw new Exception("La publicacion no existe");
+        }
+        return publicacion;
     }
 
     @Override
     public ArrayList<Publicacion> listarPublicacion() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return publicacionDAO.listarTodos();
     }
     
 }

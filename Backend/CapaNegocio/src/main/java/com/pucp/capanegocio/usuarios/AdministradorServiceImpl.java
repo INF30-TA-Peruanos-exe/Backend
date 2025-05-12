@@ -15,15 +15,15 @@ import java.util.ArrayList;
  * @author Axel
  */
 public class AdministradorServiceImpl implements AdministradorService{
-    private final AdministradorDAO AdministradorDAO;
+    private final AdministradorDAO administradorDAO;
     
     public AdministradorServiceImpl(){
-        this.AdministradorDAO = new AdministradorCRUD();
+        this.administradorDAO = new AdministradorCRUD();
     }
 
     @Override
     public void registrarAdministrador(Administrador administrador) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
     @Override
