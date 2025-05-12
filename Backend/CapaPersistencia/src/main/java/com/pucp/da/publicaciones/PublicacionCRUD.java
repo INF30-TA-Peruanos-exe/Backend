@@ -101,13 +101,13 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     }
 
     @Override
-    public ArrayList<Publicacion> listarporFacultad(String facultad) {
+    public ArrayList<Publicacion> listarporFacultad(int idFacultad) {
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
         String sql = "{CALL LISTAR_PUBLICACION_X_FACULTAD_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
              CallableStatement cs = conn.prepareCall(sql);) {
             
-            cs.setString(1,facultad);
+            cs.setInt(1,idFacultad);
                 try (ResultSet rs = cs.executeQuery()){
                 while (rs.next()) {
                 publicaciones.add(createFromResultSet(rs));
@@ -120,13 +120,13 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     }
 
     @Override
-    public ArrayList<Publicacion> listarporEspecialidad(String especialidad) {
+    public ArrayList<Publicacion> listarporEspecialidad(int idEspecialidad) {
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
         String sql = "{CALL LISTAR_PUBLICACION_X_ESPECIALIDAD_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
              CallableStatement cs = conn.prepareCall(sql);) {
 
-            cs.setString(1,especialidad);
+            cs.setInt(1,idEspecialidad);
             try (ResultSet rs = cs.executeQuery()){
                 while (rs.next()) {
                     publicaciones.add(createFromResultSet(rs));
@@ -139,13 +139,13 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     }
 
     @Override
-    public ArrayList<Publicacion> listarporCurso(String curso) {
+    public ArrayList<Publicacion> listarporCurso(int idCurso) {
         ArrayList<Publicacion> publicaciones = new ArrayList<>();
         String sql = "{CALL LISTAR_PUBLICACION_X_CURSO_TODOS(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
              CallableStatement cs = conn.prepareCall(sql);) {
             
-            cs.setString(1,curso);
+            cs.setInt(1,idCurso);
             try(ResultSet rs = cs.executeQuery()){
                 while (rs.next()) {
                     publicaciones.add(createFromResultSet(rs));

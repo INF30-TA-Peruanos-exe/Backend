@@ -15,8 +15,8 @@ import java.util.ArrayList;
  */
 public interface PublicacionDAO extends BaseDAO<Publicacion>{
     
-    ArrayList<Publicacion> listarporFacultad(String facultad);
-    ArrayList<Publicacion> listarporEspecialidad(String especialidad);
-    ArrayList<Publicacion> listarporCurso(String curso);
+    ArrayList<Publicacion> listarporFacultad(int idFacultad);
+    ArrayList<Publicacion> listarporEspecialidad(int idEspecialidad);
+    ArrayList<Publicacion> listarporCurso(int idCurso);
     
 }
