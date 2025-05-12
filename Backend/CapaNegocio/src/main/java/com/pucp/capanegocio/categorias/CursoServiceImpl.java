@@ -23,27 +23,54 @@ public class CursoServiceImpl implements CursoService{
 
     @Override
     public void registrarCurso(Curso curso) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Validaciones
+        if(curso.getNombre() == null || curso.getNombre().trim().isEmpty()){
+            throw new Exception("El nombre no puede estar vacio");
+        }
+        
+        //Llamar al DAO
+        cursoDAO.insertar(curso);
     }
 
     @Override
     public void actualizarCurso(Curso curso) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Validar existencia
+        if(cursoDAO.obtenerPorId(curso.getIdCurso()) == null){
+            throw  new Exception("El curso no existe");
+        }
+        
+        //Validaciones
+        if(curso.getNombre() == null || curso.getNombre().trim().isEmpty()){
+            throw new Exception("El nombre no puede estar vacio");
+        }
+        
+        //Llamar al DAO
+        cursoDAO.actualizar(curso);
     }
 
     @Override
     public void eliminarCurso(int idCurso) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Curso curso = cursoDAO.obtenerPorId(idCurso);
+        if(curso == null){
+            throw new Exception("El curso no existe");
+        }
+        
+        cursoDAO.eliminar(idCurso);
     }
 
     @Override
     public Curso obtenerCurso(int idCurso) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Curso curso = cursoDAO.obtenerPorId(idCurso);
+        if(curso == null){
+            throw new Exception("Curso no encontrado");
+        }
+        
+        return curso;
     }
 
     @Override
     public ArrayList<Curso> listarCurso() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cursoDAO.listarTodos();
     }
     
 }
