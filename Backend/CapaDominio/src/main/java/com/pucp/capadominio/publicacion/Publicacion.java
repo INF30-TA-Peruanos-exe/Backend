@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
@@ -48,11 +49,12 @@ public class Publicacion {
         this.publicacionesFacultades = new ArrayList<>();
         this.notificaciones = new ArrayList<>();
         this.publicacionDenuncias = new ArrayList<>();
+        this.fechaPublicacion = Date.valueOf(LocalDate.now());
     }
     
     
     public Publicacion(int idPublicacion, String titulo, String descripcion, 
-            EstadoPublicacion estado, Date fechaPublicacion, Usuario usuario, String rutaImagen, boolean activo) {
+            EstadoPublicacion estado, Usuario usuario, String rutaImagen, boolean activo) {
         
         this.idPublicacion = idPublicacion;
         this.titulo = titulo;
@@ -64,7 +66,7 @@ public class Publicacion {
         this.publicacionesFacultades = new ArrayList<>();
         this.notificaciones = new ArrayList<>();
         this.publicacionDenuncias = new ArrayList<>();
-        this.fechaPublicacion = fechaPublicacion;
+        this.fechaPublicacion = Date.valueOf(LocalDate.now());
         this.usuario = usuario;
         this.activo = activo;
         

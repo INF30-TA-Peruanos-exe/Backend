@@ -26,8 +26,8 @@ public class NotificacionServiceImpl implements NotificacionService{
         if(notificacion.getAutor() == null){
             throw new Exception("La notificacion debe tener un autor");
         }
-        if(notificacion.getCantidad() == 0){
-            
+        if(notificacion.getCantidad() <= 0){
+            throw new Exception("La cantidad debe ser un número positivo");
         }
         if(notificacion.getFecha() == null){
             throw new Exception("La fecha no puede ser nula");

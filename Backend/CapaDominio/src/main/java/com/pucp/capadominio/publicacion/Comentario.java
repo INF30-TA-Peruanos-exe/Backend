@@ -6,6 +6,7 @@ package com.pucp.capadominio.publicacion;
 
 import com.pucp.capadominio.usuarios.Usuario;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -25,14 +26,14 @@ public class Comentario {
     public Comentario() {
         this.comentador = new Usuario();
         this.publicacion = new Publicacion();
+        this.fecha = Date.valueOf(LocalDate.now());
     }
     
-    public Comentario(int idComentario, String contenido, int valoracion, 
-            Date fecha, boolean activo, Usuario comentador, Publicacion publicacion) {
+    public Comentario(int idComentario, String contenido, int valoracion, boolean activo, Usuario comentador, Publicacion publicacion) {
         this.idComentario = idComentario;
         this.contenido = contenido;
         this.valoracion = valoracion;
-        this.fecha = fecha;
+        this.fecha = Date.valueOf(LocalDate.now());
         this.activo = activo;
         this.comentador = comentador;
         this.publicacion = publicacion;

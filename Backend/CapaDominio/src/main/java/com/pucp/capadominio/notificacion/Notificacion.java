@@ -7,6 +7,7 @@ package com.pucp.capadominio.notificacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Usuario;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -27,14 +28,15 @@ public class Notificacion {
     public Notificacion() {
         this.notificador = new Usuario();
         this.autor = new Publicacion();
+        this.fecha = Date.valueOf(LocalDate.now());
     }
     
-    public Notificacion(int idNotificacion, String mensaje, TipoNotificacion tipoNot, int cantidad, Date fecha, boolean activo, Usuario notificador, Publicacion autor) {
+    public Notificacion(int idNotificacion, String mensaje, TipoNotificacion tipoNot, int cantidad, boolean activo, Usuario notificador, Publicacion autor) {
         this.idNotificacion = idNotificacion;
         this.mensaje = mensaje;
         this.tipoNotificacion = tipoNot;
         this.cantidad = cantidad;
-        this.fecha = fecha;
+        this.fecha = Date.valueOf(LocalDate.now());
         this.activo = activo;
         this.notificador = notificador;
         this.autor = autor;
