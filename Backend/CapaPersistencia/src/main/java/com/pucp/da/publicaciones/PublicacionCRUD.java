@@ -5,6 +5,9 @@
 package com.pucp.da.publicaciones;
 
 import com.pucp.base.BaseDAOImpl;
+import com.pucp.capadominio.categorias.Curso;
+import com.pucp.capadominio.categorias.Especialidad;
+import com.pucp.capadominio.categorias.Facultad;
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.config.DBManager;
@@ -40,6 +43,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         cs.setString(5, publicacion.getRutaImagen());
         cs.setInt(6, publicacion.getUsuario().getIdUsuario());
         cs.setBoolean(7, publicacion.isActivo());
+        
         return cs; 
     }
 
@@ -156,5 +160,45 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         }
         return publicaciones;
     }
+    
+    @Override
+    public void insertar(Publicacion publicacion) {
+        super.insertar(publicacion); // Inserta la publicación principal y genera el ID
+
+        try (Connection conn = DBManager.getInstance().obtenerConexion()) {
+            // CURSO
+            for (Curso cur : publicacion.getPublicacionesCursos()) {
+                String sql = "{CALL PubliCursoIntermedio(?, ?)}";
+                try (CallableStatement cs = conn.prepareCall(sql)) {
+                    cs.setInt(1, publicacion.getIdPublicacion());
+                    cs.setInt(2, cur.getIdCurso());
+                    cs.executeUpdate();
+                }
+            }
+
+            // ESPECIALIDAD
+            for (Especialidad esp : publicacion.getPublicacionesEspecialidades()) {
+                String sql = "{CALL PublicEspIntermedio(?, ?)}";
+                try (CallableStatement cs = conn.prepareCall(sql)) {
+                    cs.setInt(1, publicacion.getIdPublicacion());
+                    cs.setInt(2, esp.getIdEspecialidad());
+                    cs.executeUpdate();
+                }
+            }
+
+            // FACULTAD
+            for (Facultad fac : publicacion.getPublicacionesFacultades()) {
+                String sql = "{CALL PublicFacIntermedio(?, ?)}";
+                try (CallableStatement cs = conn.prepareCall(sql)) {
+                    cs.setInt(1, publicacion.getIdPublicacion());
+                    cs.setInt(2, fac.getIdFacultad());
+                    cs.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al insertar relaciones de publicación", e);
+        }
+    }
+
     
 }
