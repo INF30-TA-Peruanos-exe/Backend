@@ -131,5 +131,20 @@ public class PublicacionServiceImpl implements PublicacionService{
     public ArrayList<Publicacion> listarPublicacion() throws Exception {
         return publicacionDAO.listarTodos();
     }
+
+    @Override
+    public ArrayList<Publicacion> listarPorFacultad(int idFacultad) throws Exception {
+        return publicacionDAO.listarporFacultad(idFacultad);
+    }
+
+    @Override
+    public ArrayList<Publicacion> listarPorEspecialidad(int idEspecialidad) throws Exception {
+        return publicacionDAO.listarporEspecialidad(idEspecialidad);
+    }
+
+    @Override
+    public ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception {
+        return publicacionDAO.listarporCurso(idCurso);
+    }
     
 }
