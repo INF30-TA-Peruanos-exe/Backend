@@ -135,4 +135,19 @@ public class PublicacionServiceImplTest {
         ArrayList<Publicacion> resultado = publicacionService.listarPublicacion();
         assertEquals(1, resultado.size());
     } 
+    
+    @Test
+    public void testListarPorFacultad() throws Exception {
+        
+    } 
+    
+    @Test
+    public void testListarPorEspecialidad() throws Exception {
+        
+    } 
+    
+    @Test
+    public void testListarPorCurso() throws Exception {
+        
+    } 
 }

@@ -17,4 +17,8 @@ public interface PublicacionService {
     void eliminarPublicacion(int idPublicacion) throws Exception;
     Publicacion obtenerPublicacion(int idPublicacion) throws Exception;
     ArrayList<Publicacion> listarPublicacion() throws Exception;
+    
+    ArrayList<Publicacion> listarPorFacultad(int idFacultad) throws Exception;
+    ArrayList<Publicacion> listarPorEspecialidad(int idEspecialidad) throws Exception;
+    ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception;
 }
