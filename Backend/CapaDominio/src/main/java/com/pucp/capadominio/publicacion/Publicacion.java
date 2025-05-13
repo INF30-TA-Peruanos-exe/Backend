@@ -14,6 +14,7 @@ import com.pucp.capadominio.usuarios.Usuario;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -77,17 +78,17 @@ public class Publicacion {
 
     //FUNCIONES EXTRA
     private Image cargarImagen(String rutaImagen){
-        try{
-            File file = new File(rutaImagen);
-            if (file.exists() && !file.isDirectory()) {
-                return ImageIO.read(file);
-            } else {
-                System.out.println("La ruta de la imagen no es válida: " + rutaImagen);
-                return null;
-            }
+        try {
+        // Asegúrate de que la ruta comience con "/"
+        InputStream is = getClass().getResourceAsStream(rutaImagen);
+        if (is != null) {
+            return ImageIO.read(is);
+        } else {
+            System.out.println("No se encontró la imagen en: " + rutaImagen);
+            return null;
+        }
         } catch (IOException e) {
-            System.out.println("Error al cargar la imagen: " + 
-                    e.getMessage());
+            System.out.println("Error al cargar la imagen: " + e.getMessage());
             return null;
         }
     }
