@@ -20,7 +20,7 @@ USE `Pucp_qatu_db` ;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Usuario` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Usuario` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `codigo_PUCP` INT NOT NULL,
   `nombreUsuario` VARCHAR(45) NOT NULL,
@@ -37,7 +37,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Administrador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Administrador` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Administrador` (
   `id_Administrador` INT NOT NULL AUTO_INCREMENT,
   `clave_Maestra` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_Administrador`),
@@ -53,7 +53,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Publicacion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Publicacion` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Publicacion` (
   `idPublicacion` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(45) NOT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
@@ -76,7 +76,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Comentario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Comentario` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Comentario` (
   `id_comentario` INT NOT NULL AUTO_INCREMENT,
   `contenido` VARCHAR(45) NOT NULL,
   `valoracion` INT NULL DEFAULT NULL,
@@ -104,7 +104,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Curso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Curso` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Curso` (
   `id_curso` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `activo` TINYINT NOT NULL,
@@ -116,7 +116,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Denuncia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Denuncia` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Denuncia` (
   `id_reporte` INT NOT NULL AUTO_INCREMENT,
   `autor` INT NOT NULL,
   `reportante` INT NOT NULL,
@@ -150,7 +150,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Especialidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Especialidad` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Especialidad` (
   `id_especialidad` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `activo` TINYINT NOT NULL,
@@ -162,7 +162,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Facultad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Facultad` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Facultad` (
   `id_facultad` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `activo` TINYINT NOT NULL,
@@ -174,7 +174,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Notificacion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Notificacion` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Notificacion` (
   `id_notificacion` INT NOT NULL AUTO_INCREMENT,
   `mensaje` VARCHAR(45) NULL DEFAULT NULL,
   `tipo_notificacion` VARCHAR(45) NOT NULL,
@@ -203,7 +203,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Publicacion_Curso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Publicacion_Curso` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Publicacion_Curso` (
   `Publicacion_idPublicacion` INT NOT NULL,
   `Curso_id_curso` INT NOT NULL,
   PRIMARY KEY (`Publicacion_idPublicacion`, `Curso_id_curso`),
@@ -226,7 +226,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Publicacion_Especialidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Publicacion_Especialidad` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Publicacion_Especialidad` (
   `Publicacion_idPublicacion` INT NOT NULL,
   `Especialidad_id_especialidad` INT NOT NULL,
   PRIMARY KEY (`Publicacion_idPublicacion`, `Especialidad_id_especialidad`),
@@ -249,7 +249,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Publicacion_Facultad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pruebas_ta`.`Publicacion_Facultad` (
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`Publicacion_Facultad` (
   `Publicacion_idPublicacion` INT NOT NULL,
   `Facultad_id_facultad` INT NOT NULL,
   PRIMARY KEY (`Publicacion_idPublicacion`, `Facultad_id_facultad`),
@@ -343,7 +343,9 @@ DELIMITER $$
 CREATE PROCEDURE LISTAR_CURSO_TODOS()
 BEGIN
     SELECT id_curso, nombre, activo
-    FROM Curso;
+    FROM Curso
+	WHERE activo=1
+;
 END $$
 
 DELIMITER ;
@@ -420,7 +422,8 @@ DELIMITER $$
 CREATE PROCEDURE LISTAR_ESPECIALIDAD_TODOS()
 BEGIN
     SELECT id_especialidad, nombre, activo
-    FROM especialidad;
+    FROM especialidad
+    WHERE activo=1;
 END $$
 
 DELIMITER ;
@@ -498,7 +501,8 @@ DELIMITER $$
 CREATE PROCEDURE LISTAR_FACULTAD_TODOS()
 BEGIN
     SELECT id_facultad, nombre, activo
-    FROM facultad;
+    FROM facultad
+    WHERE activo=1;
 END $$
 
 DELIMITER ;
@@ -595,7 +599,8 @@ CREATE PROCEDURE LISTAR_NOTIFICACION_TODOS()
 BEGIN
     SELECT id_notificacion, mensaje, tipo_notificacion, cantidad,
            fecha, id_publicacion, id_usuario, activo
-    FROM Notificacion;
+    FROM Notificacion
+    WHERE activo=1;
 END $$
 
 DELIMITER ;
@@ -688,7 +693,7 @@ DELIMITER $$
 
 CREATE PROCEDURE LISTAR_PUBLICACION_TODOS()
 BEGIN
-    SELECT * FROM publicacion;
+    SELECT * FROM publicacion WHERE activo=1;
 END$$
 
 DELIMITER ;
@@ -701,9 +706,10 @@ CREATE PROCEDURE LISTAR_PUBLICACION_X_FACULTAD_TODOS (
 )
 BEGIN
     SELECT p.*
-    FROM publicacion p
-    JOIN usuario u ON p.id_usuario = u.idUsuario
-    WHERE u.id_facultad = p_id_facultad;
+    FROM publicacion p, Publicacion_Facultad pf
+    WHERE p.idPublicacion = pf.Publicacion_idPublicacion
+    AND pf.Facultad_id_facultad = p_id_facultad
+    AND p.activo = 1;
 END$$
 
 DELIMITER ;
@@ -717,9 +723,10 @@ CREATE PROCEDURE LISTAR_PUBLICACION_X_ESPECIALIDAD_TODOS (
 )
 BEGIN
     SELECT p.*
-    FROM publicacion p
-    JOIN usuario u ON p.id_usuario = u.idUsuario
-    WHERE u.id_especialidad = p_id_especialidad;
+    FROM publicacion p, Publicacion_Especialidad pe
+    WHERE p.idPublicacion = pe.Publicacion_idPublicacion
+    AND pe.Especialidad_id_especialidad = p_id_especialidad
+    AND p.activo = 1;
 END$$
 
 DELIMITER ;
@@ -733,13 +740,13 @@ CREATE PROCEDURE LISTAR_PUBLICACION_X_CURSO_TODOS (
 )
 BEGIN
     SELECT p.*
-    FROM publicacion p
-    JOIN usuario u ON p.id_usuario = u.idUsuario
-    WHERE u.id_curso = p_id_curso;
+    FROM publicacion p, Publicacion_Curso pc
+    WHERE p.idPublicacion = pc.Publicacion_idPublicacion
+    AND pc.Curso_id_curso = p_id_curso
+    AND p.activo = 1;
 END$$
 
 DELIMITER ;
-
 -- PROCEDIMIENTOS COMENTARIOS ------------------
 -- insertar
 DELIMITER $$
@@ -800,7 +807,7 @@ END$$
 -- listar todos
 CREATE PROCEDURE LISTAR_COMENTARIO_TODOS()
 BEGIN
-    SELECT * FROM comentario;
+    SELECT * FROM comentario WHERE activo=1;
 END$$
 
 DELIMITER ;
@@ -868,7 +875,7 @@ END$$
 -- Procedimiento para listar todas las denuncias
 CREATE PROCEDURE LISTAR_DENUNCIA_TODOS()
 BEGIN
-    SELECT * FROM denuncia;
+    SELECT * FROM denuncia WHERE activo=1;
 END$$
 
 DELIMITER ;
@@ -939,7 +946,7 @@ END$$
 -- Procedimiento para listar todos los usuarios
 CREATE PROCEDURE LISTAR_USUARIO_TODOS()
 BEGIN
-    SELECT * FROM usuario;
+    SELECT * FROM usuario WHERE activo=1;
 END$$
 
 DELIMITER ;
