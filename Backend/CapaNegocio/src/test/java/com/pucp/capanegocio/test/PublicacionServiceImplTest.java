@@ -11,6 +11,15 @@ import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
 import com.pucp.capanegocio.publicaciones.PublicacionServiceImpl;
 
+import com.pucp.da.categorias.CursoCRUD;
+import com.pucp.da.categorias.EspecialidadCRUD;
+import com.pucp.da.categorias.FacultadCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
+import com.pucp.interfacesDAO.CursoDAO;
+import com.pucp.interfacesDAO.EspecialidadDAO;
+import com.pucp.interfacesDAO.FacultadDAO;
+import com.pucp.interfacesDAO.UsuarioDAO;
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +28,10 @@ import java.util.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PublicacionServiceImplTest {
     private static PublicacionService publicacionService;
+    private static UsuarioDAO usuarioDAO;
+    private static CursoDAO cursoDAO;
+    private static EspecialidadDAO especialidadDAO;
+    private static FacultadDAO facultadDAO;
     private static int publicacionId;
 
     private static Usuario usuarioPrueba;
@@ -29,20 +42,22 @@ public class PublicacionServiceImplTest {
     @BeforeAll
     public static void setUp() {
         publicacionService = new PublicacionServiceImpl();
-
+        
         // Asume que estas entidades ya existen o puedes simularlas para los tests
         usuarioPrueba = new Usuario();
-        usuarioPrueba.setIdUsuario(1);  // Usa un ID válido o crea un usuario real si tu DAO lo permite
-        usuarioPrueba.setNombre("Luis");
-
         cursoPrueba = new Curso();
-        cursoPrueba.setIdCurso(1);
-
         especialidadPrueba = new Especialidad();
-        especialidadPrueba.setIdEspecialidad(1);
-
         facultadPrueba = new Facultad();
-        facultadPrueba.setIdFacultad(1);
+        
+        usuarioDAO = new UsuarioCRUD();
+        cursoDAO = new CursoCRUD();
+        especialidadDAO = new EspecialidadCRUD();
+        facultadDAO = new FacultadCRUD();
+        
+        usuarioPrueba = usuarioDAO.obtenerPorId(1);
+        cursoPrueba = cursoDAO.obtenerPorId(1);
+        especialidadPrueba = especialidadDAO.obtenerPorId(1);
+        facultadPrueba = facultadDAO.obtenerPorId(1);
     }
 
     private static Publicacion crearPublicacionPrueba() {

@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `Pucp_qatu_db`.`administrador`;
 DROP TABLE IF EXISTS `Pucp_qatu_db`.`usuario`;
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`usuario`
+-- Table `Pucp_qatu_db`.`usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`usuario` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
@@ -50,15 +50,15 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`administrador`
+-- Table `Pucp_qatu_db`.`administrador`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`administrador` (
   `id_administrador` INT NOT NULL AUTO_INCREMENT,
   `clave_Maestra` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_administrador`),
-  CONSTRAINT `fk_ADMINISTRADOR_usuario1`
+  CONSTRAINT `fk_administrador_usuario1`
     FOREIGN KEY (`id_administrador`)
-    REFERENCES `pruebas_ta`.`usuario` (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -66,7 +66,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`publicacion`
+-- Table `Pucp_qatu_db`.`publicacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion` (
   `idpublicacion` INT NOT NULL AUTO_INCREMENT,
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion` (
   `activo` TINYINT NOT NULL,
   `id_usuario` INT NOT NULL,
   PRIMARY KEY (`idpublicacion`, `id_usuario`),
-  INDEX `fk_PUBLICACION_usuario1_idx` (`id_usuario` ASC) VISIBLE,
-  CONSTRAINT `fk_PUBLICACION_usuario1`
+  INDEX `fk_publicacion_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_usuario1`
     FOREIGN KEY (`id_usuario`)
-    REFERENCES `pruebas_ta`.`usuario` (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -89,7 +89,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`comentario`
+-- Table `Pucp_qatu_db`.`comentario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`comentario` (
   `id_comentario` INT NOT NULL AUTO_INCREMENT,
@@ -100,16 +100,16 @@ CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`comentario` (
   `id_usuario` INT NOT NULL,
   `activo` TINYINT NOT NULL,
   PRIMARY KEY (`id_comentario`),
-  INDEX `fk_COMENTARIO_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
-  INDEX `fk_COMENTARIO_usuario1_idx` (`id_usuario` ASC) VISIBLE,
-  CONSTRAINT `fk_COMENTARIO_publicacion1`
+  INDEX `fk_comentario_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
+  INDEX `fk_comentario_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_comentario_publicacion1`
     FOREIGN KEY (`id_publicacion`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_COMENTARIO_usuario1`
+  CONSTRAINT `fk_comentario_usuario1`
     FOREIGN KEY (`id_usuario`)
-    REFERENCES `pruebas_ta`.`usuario` (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -117,7 +117,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`curso`
+-- Table `Pucp_qatu_db`.`curso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`curso` (
   `id_curso` INT NOT NULL AUTO_INCREMENT,
@@ -129,7 +129,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`denuncia`
+-- Table `Pucp_qatu_db`.`denuncia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`denuncia` (
   `id_reporte` INT NOT NULL AUTO_INCREMENT,
@@ -140,22 +140,22 @@ CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`denuncia` (
   `id_administrador` INT NOT NULL,
   `activo` TINYINT NOT NULL,
   PRIMARY KEY (`id_reporte`),
-  INDEX `fk_DENUNCIA_publicacion1_idx` (`autor` ASC) VISIBLE,
-  INDEX `fk_DENUNCIA_usuario1_idx` (`reportante` ASC) VISIBLE,
-  INDEX `fk_DENUNCIA_administrador1_idx` (`id_administrador` ASC) VISIBLE,
-  CONSTRAINT `fk_DENUNCIA_administrador1`
+  INDEX `fk_denuncia_publicacion1_idx` (`autor` ASC) VISIBLE,
+  INDEX `fk_denuncia_usuario1_idx` (`reportante` ASC) VISIBLE,
+  INDEX `fk_denuncia_administrador1_idx` (`id_administrador` ASC) VISIBLE,
+  CONSTRAINT `fk_denuncia_administrador1`
     FOREIGN KEY (`id_administrador`)
-    REFERENCES `pruebas_ta`.`administrador` (`id_administrador`)
+    REFERENCES `Pucp_qatu_db`.`administrador` (`id_administrador`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_DENUNCIA_publicacion1`
+  CONSTRAINT `fk_denuncia_publicacion1`
     FOREIGN KEY (`autor`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_DENUNCIA_usuario1`
+  CONSTRAINT `fk_denuncia_usuario1`
     FOREIGN KEY (`reportante`)
-    REFERENCES `pruebas_ta`.`usuario` (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -163,7 +163,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`especialidad`
+-- Table `Pucp_qatu_db`.`especialidad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`especialidad` (
   `id_especialidad` INT NOT NULL AUTO_INCREMENT,
@@ -175,7 +175,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`facultad`
+-- Table `Pucp_qatu_db`.`facultad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`facultad` (
   `id_facultad` INT NOT NULL AUTO_INCREMENT,
@@ -187,7 +187,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`notificacion`
+-- Table `Pucp_qatu_db`.`notificacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`notificacion` (
   `id_notificacion` INT NOT NULL AUTO_INCREMENT,
@@ -199,16 +199,16 @@ CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`notificacion` (
   `id_usuario` INT NOT NULL,
   `activo` TINYINT NOT NULL,
   PRIMARY KEY (`id_notificacion`),
-  INDEX `fk_NOTIFICACION_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
-  INDEX `fk_NOTIFICACION_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  INDEX `fk_notificacion_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
+  INDEX `fk_notificacion_usuario1_idx` (`id_usuario` ASC) VISIBLE,
   CONSTRAINT `fk_NOTIFICACION_publicacion1`
     FOREIGN KEY (`id_publicacion`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_NOTIFICACION_usuario1`
+  CONSTRAINT `fk_notificacion_usuario1`
     FOREIGN KEY (`id_usuario`)
-    REFERENCES `pruebas_ta`.`usuario` (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -216,22 +216,22 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`publicacion_curso`
+-- Table `Pucp_qatu_db`.`publicacion_curso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_curso` (
   `publicacion_idpublicacion` INT NOT NULL,
   `curso_id_curso` INT NOT NULL,
   PRIMARY KEY (`publicacion_idpublicacion`, `curso_id_curso`),
-  INDEX `fk_PUBLICACION_has_CURSO_curso1_idx` (`curso_id_curso` ASC) VISIBLE,
-  INDEX `fk_PUBLICACION_has_CURSO_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
-  CONSTRAINT `fk_PUBLICACION_has_CURSO_curso1`
+  INDEX `fk_publicacion_has_curso_curso1_idx` (`curso_id_curso` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_curso_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_curso_curso1`
     FOREIGN KEY (`curso_id_curso`)
-    REFERENCES `pruebas_ta`.`curso` (`id_curso`)
+    REFERENCES `Pucp_qatu_db`.`curso` (`id_curso`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_PUBLICACION_has_CURSO_publicacion1`
+  CONSTRAINT `fk_publicacion_has_curso_publicacion1`
     FOREIGN KEY (`publicacion_idpublicacion`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -239,22 +239,22 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`publicacion_especialidad`
+-- Table `Pucp_qatu_db`.`publicacion_especialidad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_especialidad` (
   `publicacion_idpublicacion` INT NOT NULL,
   `especialidad_id_especialidad` INT NOT NULL,
   PRIMARY KEY (`publicacion_idpublicacion`, `especialidad_id_especialidad`),
-  INDEX `fk_PUBLICACION_has_ESPECIALIDAD_especialidad1_idx` (`especialidad_id_especialidad` ASC) VISIBLE,
-  INDEX `fk_PUBLICACION_has_ESPECIALIDAD_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
-  CONSTRAINT `fk_PUBLICACION_has_ESPECIALIDAD_especialidad1`
+  INDEX `fk_publicacion_has_especialidad_especialidad1_idx` (`especialidad_id_especialidad` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_especialidad_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_especialidad_especialidad1`
     FOREIGN KEY (`especialidad_id_especialidad`)
-    REFERENCES `pruebas_ta`.`especialidad` (`id_especialidad`)
+    REFERENCES `Pucp_qatu_db`.`especialidad` (`id_especialidad`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_PUBLICACION_has_ESPECIALIDAD_publicacion1`
+  CONSTRAINT `fk_publicacion_has_especialidad_publicacion1`
     FOREIGN KEY (`publicacion_idpublicacion`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -262,22 +262,22 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `pruebas_ta`.`publicacion_facultad`
+-- Table `Pucp_qatu_db`.`publicacion_facultad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_facultad` (
   `publicacion_idpublicacion` INT NOT NULL,
   `facultad_id_facultad` INT NOT NULL,
   PRIMARY KEY (`publicacion_idpublicacion`, `facultad_id_facultad`),
-  INDEX `fk_PUBLICACION_has_FACULTAD_facultad1_idx` (`facultad_id_facultad` ASC) VISIBLE,
-  INDEX `fk_PUBLICACION_has_FACULTAD_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
-  CONSTRAINT `fk_PUBLICACION_has_FACULTAD_facultad1`
+  INDEX `fk_publicacion_has_facultad_facultad1_idx` (`facultad_id_facultad` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_facultad_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_facultad_facultad1`
     FOREIGN KEY (`facultad_id_facultad`)
-    REFERENCES `pruebas_ta`.`facultad` (`id_facultad`)
+    REFERENCES `Pucp_qatu_db`.`facultad` (`id_facultad`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_PUBLICACION_has_FACULTAD_publicacion1`
+  CONSTRAINT `fk_publicacion_has_facultad_publicacion1`
     FOREIGN KEY (`publicacion_idpublicacion`)
-    REFERENCES `pruebas_ta`.`publicacion` (`idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -287,6 +287,43 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Inserts
+INSERT INTO `Pucp_qatu_db`.`usuario` 
+(`codigo_PUCP`, `nombreusuario`, `contrasena`, `nombre`, `correo`, `estado`, `activo`) 
+VALUES 
+(20181234, 'jperez', 'clave123', 'Juan Pérez', 'jperez@pucp.edu.pe', 'HABILITADO', 1),
+(20192345, 'mgonzalez', 'segura456', 'María González', 'mgonzalez@pucp.edu.pe', 'HABILITADO', 1),
+(20203456, 'lrodriguez', 'acceso789', 'Luis Rodríguez', 'lrodriguez@pucp.edu.pe', 'DESHABILITADO', 0),
+(20175678, 'acastro', 'pucp2023', 'Ana Castro', 'acastro@pucp.edu.pe', 'HABILITADO', 1),
+(20214567, 'dfernandez', 'qwerty12', 'Diego Fernández', 'dfernandez@pucp.edu.pe', 'HABILITADO', 1);
+
+INSERT INTO `Pucp_qatu_db`.`curso` 
+(`nombre`, `activo`) 
+VALUES 
+('Matemáticas Básicas', 1),
+('Programación I', 1),
+('Historia del Perú', 1),
+('Inglés Intermedio', 0),  
+('Física General', 1);
+
+INSERT INTO `Pucp_qatu_db`.`especialidad` 
+(`nombre`, `activo`) 
+VALUES 
+('Ingeniería Informática', 1),
+('Administración de Empresas', 1),
+('Derecho Corporativo', 1),
+('Psicología Organizacional', 0),  
+('Arquitectura y Urbanismo', 1);
+
+INSERT INTO `Pucp_qatu_db`.`facultad` 
+(`nombre`, `activo`) 
+VALUES 
+('Facultad de Ciencias e Ingeniería', 1),
+('Facultad de Derecho', 1),
+('Facultad de Gestión y Alta Dirección', 1),
+('Facultad de Ciencias Sociales', 1),
+('Facultad de Arquitectura y Urbanismo', 0);  
 
 -- PROCEDIMIENTOS curso: ---------------
 
@@ -1078,7 +1115,6 @@ BEGIN
     INSERT INTO publicacion_facultad (publicacion_idpublicacion, facultad_id_facultad)
     VALUES (p_idpublicacion, p_idfacultad);
 END //
-
 DELIMITER ;
 
 
