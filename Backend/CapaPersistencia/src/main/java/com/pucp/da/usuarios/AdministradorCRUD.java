@@ -21,6 +21,13 @@ import java.sql.Types;
  */
 public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements AdministradorDAO{
 
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(9); // Valor por defecto: no hay OUT
+    }
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Administrador administrador) throws SQLException {
         String sql = "{CALL INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?, ?, ?, ?)}";

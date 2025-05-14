@@ -20,6 +20,13 @@ import java.sql.Types;
  * @author SEBASTIAN
  */
 public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(3); // Valor por defecto: no hay OUT
+    }
+    
   
     @Override
     protected CallableStatement getInsertCS(Connection conn, Curso curso) throws SQLException {

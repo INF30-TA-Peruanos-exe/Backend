@@ -29,6 +29,12 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         usuarioDAO = new UsuarioCRUD();
         publicacionDAO = new PublicacionCRUD();
     }
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Notificacion notificacion) throws SQLException {

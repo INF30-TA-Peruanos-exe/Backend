@@ -28,6 +28,12 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         usuarioDAO = new UsuarioCRUD();
         publicacionDAO = new PublicacionCRUD();
     }
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(7); // Valor por defecto: no hay OUT
+    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Comentario comentario) throws SQLException {

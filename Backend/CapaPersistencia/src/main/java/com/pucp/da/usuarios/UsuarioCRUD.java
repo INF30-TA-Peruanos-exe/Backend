@@ -21,6 +21,13 @@ import java.sql.Types;
  */
 public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
 
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }    
+
     @Override
     protected CallableStatement getInsertCS(Connection conn, Usuario usuario) throws SQLException {
         String sql = "{CALL INSERTAR_USUARIO(?, ?, ?, ?, ?, ?, ?, ?)}";

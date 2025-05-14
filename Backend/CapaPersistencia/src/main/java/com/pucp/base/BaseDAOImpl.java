@@ -23,6 +23,16 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
     protected abstract T createFromResultSet(ResultSet rs) throws SQLException;
     protected abstract void setId(T entity, int id);
     
+    //CAMBIO----------------------
+    /**
+     * Por defecto no se recupera ningún ID generado.
+     * Las subclases pueden sobrescribir este método si usan parámetros OUT para devolver IDs.
+     */
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return -1; // Valor por defecto: no hay OUT
+    }
+    
+    
     @Override
     public void insertar(T entidad) {
         try (Connection conn = DBManager.getInstance().obtenerConexion();
@@ -30,12 +40,17 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
 
             cs.execute();
             
-            try (ResultSet rs = cs.getGeneratedKeys()) {
-                if (rs.next()) {
-                    setId(entidad, rs.getInt(1));
-                }
-            }
-                    
+//            try (ResultSet rs = cs.getGeneratedKeys()) {
+//                if (rs.next()) {
+//                    setId(entidad, rs.getInt(1));
+//                }
+//            }
+            //CAMBIO NUEVO
+            int idGenerado=obtenerIdGenerado(cs);//CADA CALLABLE STATEMENT TIENE EL PARAMETRO DE SALIDA 
+            if(idGenerado!=-1)                   //EN UNA POSICION DE PARAMETRO DISTINTA
+                setId(entidad, idGenerado);
+
+
         } catch (SQLException e) {
             throw new RuntimeException("Error al agregar entidad", e);
         }

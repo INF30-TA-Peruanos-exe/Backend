@@ -32,7 +32,14 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     public PublicacionCRUD() {
         this.usuarioDAO = new UsuarioCRUD();
     } 
-
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }
+    
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Publicacion publicacion) throws SQLException {
         String sql = "{CALL INSERTAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?, ?)}";

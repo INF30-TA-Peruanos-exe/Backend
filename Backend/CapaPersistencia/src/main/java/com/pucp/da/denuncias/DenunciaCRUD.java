@@ -31,6 +31,12 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
         publicacionDAO = new PublicacionCRUD();
         administradorDAO = new AdministradorCRUD();
     }
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(7); // Valor por defecto: no hay OUT
+    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Denuncia denuncia) throws SQLException {

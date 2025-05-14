@@ -20,6 +20,13 @@ import java.sql.Types;
  */
 public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements EspecialidadDAO{
 
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(3); // Valor por defecto: no hay OUT
+    }
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Especialidad especialidad) throws SQLException {
         String sql = "{CALL INSERTAR_ESPECIALIDAD(?, ,?, ?)}";
