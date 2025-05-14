@@ -244,6 +244,17 @@ public class Publicacion {
     public String toString() {
         return "Publicacion{" + "idPublicacion=" + idPublicacion + ", titulo=" + titulo + ", descripcion=" + descripcion + ", estado=" + estado + ", fechaPublicacion=" + fechaPublicacion + ", activo=" + activo + ", usuario=" + usuario.getIdUsuario() + ", rutaImagen=" + rutaImagen + '}';
     }
-    
+
+    public void setPublicacionesCursos(ArrayList<Curso> publicacionesCursos) {
+        this.publicacionesCursos = publicacionesCursos;
+    }
+
+    public void setPublicacionesEspecialidades(ArrayList<Especialidad> publicacionesEspecialidades) {
+        this.publicacionesEspecialidades = publicacionesEspecialidades;
+    }
+
+    public void setPublicacionesFacultades(ArrayList<Facultad> publicacionesFacultades) {
+        this.publicacionesFacultades = publicacionesFacultades;
+    }
 
 }

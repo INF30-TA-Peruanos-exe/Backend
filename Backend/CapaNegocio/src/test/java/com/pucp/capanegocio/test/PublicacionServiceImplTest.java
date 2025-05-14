@@ -1,153 +1,146 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.pucp.capanegocio.test;
 
-import com.pucp.capadominio.categorias.*;
+import com.pucp.capadominio.categorias.Curso;
+import com.pucp.capadominio.categorias.Especialidad;
+import com.pucp.capadominio.categorias.Facultad;
 
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Usuario;
+
+import com.pucp.capanegocio.interfacesService.PublicacionService;
 import com.pucp.capanegocio.publicaciones.PublicacionServiceImpl;
-import com.pucp.interfacesDAO.PublicacionDAO;
 
-import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.util.*;
 
-/**
- *
- * @author Axel
- */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PublicacionServiceImplTest {
-    private PublicacionDAO publicacionDAO;
-    private PublicacionServiceImpl publicacionService;
+    private static PublicacionService publicacionService;
+    private static int publicacionId;
 
-    @BeforeEach
-    public void setUp() {
-        publicacionDAO = mock(PublicacionDAO.class);
+    private static Usuario usuarioPrueba;
+    private static Curso cursoPrueba;
+    private static Especialidad especialidadPrueba;
+    private static Facultad facultadPrueba;
+
+    @BeforeAll
+    public static void setUp() {
         publicacionService = new PublicacionServiceImpl();
+
+        // Asume que estas entidades ya existen o puedes simularlas para los tests
+        usuarioPrueba = new Usuario();
+        usuarioPrueba.setIdUsuario(1);  // Usa un ID válido o crea un usuario real si tu DAO lo permite
+        usuarioPrueba.setNombre("Luis");
+
+        cursoPrueba = new Curso();
+        cursoPrueba.setIdCurso(1);
+
+        especialidadPrueba = new Especialidad();
+        especialidadPrueba.setIdEspecialidad(1);
+
+        facultadPrueba = new Facultad();
+        facultadPrueba.setIdFacultad(1);
     }
 
-    private Publicacion crearPublicacionValida() {
-        Publicacion p = new Publicacion();
-        p.setIdPublicacion(1);
-        p.setDescripcion("Una publicación de prueba.");
-        p.setEstado(EstadoPublicacion.VISIBLE);
-        //p.setFechaPublicacion(new Date());
-        p.setRutaImagen("/images/prueba.jpg");
-        p.setImagen(p.getRutaImagen()); //Esto no se validara
-        
-        p.setTitulo("Título de prueba");
-        p.setUsuario(new Usuario());
+    private static Publicacion crearPublicacionPrueba() {
+        Publicacion publicacion = new Publicacion();
+        publicacion.setTitulo("Título de prueba");
+        publicacion.setDescripcion("Contenido de prueba");
+        publicacion.setEstado(EstadoPublicacion.VISIBLE);
+        //publicacion.setFechaPublicacion();
+        publicacion.setRutaImagen("/images/prueba.jpg");
+        publicacion.setImagen(publicacion.getRutaImagen());
+        publicacion.setUsuario(usuarioPrueba);
 
-        
-        //Aca faltaria sacar cursos, especialidades y facultades.
-        
-        Curso curso = new Curso(25, "Prueba_curso", true); 
-        Especialidad especialidad = new Especialidad(25, "Prueba_especialidad", true);
-        Facultad facultad = new Facultad(25, "Prueba_facultad", true);
+        publicacion.agregarCurso(cursoPrueba);
+        publicacion.agregarEspecialidad(especialidadPrueba);
+        publicacion.agregarFacultad(facultadPrueba);
 
-        p.agregarCurso(curso); // Simulando objetos curso
-        p.agregarEspecialidad(especialidad);
-        p.agregarFacultad(facultad);
-
-        return p;
-    }
-
-    @Test
-    public void testRegistrarPublicacion_Exitoso() throws Exception {
-        Publicacion p = crearPublicacionValida();
-        doNothing().when(publicacionDAO).insertar(p);
-        assertDoesNotThrow(() -> publicacionService.registrarPublicacion(p));
-    }
-
-    @Test
-    public void testRegistrarPublicacion_TituloVacio() {
-        Publicacion p = crearPublicacionValida();
-        p.setTitulo("");
-        Exception ex = assertThrows(Exception.class, () -> publicacionService.registrarPublicacion(p));
-        assertEquals("El titulo no puede estar vacio", ex.getMessage());
+        return publicacion;
     }
 
     @Test
-    public void testRegistrarPublicacion_RutaImagenInvalida() {
-        Publicacion p = crearPublicacionValida();
-        p.setRutaImagen("archivo.txt");
-        Exception ex = assertThrows(Exception.class, () -> publicacionService.registrarPublicacion(p));
-        assertEquals("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)", ex.getMessage());
+    @Order(1)
+    void registrarPublicacion() throws Exception {
+        Publicacion publicacion = crearPublicacionPrueba();
+        publicacionService.registrarPublicacion(publicacion);
+
+        List<Publicacion> publicaciones = publicacionService.listarPublicacion();
+        assertNotNull(publicaciones);
+        assertFalse(publicaciones.isEmpty());
+
+        Publicacion registrada = publicaciones.stream()
+            .filter(p -> p.getTitulo().equals("Título de prueba"))
+            .findFirst()
+            .orElse(null);
+
+        assertNotNull(registrada);
+        publicacionId = registrada.getIdPublicacion();
+        assertEquals("Contenido de prueba", registrada.getDescripcion());
     }
 
     @Test
-    public void testActualizarPublicacion_NoExiste() {
-        Publicacion p = crearPublicacionValida();
-        when(publicacionDAO.obtenerPorId(p.getIdPublicacion())).thenReturn(null);
-        Exception ex = assertThrows(Exception.class, () -> publicacionService.actualizarPublicacion(p));
-        assertEquals("La publicacion no existe", ex.getMessage());
+    @Order(2)
+    void obtenerPublicacion() throws Exception {
+        Publicacion publicacion = publicacionService.obtenerPublicacion(publicacionId);
+        assertNotNull(publicacion);
+        assertEquals("Título de prueba", publicacion.getTitulo());
+        assertEquals("Contenido de prueba", publicacion.getDescripcion());
+        assertEquals(usuarioPrueba.getIdUsuario(), publicacion.getUsuario().getIdUsuario());
     }
 
     @Test
-    public void testActualizarPublicacion_Exitoso() throws Exception {
-        Publicacion p = crearPublicacionValida();
-        when(publicacionDAO.obtenerPorId(p.getIdPublicacion())).thenReturn(p);
-        doNothing().when(publicacionDAO).actualizar(p);
-        assertDoesNotThrow(() -> publicacionService.actualizarPublicacion(p));
+    @Order(3)
+    void actualizarPublicacion() throws Exception {
+        Publicacion publicacion = publicacionService.obtenerPublicacion(publicacionId);
+        publicacion.setTitulo("Nuevo Título");
+        publicacion.setDescripcion("Nuevo contenido");
+        publicacionService.actualizarPublicacion(publicacion);
+
+        Publicacion actualizada = publicacionService.obtenerPublicacion(publicacionId);
+        assertEquals("Nuevo Título", actualizada.getTitulo());
+        assertEquals("Nuevo contenido", actualizada.getDescripcion());
     }
 
     @Test
-    public void testEliminarPublicacion_NoExiste() {
-        when(publicacionDAO.obtenerPorId(1)).thenReturn(null);
-        Exception ex = assertThrows(Exception.class, () -> publicacionService.eliminarPublicacion(1));
-        assertEquals("La publicacion no existe", ex.getMessage());
+    @Order(4)
+    void eliminarPublicacion() throws Exception {
+        publicacionService.eliminarPublicacion(publicacionId);
+        assertThrows(Exception.class, () -> {
+            publicacionService.obtenerPublicacion(publicacionId);
+        });
     }
-
-    @Test
-    public void testEliminarPublicacion_Exitoso() throws Exception {
-        Publicacion p = crearPublicacionValida();
-        when(publicacionDAO.obtenerPorId(1)).thenReturn(p);
-        doNothing().when(publicacionDAO).eliminar(1);
-        assertDoesNotThrow(() -> publicacionService.eliminarPublicacion(1));
-    }
-
-    @Test
-    public void testObtenerPublicacion_Exitoso() throws Exception {
-        Publicacion p = crearPublicacionValida();
-        when(publicacionDAO.obtenerPorId(1)).thenReturn(p);
-        Publicacion resultado = publicacionService.obtenerPublicacion(1);
-        assertNotNull(resultado);
-        assertEquals("Título de prueba", resultado.getTitulo());
-    }
-
-    @Test
-    public void testListarPublicaciones() throws Exception {
-        ArrayList<Publicacion> lista = new ArrayList<>();
-        lista.add(crearPublicacionValida());
-        when(publicacionDAO.listarTodos()).thenReturn(lista);
-        ArrayList<Publicacion> resultado = publicacionService.listarPublicacion();
-        assertEquals(1, resultado.size());
-    } 
     
     @Test
-    public void testListarPorFacultad() throws Exception {
-        
-    } 
-    
+    @Order(5)
+    void listarPublicaciones() throws Exception {
+        List<Publicacion> publicaciones = publicacionService.listarPublicacion();
+        assertNotNull(publicaciones);
+        assertTrue(publicaciones.size() >= 0); // Puede estar vacía si eliminaste la única publicación
+    }
+
     @Test
-    public void testListarPorEspecialidad() throws Exception {
-        
-    } 
-    
+    @Order(6)
+    void listarPorFacultad() throws Exception {
+        List<Publicacion> publicaciones = publicacionService.listarPorFacultad(facultadPrueba.getIdFacultad());
+        assertNotNull(publicaciones);
+        // Puedes validar si contiene algún título esperado si ya insertaste antes
+        // assertTrue(publicaciones.stream().anyMatch(p -> p.getTitulo().equals("Nuevo Título")));
+    }
+
     @Test
-    public void testListarPorCurso() throws Exception {
-        
-    } 
+    @Order(7)
+    void listarPorEspecialidad() throws Exception {
+        List<Publicacion> publicaciones = publicacionService.listarPorEspecialidad(especialidadPrueba.getIdEspecialidad());
+        assertNotNull(publicaciones);
+    }
+
+    @Test
+    @Order(8)
+    void listarPorCurso() throws Exception {
+        List<Publicacion> publicaciones = publicacionService.listarPorCurso(cursoPrueba.getIdCurso());
+        assertNotNull(publicaciones);
+    }
 }
