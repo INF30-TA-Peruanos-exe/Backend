@@ -103,18 +103,9 @@ public class PublicacionServiceImplTest {
         assertEquals("Nuevo Título", actualizada.getTitulo());
         assertEquals("Nuevo contenido", actualizada.getDescripcion());
     }
-
-    @Test
-    @Order(4)
-    void eliminarPublicacion() throws Exception {
-        publicacionService.eliminarPublicacion(publicacionId);
-        assertThrows(Exception.class, () -> {
-            publicacionService.obtenerPublicacion(publicacionId);
-        });
-    }
     
     @Test
-    @Order(5)
+    @Order(4)
     void listarPublicaciones() throws Exception {
         List<Publicacion> publicaciones = publicacionService.listarPublicacion();
         assertNotNull(publicaciones);
@@ -122,7 +113,7 @@ public class PublicacionServiceImplTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     void listarPorFacultad() throws Exception {
         List<Publicacion> publicaciones = publicacionService.listarPorFacultad(facultadPrueba.getIdFacultad());
         assertNotNull(publicaciones);
@@ -131,16 +122,26 @@ public class PublicacionServiceImplTest {
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     void listarPorEspecialidad() throws Exception {
         List<Publicacion> publicaciones = publicacionService.listarPorEspecialidad(especialidadPrueba.getIdEspecialidad());
         assertNotNull(publicaciones);
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     void listarPorCurso() throws Exception {
         List<Publicacion> publicaciones = publicacionService.listarPorCurso(cursoPrueba.getIdCurso());
         assertNotNull(publicaciones);
+    }
+    
+    
+    @Test
+    @Order(8)
+    void eliminarPublicacion() throws Exception {
+        publicacionService.eliminarPublicacion(publicacionId);
+        assertThrows(Exception.class, () -> {
+            publicacionService.obtenerPublicacion(publicacionId);
+        });
     }
 }
