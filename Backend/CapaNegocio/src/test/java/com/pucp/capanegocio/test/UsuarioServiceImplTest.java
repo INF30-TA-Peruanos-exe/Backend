@@ -85,4 +85,11 @@ public class UsuarioServiceImplTest {
         assertNotNull(usuarioEliminado);
         assertFalse(usuarioEliminado.isActivo()); // Verifica que esté desactivado
     }
+    
+    @Test
+    @Order(5)
+    void listarUsuarios() throws Exception {
+        ArrayList<Usuario> lista = usuarioService.listarUsuario();
+        assertNotNull(lista); // Sin importar si está vacía
+    }  
 }

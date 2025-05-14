@@ -1,0 +1,84 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.pucp.capanegocio.test;
+
+import com.pucp.capadominio.categorias.Especialidad;
+import com.pucp.capanegocio.categorias.EspecialidadServiceImpl;
+import com.pucp.capanegocio.interfacesService.EspecialidadService;
+import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+
+/**
+ *
+ * @author Axel
+ */
+public class EspecialidadServiceImplTest{
+    private static EspecialidadService especialidadService;
+    private static int especialidadId;
+
+    @BeforeAll
+    public static void setUp() {
+        especialidadService = new EspecialidadServiceImpl();
+    }
+
+    private Especialidad crearEspecialidadPrueba() {
+        Especialidad especialidad = new Especialidad();
+        especialidad.setNombre("Ingeniería de Pruebas");
+        return especialidad;
+    }
+
+    @Test
+    @Order(1)
+    void registrarEspecialidad() throws Exception {
+        Especialidad especialidad = crearEspecialidadPrueba();
+        especialidadService.registrarEspecialidad(especialidad);
+
+        ArrayList<Especialidad> lista = especialidadService.listarEspecialidad();
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty());
+
+        Especialidad registrada = lista.get(lista.size() - 1);
+        especialidadId = registrada.getIdEspecialidad();
+        assertEquals("Ingeniería de Pruebas", registrada.getNombre());
+    }
+
+    @Test
+    @Order(2)
+    void obtenerEspecialidad() throws Exception {
+        Especialidad especialidad = especialidadService.obtenerEspecialidad(especialidadId);
+        assertNotNull(especialidad);
+        assertEquals("Ingeniería de Pruebas", especialidad.getNombre());
+    }
+
+    @Test
+    @Order(3)
+    void actualizarEspecialidad() throws Exception {
+        Especialidad especialidad = especialidadService.obtenerEspecialidad(especialidadId);
+        especialidad.setNombre("Especialidad Modificada");
+        especialidadService.actualizarEspecialidad(especialidad);
+
+        Especialidad actualizada = especialidadService.obtenerEspecialidad(especialidadId);
+        assertEquals("Especialidad Modificada", actualizada.getNombre());
+    }
+
+    @Test
+    @Order(4)
+    void eliminarEspecialidad() throws Exception {
+        Especialidad eliminada = especialidadService.obtenerEspecialidad(especialidadId);
+        assertFalse(eliminada.isActivo());
+    }
+
+    @Test
+    @Order(5)
+    void listarEspecialidades() throws Exception {
+        ArrayList<Especialidad> lista = especialidadService.listarEspecialidad();
+        assertNotNull(lista);
+    }     
+}

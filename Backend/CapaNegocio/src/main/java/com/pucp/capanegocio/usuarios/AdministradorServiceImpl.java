@@ -33,7 +33,7 @@ public class AdministradorServiceImpl implements AdministradorService{
         if(administrador.getCorreo() == null || administrador.getCorreo().trim().isEmpty()){
             throw new Exception("El correo no puede estar vacio");
         }
-        if(!"@pucp.edu.pe".equals(administrador.getCorreo().split("@")[1])){
+        if(!"pucp.edu.pe".equals(administrador.getCorreo().split("@")[1])){
             throw new Exception("El correo debe ser: example@pucp.edu.pe");
         }
         if(administrador.getEstado() == null){
@@ -65,7 +65,7 @@ public class AdministradorServiceImpl implements AdministradorService{
         if(administrador.getCorreo() == null || administrador.getCorreo().trim().isEmpty()){
             throw new Exception("El correo no puede estar vacio");
         }
-        if(!"@pucp.edu.pe".equals(administrador.getCorreo().split("@")[1])){
+        if(!"pucp.edu.pe".equals(administrador.getCorreo().split("@")[1])){
             throw new Exception("El correo debe ser: example@pucp.edu.pe");
         }
         if(administrador.getEstado() == null){

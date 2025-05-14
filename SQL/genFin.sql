@@ -1,0 +1,1145 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema Pucp_qatu_db
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Pucp_qatu_db
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Pucp_qatu_db` DEFAULT CHARACTER SET utf8mb3 ;
+USE `Pucp_qatu_db` ;
+
+-- DROPS
+
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`publicacion_facultad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`publicacion_especialidad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`publicacion_curso`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`notificacion`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`denuncia`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`comentario`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`facultad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`especialidad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`curso`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`publicacion`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`administrador`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`usuario`;
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`usuario` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `codigo_PUCP` INT NOT NULL,
+  `nombreusuario` VARCHAR(45) NOT NULL,
+  `contrasena` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `correo` VARCHAR(45) NOT NULL,
+  `estado` ENUM('HABILITADO', 'DESHABILITADO') NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_usuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`administrador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`administrador` (
+  `id_administrador` INT NOT NULL AUTO_INCREMENT,
+  `clave_Maestra` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_administrador`),
+  CONSTRAINT `fk_administrador_usuario1`
+    FOREIGN KEY (`id_administrador`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`publicacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion` (
+  `idpublicacion` INT NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(45) NOT NULL,
+  `estado` ENUM('VISIBLE', 'GUARDADO', 'RESTRINGIDO', 'OCULTO') NOT NULL,
+  `fechapublicacion` DATE NOT NULL,
+  `url_imagen` VARCHAR(45) NULL DEFAULT NULL,
+  `activo` TINYINT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  PRIMARY KEY (`idpublicacion`, `id_usuario`),
+  INDEX `fk_publicacion_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_usuario1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`comentario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`comentario` (
+  `id_comentario` INT NOT NULL AUTO_INCREMENT,
+  `contenido` VARCHAR(45) NOT NULL,
+  `valoracion` INT NULL DEFAULT NULL,
+  `fecha` DATE NOT NULL,
+  `id_publicacion` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_comentario`),
+  INDEX `fk_comentario_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
+  INDEX `fk_comentario_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_comentario_publicacion1`
+    FOREIGN KEY (`id_publicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_comentario_usuario1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`curso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`curso` (
+  `id_curso` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_curso`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`denuncia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`denuncia` (
+  `id_reporte` INT NOT NULL AUTO_INCREMENT,
+  `autor` INT NOT NULL,
+  `reportante` INT NOT NULL,
+  `motivo` VARCHAR(45) NULL DEFAULT NULL,
+  `fecha_reporte` DATE NOT NULL,
+  `id_administrador` INT NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_reporte`),
+  INDEX `fk_denuncia_publicacion1_idx` (`autor` ASC) VISIBLE,
+  INDEX `fk_denuncia_usuario1_idx` (`reportante` ASC) VISIBLE,
+  INDEX `fk_denuncia_administrador1_idx` (`id_administrador` ASC) VISIBLE,
+  CONSTRAINT `fk_denuncia_administrador1`
+    FOREIGN KEY (`id_administrador`)
+    REFERENCES `Pucp_qatu_db`.`administrador` (`id_administrador`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_denuncia_publicacion1`
+    FOREIGN KEY (`autor`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_denuncia_usuario1`
+    FOREIGN KEY (`reportante`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`especialidad`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`especialidad` (
+  `id_especialidad` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_especialidad`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`facultad`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`facultad` (
+  `id_facultad` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_facultad`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`notificacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`notificacion` (
+  `id_notificacion` INT NOT NULL AUTO_INCREMENT,
+  `mensaje` VARCHAR(45) NULL DEFAULT NULL,
+  `tipo_notificacion` VARCHAR(45) NOT NULL,
+  `cantidad` INT NULL DEFAULT NULL,
+  `fecha` DATE NOT NULL,
+  `id_publicacion` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `activo` TINYINT NOT NULL,
+  PRIMARY KEY (`id_notificacion`),
+  INDEX `fk_notificacion_publicacion1_idx` (`id_publicacion` ASC) VISIBLE,
+  INDEX `fk_notificacion_usuario1_idx` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_NOTIFICACION_publicacion1`
+    FOREIGN KEY (`id_publicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_notificacion_usuario1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Pucp_qatu_db`.`usuario` (`id_usuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`publicacion_curso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_curso` (
+  `publicacion_idpublicacion` INT NOT NULL,
+  `curso_id_curso` INT NOT NULL,
+  PRIMARY KEY (`publicacion_idpublicacion`, `curso_id_curso`),
+  INDEX `fk_publicacion_has_curso_curso1_idx` (`curso_id_curso` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_curso_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_curso_curso1`
+    FOREIGN KEY (`curso_id_curso`)
+    REFERENCES `Pucp_qatu_db`.`curso` (`id_curso`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_publicacion_has_curso_publicacion1`
+    FOREIGN KEY (`publicacion_idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`publicacion_especialidad`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_especialidad` (
+  `publicacion_idpublicacion` INT NOT NULL,
+  `especialidad_id_especialidad` INT NOT NULL,
+  PRIMARY KEY (`publicacion_idpublicacion`, `especialidad_id_especialidad`),
+  INDEX `fk_publicacion_has_especialidad_especialidad1_idx` (`especialidad_id_especialidad` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_especialidad_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_especialidad_especialidad1`
+    FOREIGN KEY (`especialidad_id_especialidad`)
+    REFERENCES `Pucp_qatu_db`.`especialidad` (`id_especialidad`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_publicacion_has_especialidad_publicacion1`
+    FOREIGN KEY (`publicacion_idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `Pucp_qatu_db`.`publicacion_facultad`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`publicacion_facultad` (
+  `publicacion_idpublicacion` INT NOT NULL,
+  `facultad_id_facultad` INT NOT NULL,
+  PRIMARY KEY (`publicacion_idpublicacion`, `facultad_id_facultad`),
+  INDEX `fk_publicacion_has_facultad_facultad1_idx` (`facultad_id_facultad` ASC) VISIBLE,
+  INDEX `fk_publicacion_has_facultad_publicacion1_idx` (`publicacion_idpublicacion` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_has_facultad_facultad1`
+    FOREIGN KEY (`facultad_id_facultad`)
+    REFERENCES `Pucp_qatu_db`.`facultad` (`id_facultad`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_publicacion_has_facultad_publicacion1`
+    FOREIGN KEY (`publicacion_idpublicacion`)
+    REFERENCES `Pucp_qatu_db`.`publicacion` (`idpublicacion`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Inserts
+INSERT INTO `Pucp_qatu_db`.`usuario` 
+(`codigo_PUCP`, `nombreusuario`, `contrasena`, `nombre`, `correo`, `estado`, `activo`) 
+VALUES 
+(20181234, 'jperez', 'clave123', 'Juan Pérez', 'jperez@pucp.edu.pe', 'HABILITADO', 1),
+(20192345, 'mgonzalez', 'segura456', 'María González', 'mgonzalez@pucp.edu.pe', 'HABILITADO', 1),
+(20203456, 'lrodriguez', 'acceso789', 'Luis Rodríguez', 'lrodriguez@pucp.edu.pe', 'DESHABILITADO', 0),
+(20175678, 'acastro', 'pucp2023', 'Ana Castro', 'acastro@pucp.edu.pe', 'HABILITADO', 1),
+(20214567, 'dfernandez', 'qwerty12', 'Diego Fernández', 'dfernandez@pucp.edu.pe', 'HABILITADO', 1);
+
+INSERT INTO `Pucp_qatu_db`.`curso` 
+(`nombre`, `activo`) 
+VALUES 
+('Matemáticas Básicas', 1),
+('Programación I', 1),
+('Historia del Perú', 1),
+('Inglés Intermedio', 0),  
+('Física General', 1);
+
+INSERT INTO `Pucp_qatu_db`.`especialidad` 
+(`nombre`, `activo`) 
+VALUES 
+('Ingeniería Informática', 1),
+('Administración de Empresas', 1),
+('Derecho Corporativo', 1),
+('Psicología Organizacional', 0),  
+('Arquitectura y Urbanismo', 1);
+
+INSERT INTO `Pucp_qatu_db`.`facultad` 
+(`nombre`, `activo`) 
+VALUES 
+('Facultad de Ciencias e Ingeniería', 1),
+('Facultad de Derecho', 1),
+('Facultad de Gestión y Alta Dirección', 1),
+('Facultad de Ciencias Sociales', 1),
+('Facultad de Arquitectura y Urbanismo', 0);  
+
+-- PROCEDIMIENTOS curso: ---------------
+
+-- INSERTAR
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_CURSO(
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    INSERT INTO curso (nombre, activo)
+    VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del último registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+DELIMITER ;
+
+
+-- MODIFICAR
+
+DELIMITER $$
+
+CREATE PROCEDURE MODIFICAR_CURSO(
+    IN p_id_curso INT,
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    UPDATE curso
+    SET nombre = p_nombre,
+        activo = p_activo
+    WHERE id_curso = p_id_curso;
+END $$
+
+DELIMITER ;
+
+-- ELIMINAR
+DELIMITER $$
+
+CREATE PROCEDURE ELIMINAR_CURSO(
+    IN p_id_curso INT
+)
+BEGIN
+	UPDATE curso
+    SET activo = 0
+    WHERE id_curso = p_id_curso;
+END $$
+
+DELIMITER ;
+
+-- OBTENER POR ID
+
+DELIMITER $$
+
+CREATE PROCEDURE OBTENER_CURSO_X_ID(
+    IN p_id_curso INT
+)
+BEGIN
+    SELECT id_curso, nombre, activo
+    FROM curso
+    WHERE id_curso = p_id_curso;
+END $$
+
+DELIMITER ;
+
+-- OBTENER TODOS
+
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_CURSO_TODOS()
+BEGIN
+    SELECT id_curso, nombre, activo
+    FROM curso
+	WHERE activo=1
+;
+END $$
+
+DELIMITER ;
+
+-- PROCEDIMIENTOS especialidad: ----------------
+
+-- INSERTAR
+
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_ESPECIALIDAD(
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    INSERT INTO especialidad (nombre, activo)
+    VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del último registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+DELIMITER ;
+
+
+-- MODIFICAR
+
+DELIMITER $$
+
+CREATE PROCEDURE MODIFICAR_ESPECIALIDAD(
+    IN p_id_especialidad INT,
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    UPDATE especialidad
+    SET nombre = p_nombre,
+        activo = p_activo
+    WHERE id_especialidad = p_id_especialidad;
+END $$
+
+DELIMITER ;
+
+-- ELIMINAR
+
+DELIMITER $$
+
+CREATE PROCEDURE ELIMINAR_ESPECIALIDAD(
+    IN p_id_especialidad INT
+)
+BEGIN
+	UPDATE especialidad
+    SET activo = 0
+    WHERE id_especialidad = p_id_especialidad;
+END $$
+
+DELIMITER ;
+
+-- OBTENER POR ID
+
+DELIMITER $$
+
+CREATE PROCEDURE OBTENER_ESPECIALIDAD_X_ID(
+    IN p_id_especialidad INT
+)
+BEGIN
+    SELECT id_especialidad, nombre, activo
+    FROM especialidad
+    WHERE id_especialidad = p_id_especialidad;
+END $$
+
+DELIMITER ;
+
+-- OBTENER TODOS
+
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_ESPECIALIDAD_TODOS()
+BEGIN
+    SELECT id_especialidad, nombre, activo
+    FROM especialidad
+    WHERE activo=1;
+END $$
+
+DELIMITER ;
+
+-- PROCEDIMIENTOS facultad: ------------------------------
+
+-- INSERTAR 
+
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_FACULTAD(
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    INSERT INTO facultad (nombre, activo)
+    VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del último registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+DELIMITER ;
+
+-- MODIFICAR
+
+DELIMITER $$
+
+CREATE PROCEDURE MODIFICAR_FACULTAD(
+    IN p_id_facultad INT,
+    IN p_nombre VARCHAR(45),
+    IN p_activo TINYINT
+)
+BEGIN
+    UPDATE facultad
+    SET nombre = p_nombre,
+        activo = p_activo
+    WHERE id_facultad = p_id_facultad;
+END $$
+
+DELIMITER ;
+
+-- ELIMINAR
+
+DELIMITER $$
+
+CREATE PROCEDURE ELIMINAR_FACULTAD(
+    IN p_id_facultad INT
+)
+BEGIN
+	UPDATE facultad
+    SET activo = 0
+    WHERE id_facultad = p_id_facultad;
+END $$
+
+DELIMITER ;
+
+-- OBTENER POR ID
+
+DELIMITER $$
+
+CREATE PROCEDURE OBTENER_FACULTAD_X_ID(
+    IN p_id_facultad INT
+)
+BEGIN
+    SELECT id_facultad, nombre, activo
+    FROM facultad
+    WHERE id_facultad = p_id_facultad;
+END $$
+
+DELIMITER ;
+
+-- OBTENER TODOS
+
+
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_FACULTAD_TODOS()
+BEGIN
+    SELECT id_facultad, nombre, activo
+    FROM facultad
+    WHERE activo=1;
+END $$
+
+DELIMITER ;
+
+-- PROCEDIMIENTOS notificacion: --------------------
+
+-- INSERTAR
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_NOTIFICACION(
+    IN p_mensaje VARCHAR(45),
+    IN p_tipo_notificacion VARCHAR(45),
+    IN p_cantidad INT,
+    IN p_fecha DATE,
+    IN p_id_publicacion INT,
+    IN p_id_usuario INT,
+    IN p_activo TINYINT
+)
+BEGIN
+    INSERT INTO notificacion (
+        mensaje, tipo_notificacion, cantidad, fecha,
+        id_publicacion, id_usuario, activo
+    ) VALUES (
+        p_mensaje, p_tipo_notificacion, p_cantidad, p_fecha,
+        p_id_publicacion, p_id_usuario, p_activo
+    );
+
+    -- Obtener el ID del último registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+DELIMITER ;
+-- MODIFICAR
+
+DELIMITER $$
+
+CREATE PROCEDURE MODIFICAR_NOTIFICACION(
+    IN p_id_notificacion INT,
+    IN p_mensaje VARCHAR(45),
+    IN p_tipo_notificacion VARCHAR(45),
+    IN p_cantidad INT,
+    IN p_fecha DATE,
+    IN p_id_publicacion INT,
+    IN p_id_usuario INT,
+    IN p_activo TINYINT
+)
+BEGIN
+    UPDATE notificacion
+    SET mensaje = p_mensaje,
+        tipo_notificacion = p_tipo_notificacion,
+        cantidad = p_cantidad,
+        fecha = p_fecha,
+        id_publicacion = p_id_publicacion,
+        id_usuario = p_id_usuario,
+        activo = p_activo
+    WHERE id_notificacion = p_id_notificacion;
+END $$
+
+DELIMITER ;
+
+-- ELIMINAR
+DELIMITER $$
+
+CREATE PROCEDURE ELIMINAR_NOTIFICACION(
+    IN p_id_notificacion INT
+)
+BEGIN
+    UPDATE notificacion
+    SET activo = 0    
+    WHERE id_notificacion = p_id_notificacion;
+END $$
+
+DELIMITER ;
+
+-- OBTENER POR ID
+DELIMITER $$
+
+CREATE PROCEDURE OBTENER_NOTIFICACION_X_ID(
+    IN p_id_notificacion INT
+)
+BEGIN
+    SELECT id_notificacion, mensaje, tipo_notificacion, cantidad,
+           fecha, id_publicacion, id_usuario, activo
+    FROM notificacion
+    WHERE id_notificacion = p_id_notificacion;
+END $$
+
+DELIMITER ;
+
+-- OBTENER TODOS
+
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_NOTIFICACION_TODOS()
+BEGIN
+    SELECT id_notificacion, mensaje, tipo_notificacion, cantidad,
+           fecha, id_publicacion, id_usuario, activo
+    FROM notificacion
+    WHERE activo=1;
+END $$
+
+DELIMITER ;
+
+
+-- PROCEDIMIENTOS publicacion: -----------------
+
+-- INSERTAR
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_PUBLICACION (
+    IN p_titulo VARCHAR(255),
+    IN p_descripcion TEXT,
+    IN p_estado VARCHAR(50),
+    IN p_fecha DATE,
+    IN p_rutaImagen VARCHAR(255),
+    IN p_idusuario INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    INSERT INTO publicacion (
+        titulo, descripcion, estado, fechapublicacion,
+        url_imagen, id_usuario, activo
+    )
+    VALUES (
+        p_titulo, p_descripcion, p_estado, p_fecha,
+        p_rutaImagen, p_idusuario, p_activo
+    );
+
+    -- Obtener el ID del último registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+DELIMITER ;
+
+-- ACTUALIZAR
+	DELIMITER $$
+
+CREATE PROCEDURE MODIFICAR_PUBLICACION (
+    IN p_id INT,
+    IN p_titulo VARCHAR(255),
+    IN p_descripcion TEXT,
+    IN p_estado VARCHAR(50),
+    IN p_fecha DATE,
+    IN p_rutaImagen VARCHAR(255),
+    IN p_idusuario INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    UPDATE publicacion
+    SET
+        titulo = p_titulo,
+        descripcion = p_descripcion,
+        estado = p_estado,
+        fechapublicacion = p_fecha,
+        url_imagen = p_rutaImagen,
+        id_usuario = p_idusuario,
+        activo = p_activo
+    WHERE idpublicacion = p_id;
+END$$
+
+DELIMITER ;
+
+-- ELIMINAR
+DELIMITER $$
+
+CREATE PROCEDURE ELIMINAR_PUBLICACION (
+    IN p_id INT
+)
+BEGIN
+    UPDATE publicacion
+    SET activo = 0
+    WHERE idpublicacion = p_id;
+END$$
+
+DELIMITER ;
+
+-- SELECCIONAR POR ID
+	DELIMITER $$
+
+CREATE PROCEDURE OBTENER_PUBLICACION_X_ID (
+    IN p_id INT
+)
+BEGIN
+    SELECT * FROM publicacion
+    WHERE idpublicacion = p_id;
+END$$
+
+DELIMITER ;
+
+-- SELECCIONAR TODOS
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_PUBLICACION_TODOS()
+BEGIN
+    SELECT * FROM publicacion WHERE activo=1;
+END$$
+
+DELIMITER ;
+
+-- SELECCIONAR POR facultad TODOS
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_PUBLICACION_X_FACULTAD_TODOS (
+    IN p_id_facultad INT
+)
+BEGIN
+    SELECT p.*
+    FROM publicacion p, publicacion_facultad pf
+    WHERE p.idpublicacion = pf.publicacion_idpublicacion
+    AND pf.facultad_id_facultad = p_id_facultad
+    AND p.activo = 1;
+END$$
+
+DELIMITER ;
+
+
+-- SELECCIONAR POR especialidad TODOS
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_PUBLICACION_X_ESPECIALIDAD_TODOS (
+    IN p_id_especialidad INT
+)
+BEGIN
+    SELECT p.*
+    FROM publicacion p, publicacion_especialidad pe
+    WHERE p.idpublicacion = pe.publicacion_idpublicacion
+    AND pe.especialidad_id_especialidad = p_id_especialidad
+    AND p.activo = 1;
+END$$
+
+DELIMITER ;
+
+
+-- SELECCIONAR POR curso TODOS
+DELIMITER $$
+
+CREATE PROCEDURE LISTAR_PUBLICACION_X_CURSO_TODOS (
+    IN p_id_curso INT
+)
+BEGIN
+    SELECT p.*
+    FROM publicacion p, publicacion_curso pc
+    WHERE p.idpublicacion = pc.publicacion_idpublicacion
+    AND pc.curso_id_curso = p_id_curso
+    AND p.activo = 1;
+END$$
+
+DELIMITER ;
+-- PROCEDIMIENTOS comentarioS ------------------
+-- insertar
+DELIMITER $$
+
+CREATE PROCEDURE INSERTAR_COMENTARIO (
+    IN p_contenido TEXT,
+    IN p_valoracion INT,
+    IN p_fecha DATE,
+    IN p_id_publicacion INT,
+    IN p_id_usuario INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    INSERT INTO comentario (
+        contenido, valoracion, fecha, id_publicacion, id_usuario, activo
+    ) VALUES (
+        p_contenido, p_valoracion, p_fecha, p_id_publicacion, p_id_usuario, p_activo
+    );
+
+    -- Obtener el ID del último comentario insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
+
+-- modificar
+CREATE PROCEDURE MODIFICAR_COMENTARIO (
+    IN p_id_comentario INT,
+    IN p_contenido TEXT,
+    IN p_valoracion INT,
+    IN p_fecha DATE,
+    IN p_id_publicacion INT,
+    IN p_id_usuario INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    UPDATE comentario
+    SET contenido = p_contenido,
+        valoracion = p_valoracion,
+        fecha = p_fecha,
+        id_publicacion = p_id_publicacion,
+        id_usuario = p_id_usuario,
+        activo = p_activo
+    WHERE id_comentario = p_id_comentario;
+END$$
+-- eliminar
+CREATE PROCEDURE ELIMINAR_COMENTARIO (
+    IN p_id_comentario INT
+)
+BEGIN
+    UPDATE comentario
+    SET activo = 0
+    WHERE id_comentario = p_id_comentario;
+END$$
+-- obtener por id
+CREATE PROCEDURE OBTENER_COMENTARIO_X_ID (
+    IN p_id_comentario INT
+)
+BEGIN
+    SELECT * FROM comentario
+    WHERE id_comentario = p_id_comentario;
+END$$
+-- listar todos
+CREATE PROCEDURE LISTAR_COMENTARIO_TODOS()
+BEGIN
+    SELECT * FROM comentario WHERE activo=1;
+END$$
+
+DELIMITER ;
+
+-- Procedimientos denuncias -------------------------
+DELIMITER $$
+
+-- Procedimiento para insertar una denuncia
+CREATE PROCEDURE INSERTAR_DENUNCIA (
+    IN p_autor INT,
+    IN p_denunciante INT,
+    IN p_motivo VARCHAR(255),
+    IN p_fecha_denuncia DATE,
+    IN p_admin INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    INSERT INTO denuncia (
+        autor, reportante, motivo, fecha_reporte, id_administrador, activo
+    ) VALUES (
+        p_autor, p_denunciante, p_motivo, p_fecha_denuncia, p_admin, p_activo
+    );
+    
+    SELECT LAST_INSERT_ID() AS id;
+END$$
+
+-- Procedimiento para modificar una denuncia
+CREATE PROCEDURE MODIFICAR_DENUNCIA (
+    IN p_id_reporte INT,
+    IN p_autor INT,
+    IN p_denunciante INT,
+    IN p_motivo VARCHAR(255),
+    IN p_fecha_denuncia DATE,
+    IN p_admin INT,
+    IN p_activo BOOLEAN
+)
+BEGIN
+    UPDATE denuncia
+    SET autor = p_autor,
+        reportante = p_denunciante,
+        motivo = p_motivo,
+        fecha_reporte = p_fecha_denuncia,
+        id_administrador = p_admin,
+        activo = p_activo
+    WHERE id_reporte = p_id_reporte;
+END$$
+
+-- Procedimiento para eliminar una denuncia (borrado lógico, estableciendo 'activo' a false)
+CREATE PROCEDURE ELIMINAR_DENUNCIA (
+    IN p_id_reporte INT
+)
+BEGIN
+    UPDATE denuncia
+    SET activo = 0
+    WHERE id_reporte = p_id_reporte;
+END$$
+
+-- Procedimiento para obtener una denuncia por ID
+CREATE PROCEDURE OBTENER_DENUNCIA_X_ID (
+    IN p_id_reporte INT
+)
+BEGIN
+    SELECT * FROM denuncia
+    WHERE id_reporte = p_id_reporte;
+END$$
+
+-- Procedimiento para listar todas las denuncias
+CREATE PROCEDURE LISTAR_DENUNCIA_TODOS()
+BEGIN
+    SELECT * FROM denuncia WHERE activo=1;
+END$$
+
+DELIMITER ;
+
+-- Procedimientos usuarioS
+DELIMITER $$
+
+-- Procedimiento para insertar un usuario
+CREATE PROCEDURE INSERTAR_USUARIO (
+    IN p_codigo_pucp INT,
+    IN p_nombre_usuario VARCHAR(50),
+    IN p_contrasena VARCHAR(255),
+    IN p_nombre VARCHAR(100),
+    IN p_correo VARCHAR(100),
+    IN p_estado VARCHAR(50),
+    IN p_activo BOOLEAN
+)
+BEGIN
+    INSERT INTO usuario (
+        codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo
+    ) VALUES (
+        p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo
+    );
+    
+    SELECT LAST_INSERT_ID() AS id;
+END$$
+
+-- Procedimiento para modificar un usuario
+CREATE PROCEDURE MODIFICAR_USUARIO (
+    IN p_id_usuario INT,
+    IN p_codigo_pucp INT,
+    IN p_nombre_usuario VARCHAR(50),
+    IN p_contrasena VARCHAR(255),
+    IN p_nombre VARCHAR(100),
+    IN p_correo VARCHAR(100),
+    IN p_estado VARCHAR(50),
+    IN p_activo BOOLEAN
+)
+BEGIN
+    UPDATE usuario
+    SET codigo_PUCP = p_codigo_pucp,
+        nombreusuario = p_nombre_usuario,
+        contrasena = p_contrasena,
+        nombre = p_nombre,
+        correo = p_correo,
+        estado = p_estado,
+        activo = p_activo
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para eliminar un usuario (borrado lógico, estableciendo 'activo' a false)
+CREATE PROCEDURE ELIMINAR_USUARIO (
+    IN p_id_usuario INT
+)
+BEGIN
+    UPDATE usuario
+    SET activo = 0
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para obtener un usuario por ID
+CREATE PROCEDURE OBTENER_USUARIO_X_ID (
+    IN p_id_usuario INT
+)
+BEGIN
+    SELECT * FROM usuario
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para listar todos los usuarios
+CREATE PROCEDURE LISTAR_USUARIO_TODOS()
+BEGIN
+    SELECT * FROM usuario WHERE activo=1;
+END$$
+
+DELIMITER ;
+
+-- Procedimientos administrador
+
+DELIMITER $$
+
+-- Procedimiento para insertar un administrador
+CREATE PROCEDURE INSERTAR_ADMINISTRADOR (
+    IN p_codigo_pucp INT,
+    IN p_nombre_usuario VARCHAR(50),
+    IN p_contrasena VARCHAR(255),
+    IN p_nombre VARCHAR(100),
+    IN p_correo VARCHAR(100),
+    IN p_estado VARCHAR(50),
+    IN p_activo BOOLEAN,
+    IN p_clave_maestra VARCHAR(255)
+)
+BEGIN
+    INSERT INTO administrador (
+        codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo, clave_Maestra
+    ) VALUES (
+        p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo, p_clave_maestra
+    );
+    
+    SELECT LAST_INSERT_ID() AS id;
+END$$
+
+-- Procedimiento para modificar un administrador
+CREATE PROCEDURE MODIFICAR_ADMINISTRADOR (
+    IN p_id_usuario INT,
+    IN p_codigo_pucp INT,
+    IN p_nombre_usuario VARCHAR(50),
+    IN p_contrasena VARCHAR(255),
+    IN p_nombre VARCHAR(100),
+    IN p_correo VARCHAR(100),
+    IN p_estado VARCHAR(50),
+    IN p_activo BOOLEAN,
+    IN p_clave_maestra VARCHAR(255)
+)
+BEGIN
+    UPDATE administrador
+    SET codigo_PUCP = p_codigo_pucp,
+        nombreusuario = p_nombre_usuario,
+        contrasena = p_contrasena,
+        nombre = p_nombre,
+        correo = p_correo,
+        estado = p_estado,
+        activo = p_activo,
+        clave_Maestra = p_clave_maestra
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para eliminar un administrador (borrado lógico, estableciendo 'activo' a false)
+CREATE PROCEDURE ELIMINAR_ADMINISTRADOR (
+    IN p_id_usuario INT
+)
+BEGIN
+    UPDATE administrador
+    SET activo = 0
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para obtener un administrador por ID
+CREATE PROCEDURE OBTENER_ADMINISTRADOR_X_ID (
+    IN p_id_usuario INT
+)
+BEGIN
+    SELECT * FROM administrador
+    WHERE id_usuario = p_id_usuario;
+END$$
+
+-- Procedimiento para listar todos los administradores
+CREATE PROCEDURE LISTAR_ADMINISTRADOR_TODOS()
+BEGIN
+    SELECT * FROM administrador;
+END$$
+
+DELIMITER ;
+-- PROCEDIMIENTOS PARA TABLAS INTERMEDIAS USADAS EN publicacion -------------------------- 
+
+-- publicacion curso
+DELIMITER //
+
+CREATE PROCEDURE PublicursoIntermedio (
+    IN p_idpublicacion INT,
+    IN p_idcurso INT
+)
+BEGIN
+    INSERT INTO publicacion_curso (publicacion_idpublicacion, curso_id_curso)
+    VALUES (p_idpublicacion, p_idcurso);
+END //
+
+-- publicacion especialidad
+DELIMITER //
+
+CREATE PROCEDURE PublicEspIntermedio (
+    IN p_idpublicacion INT,
+    IN p_idespecialidad INT
+)
+BEGIN
+    INSERT INTO publicacion_especialidad (publicacion_idpublicacion, especialidad_id_especialidad)
+    VALUES (p_idpublicacion, p_idespecialidad);
+END //
+
+DELIMITER ;
+-- publicacion facultad
+DELIMITER //
+
+CREATE PROCEDURE PublicFacIntermedio (
+    IN p_idpublicacion INT,
+    IN p_idfacultad INT
+)
+BEGIN
+    INSERT INTO publicacion_facultad (publicacion_idpublicacion, facultad_id_facultad)
+    VALUES (p_idpublicacion, p_idfacultad);
+END //
+DELIMITER ;
+
+
+DELIMITER ;
