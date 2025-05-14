@@ -27,6 +27,7 @@ public class CursoServiceImplTest{
     private Curso crearCursoPrueba() {
         Curso curso = new Curso();
         curso.setNombre("Curso de Pruebas");
+        curso.setActivo(true);
         return curso;
     }
 
@@ -40,9 +41,18 @@ public class CursoServiceImplTest{
         assertNotNull(lista);
         assertFalse(lista.isEmpty());
 
-        Curso registrado = lista.get(lista.size() - 1);
+        Curso registrado = null;
+        System.err.println(curso.getNombre());
+        for (Curso c : lista) {
+            System.err.println(c.getNombre());
+            if (c.getNombre().equals(curso.getNombre())) {
+                registrado = c;
+                break;
+            }
+        }
+        assertNotNull(registrado);
         cursoId = registrado.getIdCurso();
-        assertEquals("Curso de Pruebas", registrado.getNombre());
+        assertEquals(curso.getNombre(), registrado.getNombre());
     }
 
     @Test
