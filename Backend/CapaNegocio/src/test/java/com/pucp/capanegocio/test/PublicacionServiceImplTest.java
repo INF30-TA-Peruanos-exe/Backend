@@ -159,6 +159,6 @@ public class PublicacionServiceImplTest {
         Publicacion publicacionEliminada = publicacionService.obtenerPublicacion(publicacionId);
 
         assertNotNull(publicacionEliminada);
-        assertFalse(publicacionEliminada.isActivo()); // Asegura que fue desactivada
+        assertFalse(publicacionEliminada.isActivo());
     }
 }
