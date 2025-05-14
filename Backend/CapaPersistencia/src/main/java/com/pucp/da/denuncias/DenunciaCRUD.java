@@ -15,6 +15,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 /**
  *
  * @author Axel
@@ -33,7 +34,7 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Denuncia denuncia) throws SQLException {
-        String sql = "{CALL INSERTAR_DENUNCIA(?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_DENUNCIA(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, denuncia.getAutor().getIdPublicacion());
         cs.setInt(2, denuncia.getDenunciante().getIdUsuario());
@@ -41,6 +42,7 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
         cs.setDate(4, denuncia.getFechaDenuncia());
         cs.setInt(5,denuncia.getAdmin().getIdUsuario());
         cs.setBoolean(6, denuncia.isActivo());
+        cs.registerOutParameter(7, Types.INTEGER);
         return cs; 
     }
 

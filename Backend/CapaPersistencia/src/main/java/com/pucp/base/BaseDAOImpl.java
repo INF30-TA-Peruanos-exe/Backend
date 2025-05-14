@@ -28,13 +28,11 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
         try (Connection conn = DBManager.getInstance().obtenerConexion();
             CallableStatement cs = getInsertCS(conn, entidad)) {
 
-            boolean hasResultSet = cs.execute();
+            cs.execute();
             
-            if(hasResultSet){
-                try (ResultSet rs = cs.getResultSet()){
-                    if(rs.next()){
-                        setId(entidad, rs.getInt("id"));
-                    }
+            try (ResultSet rs = cs.getGeneratedKeys()) {
+                if (rs.next()) {
+                    setId(entidad, rs.getInt(1));
                 }
             }
                     

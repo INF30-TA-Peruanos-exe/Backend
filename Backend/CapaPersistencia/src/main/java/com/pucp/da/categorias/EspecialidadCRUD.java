@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
@@ -21,10 +22,11 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Especialidad especialidad) throws SQLException {
-        String sql = "{CALL INSERTAR_ESPECIALIDAD(?, ?)}";
+        String sql = "{CALL INSERTAR_ESPECIALIDAD(?, ,?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, especialidad.getNombre());
         cs.setBoolean(2, especialidad.isActivo());
+        cs.registerOutParameter(3, Types.INTEGER);
         return cs;     
     }
 
