@@ -140,8 +140,9 @@ public class PublicacionServiceImplTest {
     @Order(8)
     void eliminarPublicacion() throws Exception {
         publicacionService.eliminarPublicacion(publicacionId);
-        assertThrows(Exception.class, () -> {
-            publicacionService.obtenerPublicacion(publicacionId);
-        });
+        Publicacion publicacionEliminada = publicacionService.obtenerPublicacion(publicacionId);
+
+        assertNotNull(publicacionEliminada);
+        assertFalse(publicacionEliminada.isActivo()); // Asegura que fue desactivada
     }
 }

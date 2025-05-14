@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         if(usuario.getCorreo() == null || usuario.getCorreo().trim().isEmpty()){
             throw new Exception("El correo no puede estar vacio");
         }
-        if(!"@pucp.edu.pe".equals(usuario.getCorreo().split("@")[1])){
+        if(!"pucp.edu.pe".equals(usuario.getCorreo().split("@")[1])){
             throw new Exception("El correo debe ser: example@pucp.edu.pe");
         }
         if(usuario.getEstado() == null){
@@ -63,7 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         if(usuario.getCorreo() == null || usuario.getCorreo().trim().isEmpty()){
             throw new Exception("El correo no puede estar vacio");
         }
-        if(!"@pucp.edu.pe".equals(usuario.getCorreo().split("@")[1])){
+        if(!"pucp.edu.pe".equals(usuario.getCorreo().split("@")[1])){
             throw new Exception("El correo debe ser: example@pucp.edu.pe");
         }
         if(usuario.getEstado() == null){

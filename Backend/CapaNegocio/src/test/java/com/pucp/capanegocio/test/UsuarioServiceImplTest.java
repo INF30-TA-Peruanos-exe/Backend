@@ -28,6 +28,7 @@ public class UsuarioServiceImplTest {
         usuario.setEstado(EstadoUsuario.HABILITADO);
         usuario.setNombre("Test");
         usuario.setNombreUsuario("testuser");
+        usuario.setActivo(true);
         return usuario;
     }
 
@@ -79,9 +80,9 @@ public class UsuarioServiceImplTest {
     @Order(4)
     void eliminarUsuario() throws Exception {
         usuarioService.eliminarUsuario(usuarioId);
-        Exception exception = assertThrows(Exception.class, () -> {
-            usuarioService.obtenerUsuario(usuarioId);
-        });
-        assertEquals("El usuario no existe", exception.getMessage());
+        Usuario usuarioEliminado = usuarioService.obtenerUsuario(usuarioId);
+
+        assertNotNull(usuarioEliminado);
+        assertFalse(usuarioEliminado.isActivo()); // Verifica que esté desactivado
     }
 }
