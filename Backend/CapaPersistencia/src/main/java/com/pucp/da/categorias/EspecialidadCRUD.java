@@ -33,8 +33,8 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
         String sql = "{CALL MODIFICAR_ESPECIALIDAD(?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, especialidad.getIdEspecialidad());
-        cs.setString(1, especialidad.getNombre());
-        cs.setBoolean(2, especialidad.isActivo());
+        cs.setString(2, especialidad.getNombre());
+        cs.setBoolean(3, especialidad.isActivo());
         return cs;    
     }
 

@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author SEBASTIAN
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CursoServiceImplTest{
     private static CursoService cursoService;
     private static int cursoId;
@@ -42,14 +43,13 @@ public class CursoServiceImplTest{
         assertFalse(lista.isEmpty());
 
         Curso registrado = null;
-        System.err.println(curso.getNombre());
         for (Curso c : lista) {
-            System.err.println(c.getNombre());
             if (c.getNombre().equals(curso.getNombre())) {
                 registrado = c;
                 break;
             }
         }
+        
         assertNotNull(registrado);
         cursoId = registrado.getIdCurso();
         assertEquals(curso.getNombre(), registrado.getNombre());
@@ -77,9 +77,11 @@ public class CursoServiceImplTest{
     @Test
     @Order(4)
     void eliminarCurso() throws Exception {
-        Curso eliminado = cursoService.obtenerCurso(cursoId);
-        assertFalse(eliminado.isActivo());
-
+        cursoService.eliminarCurso(cursoId);
+        Curso cursoEliminado = cursoService.obtenerCurso(cursoId);
+        
+        assertNotNull(cursoEliminado);
+        assertFalse(cursoEliminado.isActivo());
     }
 
     @Test

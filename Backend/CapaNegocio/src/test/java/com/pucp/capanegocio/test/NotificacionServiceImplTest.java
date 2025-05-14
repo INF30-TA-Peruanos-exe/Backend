@@ -20,6 +20,7 @@ import org.junit.jupiter.api.*;
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class NotificacionServiceImplTest {
     private static NotificacionService notificacionService;
     private static int notificacionId;
@@ -38,6 +39,7 @@ public class NotificacionServiceImplTest {
 
         usuarioDAO = new UsuarioCRUD();
         publicacionDAO = new PublicacionCRUD();
+        //No hay ninguna publicacion
         autor = publicacionDAO.obtenerPorId(1);
         notificador = usuarioDAO.obtenerPorId(1);
 
@@ -47,7 +49,8 @@ public class NotificacionServiceImplTest {
         notificacion.setNotificador(notificador);
         notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
         notificacion.setMensaje("Notificación de prueba");
-        notificacion.setCantidad(1);
+        notificacion.setCantidad(3);
+        notificacion.setActivo(true);
         //notificacion.setFecha(LocalDateTime.now());
 
         return notificacion;
@@ -57,15 +60,25 @@ public class NotificacionServiceImplTest {
     @Order(1)
     void registrarNotificacion() throws Exception {
         Notificacion notificacion = crearNotificacionPrueba();
+        
         notificacionService.registrarNotificacion(notificacion);
 
         ArrayList<Notificacion> lista = notificacionService.listarNotificacion();
         assertNotNull(lista);
         assertFalse(lista.isEmpty());
 
-        Notificacion registrada = lista.get(lista.size() - 1);
-        notificacionId = registrada.getIdNotificacion();
-        assertEquals("Notificación de prueba", registrada.getMensaje());
+        Notificacion registrado = null;
+        for (Notificacion n : lista) {
+            if (n.getMensaje().equals(notificacion.getMensaje())) {
+                registrado = n;
+                break;
+            }
+        }
+        
+        assertNotNull(registrado);
+        notificacionId = registrado.getIdNotificacion();
+        assertEquals(notificacion.getMensaje(), registrado.getMensaje());
+        
     }
 
     @Test

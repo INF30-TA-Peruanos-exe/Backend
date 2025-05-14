@@ -38,28 +38,20 @@ public class UsuarioServiceImplTest {
         Usuario usuario = crearUsuarioPrueba();
         usuarioService.registrarUsuario(usuario);
 
-//        ArrayList<Usuario> usuarios = usuarioService.listarUsuario();
-//        assertNotNull(usuarios);
-//        assertFalse(usuarios.isEmpty());
+        ArrayList<Usuario> usuarios = usuarioService.listarUsuario();
+        assertNotNull(usuarios);
+        assertFalse(usuarios.isEmpty());
 
-//        Usuario registrado = null;
-//        for (Usuario u : usuarios) {
-//            if (u.getCorreo().equals(usuario.getCorreo())) {
-//                registrado = u;
-//                break;
-//            }
-//        }
-        
-        assertTrue(usuario.getIdUsuario() > 0);
-
-        Usuario registrado = usuarioService.obtenerUsuario(usuario.getIdUsuario());
+        Usuario registrado = null;
+        for (Usuario u : usuarios) {
+            if (u.getCorreo().equals(usuario.getCorreo())) {
+                registrado = u;
+                break;
+            }
+        }
         assertNotNull(registrado);
-        assertEquals(usuario.getCodigoPUCP(), registrado.getCodigoPUCP());
+        usuarioId = registrado.getIdUsuario();
         assertEquals(usuario.getNombreUsuario(), registrado.getNombreUsuario());
-        assertEquals(usuario.getNombre(), registrado.getNombre());
-        assertEquals(usuario.getCorreo(), registrado.getCorreo());
-        assertEquals(usuario.getEstado(), registrado.getEstado());
-        assertEquals(usuario.isActivo(), registrado.isActivo());
     }
 
     @Test

@@ -12,13 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /**
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EspecialidadServiceImplTest{
     private static EspecialidadService especialidadService;
     private static int especialidadId;
@@ -31,6 +34,7 @@ public class EspecialidadServiceImplTest{
     private Especialidad crearEspecialidadPrueba() {
         Especialidad especialidad = new Especialidad();
         especialidad.setNombre("Ingeniería de Pruebas");
+        especialidad.setActivo(true);
         return especialidad;
     }
 
@@ -71,8 +75,11 @@ public class EspecialidadServiceImplTest{
     @Test
     @Order(4)
     void eliminarEspecialidad() throws Exception {
-        Especialidad eliminada = especialidadService.obtenerEspecialidad(especialidadId);
-        assertFalse(eliminada.isActivo());
+        especialidadService.eliminarEspecialidad(especialidadId);
+        Especialidad especialidadEliminado = especialidadService.obtenerEspecialidad(especialidadId);
+
+        assertNotNull(especialidadEliminado);
+        assertFalse(especialidadEliminado.isActivo()); // Verifica que esté desactivado
     }
 
     @Test

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FacultadServiceImplTest{
     private static FacultadService facultadService;
     private static int facultadId;
@@ -28,6 +29,7 @@ public class FacultadServiceImplTest{
     private Facultad crearFacultadPrueba() {
         Facultad facultad = new Facultad();
         facultad.setNombre("Facultad de Pruebas");
+        facultad.setActivo(true);
         return facultad;
     }
 
@@ -41,9 +43,18 @@ public class FacultadServiceImplTest{
         assertNotNull(facultades);
         assertFalse(facultades.isEmpty());
 
-        Facultad registrada = facultades.get(facultades.size() - 1);
-        facultadId = registrada.getIdFacultad();
-        assertEquals("Facultad de Pruebas", registrada.getNombre());
+        Facultad registrado = null;
+        
+        for (Facultad f : facultades) {
+            if (f.getNombre().equals(facultad.getNombre())) {
+                registrado = f;
+                break;
+            }
+        }
+        
+        assertNotNull(registrado);
+        facultadId = registrado.getIdFacultad();
+        assertEquals(facultad.getNombre(), registrado.getNombre());
     }
 
     @Test
@@ -68,8 +79,11 @@ public class FacultadServiceImplTest{
     @Test
     @Order(4)
     void eliminarFacultad() throws Exception {
-        Facultad eliminada = facultadService.obtenerFacultad(facultadId);
-        assertFalse(eliminada.isActivo());
+        facultadService.eliminarFacultad(facultadId);
+        Facultad facultadEliminado = facultadService.obtenerFacultad(facultadId);
+        
+        assertNotNull(facultadEliminado);
+        assertFalse(facultadEliminado.isActivo());
     }
 
     @Test

@@ -26,13 +26,18 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
     @Override
     public void insertar(T entidad) {
         try (Connection conn = DBManager.getInstance().obtenerConexion();
-             CallableStatement cs = getInsertCS(conn, entidad)) {
+            CallableStatement cs = getInsertCS(conn, entidad)) {
 
-            try (ResultSet rs = cs.executeQuery()) {
-                if (rs.next()) {
-                    setId(entidad, rs.getInt("id"));
+            boolean hasResultSet = cs.execute();
+            
+            if(hasResultSet){
+                try (ResultSet rs = cs.getResultSet()){
+                    if(rs.next()){
+                        setId(entidad, rs.getInt("id"));
+                    }
                 }
             }
+                    
         } catch (SQLException e) {
             throw new RuntimeException("Error al agregar entidad", e);
         }

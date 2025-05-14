@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DenunciaServiceImplTest {
     private static DenunciaService denunciaService;
     private static int denunciaId;

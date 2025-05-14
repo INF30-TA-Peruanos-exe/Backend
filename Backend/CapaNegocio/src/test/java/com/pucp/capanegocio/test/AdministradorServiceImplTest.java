@@ -18,6 +18,7 @@ import org.junit.jupiter.api.*;
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AdministradorServiceImplTest {
     private static AdministradorService administradorService;
     private static int administradorId;

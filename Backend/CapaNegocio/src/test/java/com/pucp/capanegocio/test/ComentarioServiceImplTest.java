@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Axel
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ComentarioServiceImplTest {
     private static ComentarioService comentarioService;
     private static UsuarioDAO usuarioDAO;
@@ -51,6 +52,7 @@ public class ComentarioServiceImplTest {
         comentario.setContenido("Este es un comentario de prueba.");
         //comentario.setFecha(new Date());
         comentario.setPublicacion(publicacionPrueba);
+        comentario.setActivo(true);
         comentario.setValoracion(5);
         return comentario;
     }

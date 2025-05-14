@@ -325,6 +325,23 @@ VALUES
 ('Facultad de Ciencias Sociales', 1),
 ('Facultad de Arquitectura y Urbanismo', 0);  
 
+INSERT INTO `Pucp_qatu_db`.`publicacion` (
+    `titulo`, 
+    `descripcion`, 
+    `estado`, 
+    `fechapublicacion`, 
+    `url_imagen`, 
+    `activo`, 
+    `id_usuario`
+) VALUES (
+    'Mi primera publicación', 
+    'Esta es una descripción de ejemplo', 
+    'VISIBLE', 
+    CURDATE(),  -- Fecha actual
+    'imagen1.jpg', 
+    1,  -- 1 = true (activo)
+    1   -- ID de un usuario existente en la tabla 'usuario'
+);
 -- PROCEDIMIENTOS curso: ---------------
 
 -- INSERTAR
@@ -337,9 +354,13 @@ CREATE PROCEDURE INSERTAR_CURSO(
 BEGIN
     INSERT INTO curso (nombre, activo)
     VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del Ãºltimo registro insertado
+    SELECT LAST_INSERT_ID() AS id;
 END $$
 
 DELIMITER ;
+
 
 -- MODIFICAR
 
@@ -415,9 +436,13 @@ CREATE PROCEDURE INSERTAR_ESPECIALIDAD(
 BEGIN
     INSERT INTO especialidad (nombre, activo)
     VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del Ãºltimo registro insertado
+    SELECT LAST_INSERT_ID() AS id;
 END $$
 
 DELIMITER ;
+
 
 -- MODIFICAR
 
@@ -493,6 +518,9 @@ CREATE PROCEDURE INSERTAR_FACULTAD(
 BEGIN
     INSERT INTO facultad (nombre, activo)
     VALUES (p_nombre, p_activo);
+
+    -- Obtener el ID del Ãºltimo registro insertado
+    SELECT LAST_INSERT_ID() AS id;
 END $$
 
 DELIMITER ;
@@ -562,7 +590,6 @@ DELIMITER ;
 -- PROCEDIMIENTOS notificacion: --------------------
 
 -- INSERTAR
-
 DELIMITER $$
 
 CREATE PROCEDURE INSERTAR_NOTIFICACION(
@@ -582,10 +609,12 @@ BEGIN
         p_mensaje, p_tipo_notificacion, p_cantidad, p_fecha,
         p_id_publicacion, p_id_usuario, p_activo
     );
+
+    -- Obtener el ID del Ãºltimo registro insertado
+    SELECT LAST_INSERT_ID() AS id;
 END $$
 
 DELIMITER ;
-
 -- MODIFICAR
 
 DELIMITER $$
@@ -681,7 +710,10 @@ BEGIN
         p_titulo, p_descripcion, p_estado, p_fecha,
         p_rutaImagen, p_idusuario, p_activo
     );
-END$$
+
+    -- Obtener el ID del Ãºltimo registro insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
 
 DELIMITER ;
 
@@ -817,7 +849,10 @@ BEGIN
     ) VALUES (
         p_contenido, p_valoracion, p_fecha, p_id_publicacion, p_id_usuario, p_activo
     );
-END$$
+
+    -- Obtener el ID del Ãºltimo comentario insertado
+    SELECT LAST_INSERT_ID() AS id;
+END $$
 
 -- modificar
 CREATE PROCEDURE MODIFICAR_COMENTARIO (
@@ -882,6 +917,8 @@ BEGIN
     ) VALUES (
         p_autor, p_denunciante, p_motivo, p_fecha_denuncia, p_admin, p_activo
     );
+    
+    SELECT LAST_INSERT_ID() AS id;
 END$$
 
 -- Procedimiento para modificar una denuncia
@@ -905,7 +942,7 @@ BEGIN
     WHERE id_reporte = p_id_reporte;
 END$$
 
--- Procedimiento para eliminar una denuncia (borrado lógico, estableciendo 'activo' a false)
+-- Procedimiento para eliminar una denuncia (borrado lÃ³gico, estableciendo 'activo' a false)
 CREATE PROCEDURE ELIMINAR_DENUNCIA (
     IN p_id_reporte INT
 )
@@ -951,6 +988,8 @@ BEGIN
     ) VALUES (
         p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo
     );
+    
+    SELECT LAST_INSERT_ID() AS id;
 END$$
 
 -- Procedimiento para modificar un usuario
@@ -976,7 +1015,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario;
 END$$
 
--- Procedimiento para eliminar un usuario (borrado lógico, estableciendo 'activo' a false)
+-- Procedimiento para eliminar un usuario (borrado lÃ³gico, estableciendo 'activo' a false)
 CREATE PROCEDURE ELIMINAR_USUARIO (
     IN p_id_usuario INT
 )
@@ -1019,10 +1058,15 @@ CREATE PROCEDURE INSERTAR_ADMINISTRADOR (
     IN p_clave_maestra VARCHAR(255)
 )
 BEGIN
-    INSERT INTO administrador (
-        codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo, clave_Maestra
+    INSERT INTO usuario (
+        codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo
     ) VALUES (
-        p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo, p_clave_maestra
+        p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo
+    );
+    INSERT INTO administrador (
+        id_administrador, clave_Maestra
+    ) VALUES (
+        @@last_insert_id, p_clave_maestra
     );
 END$$
 
@@ -1051,7 +1095,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario;
 END$$
 
--- Procedimiento para eliminar un administrador (borrado lógico, estableciendo 'activo' a false)
+-- Procedimiento para eliminar un administrador (borrado lÃ³gico, estableciendo 'activo' a false)
 CREATE PROCEDURE ELIMINAR_ADMINISTRADOR (
     IN p_id_usuario INT
 )
@@ -1066,16 +1110,23 @@ CREATE PROCEDURE OBTENER_ADMINISTRADOR_X_ID (
     IN p_id_usuario INT
 )
 BEGIN
-    SELECT * FROM administrador
-    WHERE id_usuario = p_id_usuario;
+    SELECT u.id_usuario, u.codigo_PUCP, u.nombreUsuario, u.contrasena, 
+           u.nombre, u.correo, u.estado, u.activo,
+           a.clave_Maestra
+    FROM usuario u
+    INNER JOIN administrador a ON u.id_usuario = a.id_Administrador
+    WHERE u.id_usuario = p_id_usuario;
 END$$
 
 -- Procedimiento para listar todos los administradores
 CREATE PROCEDURE LISTAR_ADMINISTRADOR_TODOS()
 BEGIN
-    SELECT * FROM administrador;
+    SELECT u.id_usuario, u.codigo_PUCP, u.nombreUsuario, u.contrasena, 
+           u.nombre, u.correo, u.estado, u.activo,
+           a.clave_Maestra
+    FROM usuario u
+    INNER JOIN administrador a ON u.id_usuario = a.id_Administrador;
 END$$
-
 DELIMITER ;
 -- PROCEDIMIENTOS PARA TABLAS INTERMEDIAS USADAS EN publicacion -------------------------- 
 
