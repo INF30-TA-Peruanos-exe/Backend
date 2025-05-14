@@ -332,14 +332,15 @@ DELIMITER $$
 
 CREATE PROCEDURE INSERTAR_CURSO(
     IN p_nombre VARCHAR(45),
-    IN p_activo TINYINT
+    IN p_activo TINYINT,
+    OUT p_id_curso INT
 )
 BEGIN
     INSERT INTO curso (nombre, activo)
     VALUES (p_nombre, p_activo);
 
-    -- Obtener el ID del último registro insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- asignar out
+    SET p_id_curso = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;
@@ -414,14 +415,15 @@ DELIMITER $$
 
 CREATE PROCEDURE INSERTAR_ESPECIALIDAD(
     IN p_nombre VARCHAR(45),
-    IN p_activo TINYINT
+    IN p_activo TINYINT,
+    OUT p_id_especialidad INT
 )
 BEGIN
     INSERT INTO especialidad (nombre, activo)
     VALUES (p_nombre, p_activo);
 
-    -- Obtener el ID del último registro insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- ASIGNAR OUT
+    SET p_id_especialidad = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;
@@ -496,14 +498,15 @@ DELIMITER $$
 
 CREATE PROCEDURE INSERTAR_FACULTAD(
     IN p_nombre VARCHAR(45),
-    IN p_activo TINYINT
+    IN p_activo TINYINT,
+    OUT p_id_facultad INT
 )
 BEGIN
     INSERT INTO facultad (nombre, activo)
     VALUES (p_nombre, p_activo);
 
-    -- Obtener el ID del último registro insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- Asignar Out
+    SET p_id_facultad = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;
@@ -582,7 +585,8 @@ CREATE PROCEDURE INSERTAR_NOTIFICACION(
     IN p_fecha DATE,
     IN p_id_publicacion INT,
     IN p_id_usuario INT,
-    IN p_activo TINYINT
+    IN p_activo TINYINT,
+    OUT p_id_facultad INT
 )
 BEGIN
     INSERT INTO notificacion (
@@ -593,8 +597,8 @@ BEGIN
         p_id_publicacion, p_id_usuario, p_activo
     );
 
-    -- Obtener el ID del último registro insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- ASIGNAR OUT
+    SET p_id_publicacion = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;
@@ -682,7 +686,8 @@ CREATE PROCEDURE INSERTAR_PUBLICACION (
     IN p_fecha DATE,
     IN p_rutaImagen VARCHAR(255),
     IN p_idusuario INT,
-    IN p_activo BOOLEAN
+    IN p_activo BOOLEAN,
+    OUT p_id_publicacion INT
 )
 BEGIN
     INSERT INTO publicacion (
@@ -694,8 +699,8 @@ BEGIN
         p_rutaImagen, p_idusuario, p_activo
     );
 
-    -- Obtener el ID del último registro insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- ASIGNAR OUT
+    SET p_id_publicacion = LAST_INSERT_ID();
 END $$
 
 DELIMITER ;
@@ -824,7 +829,8 @@ CREATE PROCEDURE INSERTAR_COMENTARIO (
     IN p_fecha DATE,
     IN p_id_publicacion INT,
     IN p_id_usuario INT,
-    IN p_activo BOOLEAN
+    IN p_activo BOOLEAN,
+    OUT p_id_comentario INT
 )
 BEGIN
     INSERT INTO comentario (
@@ -833,8 +839,8 @@ BEGIN
         p_contenido, p_valoracion, p_fecha, p_id_publicacion, p_id_usuario, p_activo
     );
 
-    -- Obtener el ID del último comentario insertado
-    SELECT LAST_INSERT_ID() AS id;
+    -- ASIGNAR OUT
+    set p_id_comentario = LAST_INSERT_ID();
 END $$
 
 -- modificar
@@ -892,7 +898,8 @@ CREATE PROCEDURE INSERTAR_DENUNCIA (
     IN p_motivo VARCHAR(255),
     IN p_fecha_denuncia DATE,
     IN p_admin INT,
-    IN p_activo BOOLEAN
+    IN p_activo BOOLEAN,
+    OUT p_id_denuncia INT
 )
 BEGIN
     INSERT INTO denuncia (
@@ -901,7 +908,7 @@ BEGIN
         p_autor, p_denunciante, p_motivo, p_fecha_denuncia, p_admin, p_activo
     );
     
-    SELECT LAST_INSERT_ID() AS id;
+    SET p_id_denuncia = LAST_INSERT_ID();
 END$$
 
 -- Procedimiento para modificar una denuncia
@@ -963,7 +970,8 @@ CREATE PROCEDURE INSERTAR_USUARIO (
     IN p_nombre VARCHAR(100),
     IN p_correo VARCHAR(100),
     IN p_estado VARCHAR(50),
-    IN p_activo BOOLEAN
+    IN p_activo BOOLEAN,
+    OUT p_id_usuario INT
 )
 BEGIN
     INSERT INTO usuario (
@@ -972,7 +980,7 @@ BEGIN
         p_codigo_pucp, p_nombre_usuario, p_contrasena, p_nombre, p_correo, p_estado, p_activo
     );
     
-    SELECT LAST_INSERT_ID() AS id;
+    SET p_id_usuario = LAST_INSERT_ID();
 END$$
 
 -- Procedimiento para modificar un usuario
@@ -1090,16 +1098,23 @@ CREATE PROCEDURE OBTENER_ADMINISTRADOR_X_ID (
     IN p_id_usuario INT
 )
 BEGIN
-    SELECT * FROM administrador
-    WHERE id_usuario = p_id_usuario;
+    SELECT u.id_usuario, u.codigo_PUCP, u.nombreUsuario, u.contrasena, 
+           u.nombre, u.correo, u.estado, u.activo,
+           a.clave_Maestra
+    FROM usuario u
+    INNER JOIN administrador a ON u.id_usuario = a.id_Administrador
+    WHERE u.id_usuario = p_id_usuario;
 END$$
 
 -- Procedimiento para listar todos los administradores
 CREATE PROCEDURE LISTAR_ADMINISTRADOR_TODOS()
 BEGIN
-    SELECT * FROM administrador;
+    SELECT u.id_usuario, u.codigo_PUCP, u.nombreUsuario, u.contrasena, 
+           u.nombre, u.correo, u.estado, u.activo,
+           a.clave_Maestra
+    FROM usuario u
+    INNER JOIN administrador a ON u.id_usuario = a.id_Administrador;
 END$$
-
 DELIMITER ;
 -- PROCEDIMIENTOS PARA TABLAS INTERMEDIAS USADAS EN publicacion -------------------------- 
 
