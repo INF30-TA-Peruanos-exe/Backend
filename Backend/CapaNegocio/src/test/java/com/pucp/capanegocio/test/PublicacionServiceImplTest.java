@@ -1,3 +1,4 @@
+package com.pucp.capanegocio.test;
 
 import com.pucp.capadominio.categorias.Curso;
 import com.pucp.capadominio.categorias.Especialidad;

@@ -1,4 +1,4 @@
-
+package com.pucp.capanegocio.test;
 
 import com.pucp.capadominio.usuarios.EstadoUsuario;
 import com.pucp.capadominio.usuarios.Usuario;
