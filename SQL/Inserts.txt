@@ -1,0 +1,36 @@
+-- Inserts
+INSERT INTO `Pucp_qatu_db`.`usuario` 
+(`codigo_PUCP`, `nombreusuario`, `contrasena`, `nombre`, `correo`, `estado`, `activo`) 
+VALUES 
+(20181234, 'jperez', 'clave123', 'Juan Pérez', 'jperez@pucp.edu.pe', 'HABILITADO', 1),
+(20192345, 'mgonzalez', 'segura456', 'María González', 'mgonzalez@pucp.edu.pe', 'HABILITADO', 1),
+(20203456, 'lrodriguez', 'acceso789', 'Luis Rodríguez', 'lrodriguez@pucp.edu.pe', 'DESHABILITADO', 0),
+(20175678, 'acastro', 'pucp2023', 'Ana Castro', 'acastro@pucp.edu.pe', 'HABILITADO', 1),
+(20214567, 'dfernandez', 'qwerty12', 'Diego Fernández', 'dfernandez@pucp.edu.pe', 'HABILITADO', 1);
+
+INSERT INTO `Pucp_qatu_db`.`curso` 
+(`nombre`, `activo`) 
+VALUES 
+('Matemáticas Básicas', 1),
+('Programación I', 1),
+('Historia del Perú', 1),
+('Inglés Intermedio', 0),  
+('Física General', 1);
+
+INSERT INTO `Pucp_qatu_db`.`especialidad` 
+(`nombre`, `activo`) 
+VALUES 
+('Ingeniería Informática', 1),
+('Administración de Empresas', 1),
+('Derecho Corporativo', 1),
+('Psicología Organizacional', 0),  
+('Arquitectura y Urbanismo', 1);
+
+INSERT INTO `Pucp_qatu_db`.`facultad` 
+(`nombre`, `activo`) 
+VALUES 
+('Facultad de Ciencias e Ingeniería', 1),
+('Facultad de Derecho', 1),
+('Facultad de Gestión y Alta Dirección', 1),
+('Facultad de Ciencias Sociales', 1),
+('Facultad de Arquitectura y Urbanismo', 0);  
