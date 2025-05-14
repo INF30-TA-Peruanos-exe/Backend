@@ -1066,7 +1066,7 @@ BEGIN
     INSERT INTO administrador (
         id_administrador, clave_Maestra
     ) VALUES (
-        @@last_insert_id, p_clave_maestra
+        LAST_INSERT_ID(), p_clave_maestra
     );
 END$$
 
