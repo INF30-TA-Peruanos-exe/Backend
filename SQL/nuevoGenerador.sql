@@ -17,6 +17,21 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 CREATE SCHEMA IF NOT EXISTS `Pucp_qatu_db` DEFAULT CHARACTER SET utf8mb3 ;
 USE `Pucp_qatu_db` ;
 
+-- DROPS
+
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Publicacion_Facultad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Publicacion_Especialidad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Publicacion_Curso`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Notificacion`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Denuncia`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Comentario`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Facultad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Especialidad`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Curso`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Publicacion`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Administrador`;
+DROP TABLE IF EXISTS `Pucp_qatu_db`.`Usuario`;
+
 -- -----------------------------------------------------
 -- Table `pruebas_ta`.`Usuario`
 -- -----------------------------------------------------
