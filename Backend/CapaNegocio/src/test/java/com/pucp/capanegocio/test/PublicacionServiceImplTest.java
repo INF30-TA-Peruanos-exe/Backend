@@ -69,11 +69,13 @@ public class PublicacionServiceImplTest {
         publicacion.setRutaImagen("/images/prueba.jpg");
         publicacion.setImagen(publicacion.getRutaImagen());
         publicacion.setUsuario(usuarioPrueba);
-
+        publicacion.setActivo(false);
+        
         publicacion.agregarCurso(cursoPrueba);
         publicacion.agregarEspecialidad(especialidadPrueba);
         publicacion.agregarFacultad(facultadPrueba);
-
+        
+        
         return publicacion;
     }
 
@@ -91,6 +93,9 @@ public class PublicacionServiceImplTest {
             .filter(p -> p.getTitulo().equals("Título de prueba"))
             .findFirst()
             .orElse(null);
+        
+        System.err.println(registrada.getTitulo());
+        
 
         assertNotNull(registrada);
         publicacionId = registrada.getIdPublicacion();
