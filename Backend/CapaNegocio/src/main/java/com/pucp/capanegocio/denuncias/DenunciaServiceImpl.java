@@ -26,9 +26,9 @@ public class DenunciaServiceImpl implements DenunciaService{
         //En este caso no se si se tiene que validar esto
         //Porque recien se cargara este dato cuando un admin
         //Vea la denuncia
-        if(denuncia.getAdmin()==null){
-            throw new Exception("Campo por validar");
-        }
+//        if(denuncia.getAdmin()==null){
+//            throw new Exception("Campo por validar");
+//        }
         if(denuncia.getAutor()==null){
             throw new Exception("El autor no puede estar vacio");
         }

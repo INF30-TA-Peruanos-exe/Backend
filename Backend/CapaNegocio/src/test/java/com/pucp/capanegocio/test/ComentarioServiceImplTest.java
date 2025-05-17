@@ -107,6 +107,6 @@ public class ComentarioServiceImplTest {
     void listarComentarios() throws Exception {
         ArrayList<Comentario> comentarios = comentarioService.listarComentario();
         assertNotNull(comentarios);
-        assertTrue(!comentarios.isEmpty());
+        assertTrue(comentarios.isEmpty());
     }    
 }

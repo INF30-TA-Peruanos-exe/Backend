@@ -29,7 +29,7 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
     
     @Override
     protected CallableStatement getInsertCS(Connection conn, Especialidad especialidad) throws SQLException {
-        String sql = "{CALL INSERTAR_ESPECIALIDAD(?, ,?, ?)}";
+        String sql = "{CALL INSERTAR_ESPECIALIDAD(? , ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, especialidad.getNombre());
         cs.setBoolean(2, especialidad.isActivo());

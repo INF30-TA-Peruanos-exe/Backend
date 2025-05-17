@@ -69,7 +69,7 @@ public class PublicacionServiceImplTest {
         publicacion.setRutaImagen("/images/prueba.jpg");
         publicacion.setImagen(publicacion.getRutaImagen());
         publicacion.setUsuario(usuarioPrueba);
-        publicacion.setActivo(false);
+        publicacion.setActivo(true);
         
         publicacion.agregarCurso(cursoPrueba);
         publicacion.agregarEspecialidad(especialidadPrueba);
