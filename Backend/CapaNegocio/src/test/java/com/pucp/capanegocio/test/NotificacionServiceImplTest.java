@@ -45,7 +45,7 @@ public class NotificacionServiceImplTest {
 
 
         Notificacion notificacion = new Notificacion();
-        notificacion.setAutor(autor);
+        notificacion.setAutor(autor); //Falta iniciarle una publicacion
         notificacion.setNotificador(notificador);
         notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
         notificacion.setMensaje("Notificación de prueba");
@@ -65,6 +65,7 @@ public class NotificacionServiceImplTest {
 
         ArrayList<Notificacion> lista = notificacionService.listarNotificacion();
         assertNotNull(lista);
+        System.err.println(lista.size());
         assertFalse(lista.isEmpty());
 
         Notificacion registrado = null;

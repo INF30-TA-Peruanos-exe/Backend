@@ -12,18 +12,26 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 /**
  *
  * @author SEBASTIAN
  */
 public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
 
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(3); // Valor por defecto: no hay OUT
+    }
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Facultad facultad) throws SQLException {
-        String sql = "{CALL INSERTAR_FACULTAD(?, ?)}";
+        String sql = "{CALL INSERTAR_FACULTAD(?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, facultad.getNombre());
         cs.setBoolean(2, facultad.isActivo());
+        cs.registerOutParameter(3, Types.INTEGER);
         return cs;
     }
 

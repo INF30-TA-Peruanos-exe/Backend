@@ -18,6 +18,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -31,10 +32,17 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
     public PublicacionCRUD() {
         this.usuarioDAO = new UsuarioCRUD();
     } 
-
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }
+    
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Publicacion publicacion) throws SQLException {
-        String sql = "{CALL INSERTAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_PUBLICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, publicacion.getTitulo());
         cs.setString(2, publicacion.getDescripcion());
@@ -43,7 +51,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         cs.setString(5, publicacion.getRutaImagen());
         cs.setInt(6, publicacion.getUsuario().getIdUsuario());
         cs.setBoolean(7, publicacion.isActivo());
-        
+        cs.registerOutParameter(8, Types.INTEGER);
         return cs; 
     }
 

@@ -14,6 +14,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.Types;
 
 /**
  *
@@ -28,10 +29,16 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         usuarioDAO = new UsuarioCRUD();
         publicacionDAO = new PublicacionCRUD();
     }
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Notificacion notificacion) throws SQLException {
-        String sql = "{CALL INSERTAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_NOTIFICACION(?, ?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, notificacion.getMensaje());
         cs.setString(2, notificacion.getTipoNotificacion().name());
@@ -40,6 +47,7 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         cs.setInt(5, notificacion.getAutor().getIdPublicacion());
         cs.setInt(6, notificacion.getNotificador().getIdUsuario());
         cs.setBoolean(7, notificacion.isActivo());
+        cs.registerOutParameter(8, Types.INTEGER);
         return cs; 
     }
 

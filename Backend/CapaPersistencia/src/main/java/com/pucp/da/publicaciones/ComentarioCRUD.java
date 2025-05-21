@@ -13,6 +13,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
@@ -27,10 +28,16 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         usuarioDAO = new UsuarioCRUD();
         publicacionDAO = new PublicacionCRUD();
     }
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(7); // Valor por defecto: no hay OUT
+    }
 
     @Override
     protected CallableStatement getInsertCS(Connection conn, Comentario comentario) throws SQLException {
-        String sql = "{CALL INSERTAR_COMENTARIO(?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_COMENTARIO(?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, comentario.getContenido());
         cs.setInt(2, comentario.getValoracion());
@@ -38,6 +45,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         cs.setInt(4, comentario.getPublicacion().getIdPublicacion());
         cs.setInt(5, comentario.getComentador().getIdUsuario());
         cs.setBoolean(6, comentario.isActivo());
+        cs.registerOutParameter(7, Types.INTEGER);
         return cs; 
     }
 

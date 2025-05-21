@@ -41,9 +41,9 @@ public class PublicacionServiceImpl implements PublicacionService{
             throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
         }
         
-        if(publicacion.getImagen()==null){
-            throw new Exception("La imagen no puede estar vacía");
-        }
+//        if(publicacion.getImagen()==null){
+//            throw new Exception("La imagen no puede estar vacía");
+//        }
         if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
             throw new Exception("El titulo no puede estar vacio");
         }
@@ -87,9 +87,9 @@ public class PublicacionServiceImpl implements PublicacionService{
             throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
         }
         
-        if(publicacion.getImagen()==null){
-            throw new Exception("La imagen no puede estar vacía");
-        }
+//        if(publicacion.getImagen()==null){
+//            throw new Exception("La imagen no puede estar vacía");
+//        }
         if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
             throw new Exception("El titulo no puede estar vacio");
         }

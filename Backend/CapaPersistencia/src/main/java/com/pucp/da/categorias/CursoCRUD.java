@@ -13,19 +13,28 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
  * @author SEBASTIAN
  */
 public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(3); // Valor por defecto: no hay OUT
+    }
+    
   
     @Override
     protected CallableStatement getInsertCS(Connection conn, Curso curso) throws SQLException {
-        String sql = "{CALL INSERTAR_CURSO(?, ?)}";
+        String sql = "{CALL INSERTAR_CURSO(?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, curso.getNombre());
         cs.setBoolean(2, curso.isActivo());
+        cs.registerOutParameter(3, Types.INTEGER);
         return cs;    
     }
 

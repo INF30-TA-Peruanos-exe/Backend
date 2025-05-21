@@ -13,6 +13,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
@@ -20,9 +21,16 @@ import java.sql.SQLException;
  */
 public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements AdministradorDAO{
 
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(9); // Valor por defecto: no hay OUT
+    }
+    
     @Override
     protected CallableStatement getInsertCS(Connection conn, Administrador administrador) throws SQLException {
-        String sql = "{CALL INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_ADMINISTRADOR(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, administrador.getCodigoPUCP());
         cs.setString(2, administrador.getNombreUsuario());
@@ -32,6 +40,7 @@ public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements Adm
         cs.setString(6, administrador.getEstado().name());
         cs.setBoolean(7, administrador.isActivo());
         cs.setString(8, administrador.getClaveMaestra());
+        cs.registerOutParameter(9, Types.INTEGER);
         return cs; 
     }
 

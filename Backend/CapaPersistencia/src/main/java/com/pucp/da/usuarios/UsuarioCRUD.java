@@ -13,6 +13,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
@@ -20,9 +21,16 @@ import java.sql.SQLException;
  */
 public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
 
+    
+    //NUEVO CAMBIO
+    @Override
+    protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
+        return cs.getInt(8); // Valor por defecto: no hay OUT
+    }    
+
     @Override
     protected CallableStatement getInsertCS(Connection conn, Usuario usuario) throws SQLException {
-        String sql = "{CALL INSERTAR_USUARIO(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL INSERTAR_USUARIO(?, ?, ?, ?, ?, ?, ?, ?)}";
         CallableStatement cs = conn.prepareCall(sql);
         cs.setInt(1, usuario.getCodigoPUCP());
         cs.setString(2, usuario.getNombreUsuario());
@@ -31,6 +39,7 @@ public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
         cs.setString(5, usuario.getCorreo());
         cs.setString(6, usuario.getEstado().name());
         cs.setBoolean(7, usuario.isActivo());
+        cs.registerOutParameter(8, Types.INTEGER);
         return cs; 
     }
 
