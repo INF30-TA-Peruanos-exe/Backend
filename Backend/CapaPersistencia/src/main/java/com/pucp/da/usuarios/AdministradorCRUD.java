@@ -7,6 +7,7 @@ package com.pucp.da.usuarios;
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.usuarios.Administrador;
 import com.pucp.capadominio.usuarios.EstadoUsuario;
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.AdministradorDAO;
 import java.sql.CallableStatement;
 
@@ -27,6 +28,27 @@ public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements Adm
     protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
         return cs.getInt(9); // Valor por defecto: no hay OUT
     }
+    
+    @Override
+    public void insertar(Administrador entidad) {
+        
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+            CallableStatement cs = getInsertCS(conn, entidad)) {
+           
+            cs.execute();
+
+            //CAMBIO NUEVO
+            int idGenerado=obtenerIdGenerado(cs);//CADA CALLABLE STATEMENT TIENE EL PARAMETRO DE SALIDA 
+            if(idGenerado!=-1)                   //EN UNA POSICION DE PARAMETRO DISTINTA
+                setId(entidad, idGenerado);
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al agregar entidad", e);
+        }
+    }
+    
+    
     
     @Override
     protected CallableStatement getInsertCS(Connection conn, Administrador administrador) throws SQLException {

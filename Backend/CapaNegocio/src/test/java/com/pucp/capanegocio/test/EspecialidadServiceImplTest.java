@@ -33,7 +33,7 @@ public class EspecialidadServiceImplTest{
 
     private Especialidad crearEspecialidadPrueba() {
         Especialidad especialidad = new Especialidad();
-        especialidad.setNombre("Ingeniería de Pruebas");
+        especialidad.setNombre("EspecialidadPrueba");
         especialidad.setActivo(true);
         return especialidad;
     }
@@ -50,7 +50,7 @@ public class EspecialidadServiceImplTest{
 
         Especialidad registrada = lista.get(lista.size() - 1);
         especialidadId = registrada.getIdEspecialidad();
-        assertEquals("Ingeniería de Pruebas", registrada.getNombre());
+        assertEquals("EspecialidadPrueba", registrada.getNombre());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class EspecialidadServiceImplTest{
     void obtenerEspecialidad() throws Exception {
         Especialidad especialidad = especialidadService.obtenerEspecialidad(especialidadId);
         assertNotNull(especialidad);
-        assertEquals("Ingeniería de Pruebas", especialidad.getNombre());
+        assertEquals("EspecialidadPrueba", especialidad.getNombre());
     }
 
     @Test

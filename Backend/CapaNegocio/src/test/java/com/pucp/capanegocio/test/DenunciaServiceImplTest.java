@@ -5,8 +5,10 @@
 package com.pucp.capanegocio.test;
 
 import com.pucp.capadominio.denuncia.Denuncia;
+import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Administrador;
+import com.pucp.capadominio.usuarios.EstadoUsuario;
 import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.capanegocio.denuncias.DenunciaServiceImpl;
 import com.pucp.capanegocio.interfacesService.DenunciaService;
@@ -16,6 +18,8 @@ import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.AdministradorDAO;
 import com.pucp.interfacesDAO.PublicacionDAO;
 import com.pucp.interfacesDAO.UsuarioDAO;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,37 +44,66 @@ public class DenunciaServiceImplTest {
         denunciaService = new DenunciaServiceImpl();
     }
 
-    private static Denuncia crearDenunciaPrueba() {
-        //Administrador
-        admin = new Administrador();
-        administradorDAO = new AdministradorCRUD();
-        admin = administradorDAO.obtenerPorId(1);
-        
-        //Publicacion
-        autor = new Publicacion();
-        publicacionDAO = new PublicacionCRUD();
-        autor = publicacionDAO.obtenerPorId(1);
-        
-        //Usuario
-        denunciante = new Usuario();
-        usuarioDAO = new UsuarioCRUD();
-        denunciante = usuarioDAO.obtenerPorId(1);
+private static Denuncia crearDenunciaPrueba() {
+    // DAO init
+    administradorDAO = new AdministradorCRUD();
+    publicacionDAO = new PublicacionCRUD();
+    usuarioDAO = new UsuarioCRUD();
 
-        Denuncia denuncia = new Denuncia();
-        denuncia.setAdmin(admin);
-        denuncia.setAutor(autor);
-        denuncia.setDenunciante(denunciante);
-        //denuncia.setFechaDenuncia(LocalDateTime.now());
-        denuncia.setMotivo("Contenido inapropiado");
+    // Crear e insertar un usuario denunciante
+    denunciante = new Usuario();
+    denunciante.setCodigoPUCP(20241111);
+    denunciante.setNombreUsuario("denunciante");
+    denunciante.setContrasena("123456");
+    denunciante.setNombre("Usuario Denunciante");
+    denunciante.setCorreo("denunciante@pucp.edu.pe");
+    denunciante.setEstado(EstadoUsuario.HABILITADO);
+    denunciante.setActivo(true);
+    usuarioDAO.insertar(denunciante);
 
-        return denuncia;
-    }
+    // Crear e insertar administrador
+    admin = new Administrador();
+    admin.setCodigoPUCP(20241112);
+    admin.setNombreUsuario("adminDenuncia");
+    admin.setContrasena("admin123");
+    admin.setNombre("Administrador Denuncias");
+    admin.setCorreo("admin.d@pucp.edu.pe");
+    admin.setEstado(EstadoUsuario.HABILITADO);
+    admin.setActivo(true);
+    admin.setClaveMaestra("claveMaestra");
+    administradorDAO.insertar(admin);
+
+    // Crear e insertar publicación (autor es el mismo que denunciante para simplicidad)
+    autor = new Publicacion();
+    autor.setTitulo("Publicación falsa");
+    autor.setDescripcion("Contenido sospechoso");
+    autor.setUsuario(denunciante);
+    autor.setActivo(true);
+    autor.setEstado(EstadoPublicacion.VISIBLE);
+
+    publicacionDAO.insertar(autor);
+
+    // Crear denuncia
+    Denuncia denuncia = new Denuncia();
+    denuncia.setAdmin(admin);
+    denuncia.setAutor(autor); //el autor es la publicacion reportada
+    denuncia.setDenunciante(denunciante);
+    denuncia.setMotivo("Contenido inapropiado");
+    denuncia.setActivo(true);
+    denuncia.setFechaDenuncia(Date.valueOf(LocalDate.now()));
+
+    return denuncia;
+}
+
 
     @Test
     @Order(1)
     void registrarDenuncia() throws Exception {
         Denuncia denuncia = crearDenunciaPrueba();
+        System.out.println("Antes de registrar: total denuncias = " + denunciaService.listarDenuncia().size());
         denunciaService.registrarDenuncia(denuncia);
+        System.out.println("Después de registrar: total denuncias = " + denunciaService.listarDenuncia().size());
+
 
         ArrayList<Denuncia> lista = denunciaService.listarDenuncia();
         assertNotNull(lista);
