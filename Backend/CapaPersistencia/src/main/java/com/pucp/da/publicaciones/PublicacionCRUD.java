@@ -11,6 +11,9 @@ import com.pucp.capadominio.categorias.Facultad;
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.config.DBManager;
+import com.pucp.da.categorias.CursoCRUD;
+import com.pucp.da.categorias.EspecialidadCRUD;
+import com.pucp.da.categorias.FacultadCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.PublicacionDAO;
 import java.sql.CallableStatement;
@@ -168,7 +171,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         }
         return publicaciones;
     }
-    
+    //OVERRIDES DEBIDO A TABLAS INTERMEDIAS---------------------------
     @Override
     public void insertar(Publicacion publicacion) {
         super.insertar(publicacion); // Inserta la publicación principal y genera el ID
@@ -219,5 +222,31 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         }
     }
 
-    
+@Override
+public Publicacion obtenerPorId(int id) {
+    Publicacion publicacion = null;
+    try (Connection conn = DBManager.getInstance().obtenerConexion();
+         CallableStatement cs = getSelectByIdCS(conn, id);
+         ResultSet rs = cs.executeQuery()) {
+
+        if (rs.next()) {
+            publicacion = createFromResultSet(rs);
+
+            // Agregar relaciones
+            CursoCRUD cursoCRUD = new CursoCRUD();
+            EspecialidadCRUD especialidadCRUD = new EspecialidadCRUD();
+            FacultadCRUD facultadCRUD = new FacultadCRUD();
+
+            publicacion.setPublicacionesCursos(cursoCRUD.listarCursosPorPublicacion(id));
+            publicacion.setPublicacionesEspecialidades(especialidadCRUD.listarEspecialidadesPorPublicacion(id));
+            publicacion.setPublicacionesFacultades(facultadCRUD.listarFacultadesPorPublicacion(id));
+        }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al obtener publicacion", e);
+    }
+
+    return publicacion;
+}
+
 }

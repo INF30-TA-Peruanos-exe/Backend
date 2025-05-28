@@ -6,6 +6,7 @@ package com.pucp.da.categorias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Curso;
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.CursoDAO;
 import java.sql.CallableStatement;
 
@@ -14,6 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  *
@@ -83,5 +85,34 @@ public class CursoCRUD extends BaseDAOImpl<Curso> implements CursoDAO{
     protected void setId(Curso curso, int id) {
         curso.setIdCurso(id);
     }
+    
+    //METODOS ADICIONALES PARA TABLAS INTERMEDIAS
+    public ArrayList<Curso> listarCursosPorPublicacion(int idPublicacion) {
+    ArrayList<Curso> lista = new ArrayList<>();
+    String sql = "{CALL LISTAR_CURSOS_X_PUBLICACION(?)}";
+    try (Connection conn = DBManager.getInstance().obtenerConexion();
+         CallableStatement cs = conn.prepareCall(sql)) {
+        cs.setInt(1, idPublicacion);
+        try (ResultSet rs = cs.executeQuery()) {
+            System.err.println("Llamando a LISTAR_CURSOS_X_PUBLICACION con ID: " + idPublicacion);
+            while (rs.next()) {
+                Curso c = new Curso();
+                c.setIdCurso(rs.getInt("id_curso"));
+                c.setNombre(rs.getString("nombre")); // o los campos que uses
+                c.setActivo(true);
+                lista.add(c);
+                System.err.println("Curso obtenido: " + c.getIdCurso() + " - " + c.getNombre());
+
+            }
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al listar cursos de una publicación", e);
+    }
+    System.err.println("Cursos recuperados por publicación ID " + idPublicacion + ": " + lista.size());
+    for (Curso c : lista) {
+    System.err.println("- " + c.getNombre());
+}
+    return lista;
+}
     
 }

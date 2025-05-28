@@ -16,7 +16,7 @@ public class Especialidad {
     
     //CONSTRUCTORES
     public Especialidad(){
-
+        
     }
 	
     public Especialidad(int idEspecialidad, String nombre, boolean activo){

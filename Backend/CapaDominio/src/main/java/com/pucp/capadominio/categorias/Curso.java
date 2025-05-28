@@ -16,6 +16,7 @@ public class Curso {
     
     //CONSTRUCTORES
     public Curso() {
+        
     }
 
     public Curso(int idCurso, String nombre, boolean activo) {

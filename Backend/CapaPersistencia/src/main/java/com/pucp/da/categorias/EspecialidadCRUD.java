@@ -6,6 +6,7 @@ package com.pucp.da.categorias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Especialidad;
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.EspecialidadDAO;
 import java.sql.CallableStatement;
 
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  *
@@ -84,4 +86,27 @@ public class EspecialidadCRUD extends BaseDAOImpl<Especialidad>implements Especi
         especialidad.setIdEspecialidad(id);
     }
     
+    
+    //PROCEDIMIENTO ADICIONAL PARA TABLA INTERMEDIA PUBLICACION ESPECIALIDAD
+    public ArrayList<Especialidad> listarEspecialidadesPorPublicacion(int idPublicacion) {
+    ArrayList<Especialidad> lista = new ArrayList<>();
+    String sql = "{CALL LISTAR_ESPECIALIDADES_X_PUBLICACION(?)}";
+    try (Connection conn = DBManager.getInstance().obtenerConexion();
+         CallableStatement cs = conn.prepareCall(sql)) {
+        cs.setInt(1, idPublicacion);
+        try (ResultSet rs = cs.executeQuery()) {
+            while (rs.next()) {
+                Especialidad e = new Especialidad();
+                e.setIdEspecialidad(rs.getInt("id_especialidad"));
+                e.setNombre(rs.getString("nombre"));
+                e.setActivo(true);
+                lista.add(e);
+            }
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al listar especialidades de una publicación", e);
+    }
+    return lista;
+}
+
 }

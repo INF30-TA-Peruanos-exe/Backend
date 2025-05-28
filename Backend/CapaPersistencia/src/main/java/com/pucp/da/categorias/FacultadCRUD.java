@@ -6,6 +6,7 @@ package com.pucp.da.categorias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Facultad;
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.FacultadDAO;
 import java.sql.CallableStatement;
 
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 /**
  *
  * @author SEBASTIAN
@@ -82,4 +84,25 @@ public class FacultadCRUD extends BaseDAOImpl<Facultad> implements FacultadDAO{
         facultad.setIdFacultad(id);
     }
     
+    //Metodos intermedios para tabla PUBLICACION FACULTAD
+    public ArrayList<Facultad> listarFacultadesPorPublicacion(int idPublicacion) {
+    ArrayList<Facultad> lista = new ArrayList<>();
+    String sql = "{CALL LISTAR_FACULTADES_X_PUBLICACION(?)}";
+    try (Connection conn = DBManager.getInstance().obtenerConexion();
+         CallableStatement cs = conn.prepareCall(sql)) {
+        cs.setInt(1, idPublicacion);
+        try (ResultSet rs = cs.executeQuery()) {
+            while (rs.next()) {
+                Facultad f = new Facultad();
+                f.setIdFacultad(rs.getInt("id_facultad"));
+                f.setNombre(rs.getString("nombre"));
+                f.setActivo(true);
+                lista.add(f);
+            }
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al listar facultades de una publicación", e);
+    }
+    return lista;
+}
 }
