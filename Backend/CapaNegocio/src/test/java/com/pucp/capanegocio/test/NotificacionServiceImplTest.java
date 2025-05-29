@@ -27,7 +27,7 @@ public class NotificacionServiceImplTest {
     private static UsuarioDAO usuarioDAO;
     private static PublicacionDAO publicacionDAO;
     
-    private static Publicacion autor;
+    private static Publicacion autor; //El autor es la publicacion de la notificacion
     private static Usuario notificador;
     
     @BeforeAll
@@ -42,8 +42,10 @@ public class NotificacionServiceImplTest {
         //No hay ninguna publicacion
         autor = publicacionDAO.obtenerPorId(1);
         notificador = usuarioDAO.obtenerPorId(1);
-
-
+        System.err.println("Autor: " + (autor != null ? autor.getTitulo() : "null"));
+        System.err.println("Notificador: " + (notificador != null ? notificador.getNombreUsuario() : "null"));
+        System.err.println("ID Autor: " + (autor != null ? autor.getIdPublicacion() : "null"));
+        System.err.println("ID Notificador: " + (notificador != null ? notificador.getIdUsuario() : "null"));
         Notificacion notificacion = new Notificacion();
         notificacion.setAutor(autor); //Falta iniciarle una publicacion
         notificacion.setNotificador(notificador);

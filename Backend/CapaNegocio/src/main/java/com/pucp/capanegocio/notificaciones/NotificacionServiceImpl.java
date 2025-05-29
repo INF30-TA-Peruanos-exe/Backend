@@ -42,6 +42,8 @@ public class NotificacionServiceImpl implements NotificacionService{
         if(notificacion.getTipoNotificacion() == null){
             throw new Exception("La notificacion debe tener un tipo de notificacion");
         }
+        notificacionDAO.insertar(notificacion);
+
     }
 
     @Override
