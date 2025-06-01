@@ -64,6 +64,11 @@
             <artifactId>CapaNegocio</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.metro</groupId>
+            <artifactId>webservices-rt</artifactId>
+            <version>2.3</version>
+        </dependency>
     </dependencies>
     
     <build>

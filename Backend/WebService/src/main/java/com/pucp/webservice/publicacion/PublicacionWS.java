@@ -11,32 +11,38 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.xml.ws.WebServiceException;
+import java.util.ArrayList;
 
 
 /**
  *
  * @author Axel
  */
-@WebService(serviceName = "PublicacionWS")
+@WebService(serviceName = "PublicacionWS", targetNamespace = "com.pucp.pucpqhatu")
 public class PublicacionWS {
 
-    private PublicacionService publicacionService;
+    private final PublicacionService publicacionService;
     
     public PublicacionWS(){
         publicacionService = new PublicacionServiceImpl();
     }
-    
-    /**
-     * This is a sample web service operation
-     * @param publicacion
-     */
+
     @WebMethod(operationName = "crearPublicacion")
-    public void crearPublicacion(Publicacion publicacion) {
+    public void crearPublicacion(@WebParam(name = "publicacion") Publicacion publicacion) {
         try{
             publicacionService.registrarPublicacion(publicacion);
         } catch (Exception ex) {
             throw new WebServiceException("Error al crear publicación: " + ex.getMessage());
         }
+    }
+    
+    @WebMethod(operationName = "actualizarPublicacion")
+    public void actualizarPublicacion(@WebParam(name = "publicacion") Publicacion publicacion){
+        try{
+            publicacionService.actualizarPublicacion(publicacion);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al actualizar publicación: " + ex.getMessage());
+        }       
     }
     
     @WebMethod(operationName = "eliminarPublicacion")
@@ -59,6 +65,51 @@ public class PublicacionWS {
             throw new WebServiceException("Error al eliminar publicación: " + ex.getMessage());
         }
     }
+    
+    @WebMethod(operationName = "obtenerPublicacion")
+    public Publicacion obtenerPublicacion(@WebParam(name = "idPublicacion") int idPublicacion){
+        try{
+            return publicacionService.obtenerPublicacion(idPublicacion);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al obtener publicación: " + ex.getMessage());
+        }        
+    }
+    
+    @WebMethod(operationName = "listarPublicacion")
+    public ArrayList<Publicacion> listarPublicacion(){
+        try{
+            return publicacionService.listarPublicacion();
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones: " + ex.getMessage());
+        }       
+    }
+    
+    @WebMethod(operationName = "listarPorFacultad")
+    public ArrayList<Publicacion> listarPorFacultad(@WebParam(name = "idFacultad") int idFacultad){
+        try{
+            return publicacionService.listarPorFacultad(idFacultad);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones por facultad: " + ex.getMessage());
+        }       
+    }
+    
+    @WebMethod(operationName = "listarPorEspecialidad")
+    public ArrayList<Publicacion> listarPorEspecialidad(@WebParam(name = "idEspecialidad") int idEspecialidad){
+        try{
+            return publicacionService.listarPorEspecialidad(idEspecialidad);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones por especialidad: " + ex.getMessage());
+        }       
+    }
+    
+    @WebMethod(operationName = "listarPorCurso")
+    public ArrayList<Publicacion> listarPorCurso(@WebParam(name = "idCurso") int idCurso){
+        try{
+            return publicacionService.listarPorCurso(idCurso);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones por curso: " + ex.getMessage());
+        }       
+    }    
     
     //Esto iria en la parte de usuario
 //    @WebMethod(operationName = "marcarFavorito")
