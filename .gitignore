@@ -26,3 +26,4 @@ replay_pid*
 /Backend/CapaDominio/target/
 /Backend/CapaNegocio/target/
 /Backend/CapaPersistencia/target/
+/Backend/WebService/target/
