@@ -4,6 +4,7 @@
  */
 package com.pucp.capanegocio.publicaciones;
 
+import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
 import com.pucp.da.publicaciones.PublicacionCRUD;
@@ -125,6 +126,16 @@ public class PublicacionServiceImpl implements PublicacionService{
             throw new Exception("La publicacion no existe");
         }
         return publicacion;
+    }
+    
+    @Override
+    public void cambiarEstadoPublicacion(int idPublicacion, String estado) throws Exception {
+        Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+        if(publicacion == null){
+            throw new Exception("La publicacion no existe");
+        }
+        publicacion.setEstado(EstadoPublicacion.valueOf(estado));
+        publicacionDAO.actualizar(publicacion);
     }
 
     @Override

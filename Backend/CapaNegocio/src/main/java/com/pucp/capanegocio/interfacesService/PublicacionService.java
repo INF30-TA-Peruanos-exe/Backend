@@ -15,6 +15,7 @@ public interface PublicacionService {
     void registrarPublicacion(Publicacion publicacion) throws Exception;
     void actualizarPublicacion(Publicacion publicacion) throws Exception;
     void eliminarPublicacion(int idPublicacion) throws Exception;
+    void cambiarEstadoPublicacion(int idPublicacion, String estado) throws Exception;
     Publicacion obtenerPublicacion(int idPublicacion) throws Exception;
     ArrayList<Publicacion> listarPublicacion() throws Exception;
     
