@@ -59,4 +59,15 @@ public class PublicacionWS {
             throw new WebServiceException("Error al eliminar publicación: " + ex.getMessage());
         }
     }
+    
+    //Esto iria en la parte de usuario
+//    @WebMethod(operationName = "marcarFavorito")
+//    public void marcarFavorito(@WebParam(name = "idPublicacion") int idPublicacion) {
+//        try{
+//            publicacionService.eliminarPublicacion(idPublicacion);
+    //Falta implementar una funcion que llame a Add -> actualice
+//        } catch (Exception ex) {
+//            throw new WebServiceException("Error al eliminar publicación: " + ex.getMessage());
+//        }
+//    }
 }
