@@ -12,7 +12,7 @@ import jakarta.jws.WebService;
  *
  * @author Axel
  */
-@WebService(serviceName = "Comentario")
+@WebService(serviceName = "ComentarioWS")
 public class ComentarioWS {
 
     /**
