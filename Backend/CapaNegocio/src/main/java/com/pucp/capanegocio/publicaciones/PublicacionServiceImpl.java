@@ -51,15 +51,15 @@ public class PublicacionServiceImpl implements PublicacionService{
         if(publicacion.getUsuario()==null){
             throw new Exception("El usuario no puede estar vacio");
         }
-        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
-            throw new Exception("La lista de cursos no puede estar vacia");
-        }
-        if(publicacion.getPublicacionesEspecialidades()==null || publicacion.getPublicacionesEspecialidades().isEmpty()){
-            throw new Exception("La lista de especialidades no puede estar vacia");
-        }
-        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
-            throw new Exception("La lista de facultades no puede estar vacia");
-        }
+//        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
+//            throw new Exception("La lista de cursos no puede estar vacia");
+//        }
+//        if(publicacion.getPublicacionesEspecialidades()==null || publicacion.getPublicacionesEspecialidades().isEmpty()){
+//            throw new Exception("La lista de especialidades no puede estar vacia");
+//        }
+//        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
+//            throw new Exception("La lista de facultades no puede estar vacia");
+//        }
         
         publicacionDAO.insertar(publicacion);
     }
