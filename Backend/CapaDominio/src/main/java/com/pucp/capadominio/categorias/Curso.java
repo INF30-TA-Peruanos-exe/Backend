@@ -4,10 +4,13 @@
  */
 package com.pucp.capadominio.categorias;
 
-/**
- *
- * @author Axel
- */
+
+//nuevo
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "curso")  // Muy importante
+@XmlType(propOrder = { "idCurso", "nombre", "activo" })  // Opcional pero recomendado para orden
 public class Curso {
     //ATRIBUTOS
     private int idCurso;

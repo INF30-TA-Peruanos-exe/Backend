@@ -20,10 +20,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author Axel
- */
+
+
+//nuevo
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "publicacion")
+@XmlType(propOrder = {
+    "idPublicacion",
+    "titulo",
+    "descripcion",
+    "rutaImagen",
+    "activo",
+    "estado",
+    "fechaPublicacion",
+    "usuario",
+    "publicacionesCursos",
+    "publicacionesEspecialidades",
+    "publicacionesFacultades"
+})
+//-------
 public class Publicacion {
     //ATRIBUTOS
     private int idPublicacion;
@@ -179,16 +198,29 @@ public class Publicacion {
         return new ArrayList<>(comentarios);
     }
 
+    
+    
+    @XmlElementWrapper(name = "publicacionesCursos")
+    @XmlElement(name = "curso")
     public ArrayList<Curso> getPublicacionesCursos() {
-        return new ArrayList<>(publicacionesCursos);
+        //return new ArrayList<>(publicacionesCursos);
+        return publicacionesCursos;
+
     }
 
+    
+    @XmlElementWrapper(name = "publicacionesEspecialidades")
+    @XmlElement(name = "especialidad")
     public ArrayList<Especialidad> getPublicacionesEspecialidades() {
-        return new ArrayList<>(publicacionesEspecialidades);
+        //return new ArrayList<>(publicacionesEspecialidades);
+        return publicacionesEspecialidades;
     }
 
+    @XmlElementWrapper(name = "publicacionesFacultades")
+    @XmlElement(name = "facultad")
     public ArrayList<Facultad> getPublicacionesFacultades() {
-        return new ArrayList<>(publicacionesFacultades);
+        //return new ArrayList<>(publicacionesFacultades);
+        return publicacionesFacultades;
     }
 
     public ArrayList<Notificacion> getNotificaciones() {

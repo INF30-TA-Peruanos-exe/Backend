@@ -8,6 +8,13 @@ package com.pucp.capadominio.categorias;
  *
  * @author Axel
  */
+//nuevo
+
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "especialidad")
+@XmlType(propOrder = { "idEspecialidad", "nombre", "activo" })
 public class Especialidad {
     //ATRIBUTOS
     private int idEspecialidad;
