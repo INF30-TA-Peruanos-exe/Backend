@@ -1386,54 +1386,54 @@ BEGIN
 END$$
 
 -- DATOS
-INSERT INTO usuario (codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo)
+publicacionINSERT INTO usuario (id_usuario, codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo)
 VALUES
-(20230001, 'jlopez', 'pass123', 'Juan L贸pez', 'jlopez@pucp.edu.pe', 'HABILITADO', 1),
-(20230002, 'mmendez', 'secure456', 'Mar铆a M茅ndez', 'mmendez@pucp.edu.pe', 'HABILITADO', 1),
-(20230003, 'ccastro', 'qwe789', 'Carlos Castro', 'ccastro@pucp.edu.pe', 'DESHABILITADO', 0);
+(1, 20230001, 'jlopez', 'pass123', 'Juan L髉ez', 'jlopez@pucp.edu.pe', 'HABILITADO', 1),
+(2, 20230002, 'mmendez', 'secure456', 'Mar韆 M閚dez', 'mmendez@pucp.edu.pe', 'HABILITADO', 1),
+(3, 20230003, 'ccastro', 'qwe789', 'Carlos Castro', 'ccastro@pucp.edu.pe', 'DESHABILITADO', 0);
 
 INSERT INTO administrador (id_administrador, clave_Maestra)
 VALUES
 (1, 'adminKey123');
 
-INSERT INTO publicacion (titulo, descripcion, estado, fechapublicacion, url_imagen, activo, id_usuario)
+INSERT INTO publicacion (idpublicacion, titulo, descripcion, estado, fechapublicacion, url_imagen, activo, id_usuario)
 VALUES
-('Introducci贸n a C++', 'Gu铆a b谩sica para empezar en C++', 'VISIBLE', '2025-05-01', 'img/cpp_intro.png', 1, 1),
-('Bases de Datos', 'Explicaci贸n sobre normalizaci贸n', 'VISIBLE', '2025-05-03', 'img/cpp_intro.png', 1, 2);
+(1, 'Introducci髇 a C++', 'Gu韆 b醩ica para empezar en C++', 'VISIBLE', '2025-05-01', 'img/cpp_intro.png', 1, 1),
+(2, 'Bases de Datos', 'Explicaci髇 sobre normalizaci髇', 'VISIBLE', '2025-05-03', 'img/cpp_intro.png', 1, 2);
 
-INSERT INTO comentario (contenido, valoracion, fecha, id_publicacion, id_usuario, activo)
+INSERT INTO comentario (id_comentario, contenido, valoracion, fecha, id_publicacion, id_usuario, activo)
 VALUES
-('Muy 煤til, gracias!', 5, '2025-05-02', 1, 2, 1),
-('Me gustar铆a ver m谩s ejemplos', 4, '2025-05-04', 2, 1, 1);
+(1, 'Muy 鷗il, gracias!', 5, '2025-05-02', 1, 2, 1),
+(2, 'Me gustar韆 ver m醩 ejemplos', 4, '2025-05-04', 2, 1, 1);
 
-INSERT INTO curso (nombre, activo)
+INSERT INTO curso (id_curso, nombre, activo)
 VALUES
-('Programaci贸n I', 1),
-('Estructuras de Datos', 1),
-('Bases de Datos', 1);
+(1, 'Programaci髇 I', 1),
+(2, 'Estructuras de Datos', 1),
+(3, 'Bases de Datos', 1);
 
-INSERT INTO denuncia (autor, reportante, motivo, fecha_reporte, id_administrador, activo)
+INSERT INTO denuncia (id_reporte, autor, reportante, motivo, fecha_reporte, id_administrador, activo)
 VALUES
-(1, 2, 'Contenido ofensivo', '2025-05-05', 1, 1);
+(1, 1, 2, 'Contenido ofensivo', '2025-05-05', 1, 1);
 
-INSERT INTO especialidad (nombre, activo)
+INSERT INTO especialidad (id_especialidad, nombre, activo)
 VALUES
-('Ingenier铆a Inform谩tica', 1),
-('Ingenier铆a Electr贸nica', 1);
+(1, 'Ingenier韆 Inform醫ica', 1),
+(2, 'Ingenier韆 Electr髇ica', 1);
 
-INSERT INTO facultad (nombre, activo)
+INSERT INTO facultad (id_facultad, nombre, activo)
 VALUES
-('Facultad de Ciencias e Ingenier铆a', 1),
-('Facultad de Arquitectura', 1);
+(1, 'Facultad de Ciencias e Ingenier韆', 1),
+(2, 'Facultad de Arquitectura', 1);
 
-INSERT INTO notificacion (mensaje, tipo_notificacion, cantidad, fecha, id_publicacion, id_usuario, activo)
+INSERT INTO notificacion (id_notificacion, mensaje, tipo_notificacion, cantidad, fecha, id_publicacion, id_usuario, activo)
 VALUES
-('Nueva publicaci贸n en tu curso', 'Publicaci贸n', 1, '2025-05-06', 1, 2, 1);
+(1, 'Nueva publicaci髇 en tu curso', 'Publicaci髇', 1, '2025-05-06', 1, 2, 1);
 
 INSERT INTO publicacion_curso (publicacion_idpublicacion, curso_id_curso)
 VALUES
-(1, 1), -- Publicaci贸n 1 -> Programaci贸n I
-(2, 3); -- Publicaci贸n 2 -> Bases de Datos
+(1, 1), -- Publicaci髇 1 -> Programaci髇 I
+(2, 3); -- Publicaci髇 2 -> Bases de Datos
 
 INSERT INTO publicacion_especialidad (publicacion_idpublicacion, especialidad_id_especialidad)
 VALUES
@@ -1443,8 +1443,7 @@ VALUES
 INSERT INTO publicacion_facultad (publicacion_idpublicacion, facultad_id_facultad)
 VALUES
 (1, 1),
-(2, 1);
-DELIMITER ;
+(2, 1);DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
