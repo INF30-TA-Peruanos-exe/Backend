@@ -1385,6 +1385,65 @@ BEGIN
     VALUES (p_idpublicacion, p_idcurso);
 END$$
 
+-- DATOS
+INSERT INTO usuario (codigo_PUCP, nombreusuario, contrasena, nombre, correo, estado, activo)
+VALUES
+(20230001, 'jlopez', 'pass123', 'Juan López', 'jlopez@pucp.edu.pe', 'HABILITADO', 1),
+(20230002, 'mmendez', 'secure456', 'María Méndez', 'mmendez@pucp.edu.pe', 'HABILITADO', 1),
+(20230003, 'ccastro', 'qwe789', 'Carlos Castro', 'ccastro@pucp.edu.pe', 'DESHABILITADO', 0);
+
+INSERT INTO administrador (id_administrador, clave_Maestra)
+VALUES
+(1, 'adminKey123');
+
+INSERT INTO publicacion (titulo, descripcion, estado, fechapublicacion, url_imagen, activo, id_usuario)
+VALUES
+('Introducción a C++', 'Guía básica para empezar en C++', 'VISIBLE', '2025-05-01', 'img/cpp_intro.png', 1, 1),
+('Bases de Datos', 'Explicación sobre normalización', 'VISIBLE', '2025-05-03', 'img/cpp_intro.png', 1, 2);
+
+INSERT INTO comentario (contenido, valoracion, fecha, id_publicacion, id_usuario, activo)
+VALUES
+('Muy útil, gracias!', 5, '2025-05-02', 1, 2, 1),
+('Me gustaría ver más ejemplos', 4, '2025-05-04', 2, 1, 1);
+
+INSERT INTO curso (nombre, activo)
+VALUES
+('Programación I', 1),
+('Estructuras de Datos', 1),
+('Bases de Datos', 1);
+
+INSERT INTO denuncia (autor, reportante, motivo, fecha_reporte, id_administrador, activo)
+VALUES
+(1, 2, 'Contenido ofensivo', '2025-05-05', 1, 1);
+
+INSERT INTO especialidad (nombre, activo)
+VALUES
+('Ingeniería Informática', 1),
+('Ingeniería Electrónica', 1);
+
+INSERT INTO facultad (nombre, activo)
+VALUES
+('Facultad de Ciencias e Ingeniería', 1),
+('Facultad de Arquitectura', 1);
+
+INSERT INTO notificacion (mensaje, tipo_notificacion, cantidad, fecha, id_publicacion, id_usuario, activo)
+VALUES
+('Nueva publicación en tu curso', 'Publicación', 1, '2025-05-06', 1, 2, 1);
+
+INSERT INTO publicacion_curso (publicacion_idpublicacion, curso_id_curso)
+VALUES
+(1, 1), -- Publicación 1 -> Programación I
+(2, 3); -- Publicación 2 -> Bases de Datos
+
+INSERT INTO publicacion_especialidad (publicacion_idpublicacion, especialidad_id_especialidad)
+VALUES
+(1, 1),
+(2, 1);
+
+INSERT INTO publicacion_facultad (publicacion_idpublicacion, facultad_id_facultad)
+VALUES
+(1, 1),
+(2, 1);
 DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
