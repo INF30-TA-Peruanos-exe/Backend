@@ -1443,7 +1443,8 @@ VALUES
 INSERT INTO publicacion_facultad (publicacion_idpublicacion, facultad_id_facultad)
 VALUES
 (1, 1),
-(2, 1);DELIMITER ;
+(2, 1);
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
