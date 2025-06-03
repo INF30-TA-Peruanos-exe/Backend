@@ -22,4 +22,7 @@ public interface PublicacionService {
     ArrayList<Publicacion> listarPorFacultad(int idFacultad) throws Exception;
     ArrayList<Publicacion> listarPorEspecialidad(int idEspecialidad) throws Exception;
     ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception;
+    void agregarFavorito(int idUsuario,int idPublicacion)throws Exception;
+    void eliminarFavorito(int idUsuario,int idPublicacion)throws Exception;
+    ArrayList<Publicacion> listarFavoritos(int idUsuario)throws Exception;
 }

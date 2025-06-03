@@ -23,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -248,5 +250,63 @@ public Publicacion obtenerPorId(int id) {
 
     return publicacion;
 }
+ @Override
+    public void agregarFavorito(int idPublicacion, int idUsuario) {
+        
+        try (Connection conn = DBManager.getInstance().obtenerConexion()) {
+           
+            String sql = "{CALL PublicFavoritoAgregar(?,?)}";
+            try(CallableStatement cs = conn.prepareCall(sql)){
+                
+                cs.setInt(1, idPublicacion);
+                cs.setInt(2, idUsuario);
+                cs.executeUpdate();
+            }
+            
+            
+            
+        } catch (SQLException e) {
+        throw new RuntimeException("Error al agregar publicacion favorita en CRUD", e);
+        }
+        
+    }
+
+    @Override
+    public void eliminarfavorito(int idUsuario, int idPublicacion) {
+        try (Connection conn = DBManager.getInstance().obtenerConexion()) {
+            String sql = "{CALL PublicFavoritoEliminar(?,?)}";
+            try(CallableStatement cs = conn.prepareCall(sql)){
+                cs.setInt(1, idPublicacion);
+                cs.setInt(2, idUsuario);
+                cs.executeUpdate();
+            }
+            
+            
+            
+        } catch (SQLException e) {
+        throw new RuntimeException("Error al eliminar publicacion favorita", e);
+        }
+        
+        
+    }
+
+    @Override
+    public ArrayList<Publicacion> listarFavorito(int idUsuario) {
+        ArrayList<Publicacion> publicaciones = new ArrayList<>();
+        String sql = "{CALL ListarPublicFavoritos(?)}";
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = conn.prepareCall(sql);) {
+            
+            cs.setInt(1,idUsuario);
+            try(ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
+                    publicaciones.add(createFromResultSet(rs));
+                }      
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar publicacion favoritas", e);
+        }
+        return publicaciones;
+    }
 
 }

@@ -19,4 +19,7 @@ public interface PublicacionDAO extends BaseDAO<Publicacion>{
     ArrayList<Publicacion> listarporEspecialidad(int idEspecialidad);
     ArrayList<Publicacion> listarporCurso(int idCurso);
     
+    public void agregarFavorito(int idUsuario,int idPublicacion);
+    public void eliminarfavorito(int idUsuario,int idPublicacion);
+   ArrayList<Publicacion> listarFavorito(int idUsuario);
 }

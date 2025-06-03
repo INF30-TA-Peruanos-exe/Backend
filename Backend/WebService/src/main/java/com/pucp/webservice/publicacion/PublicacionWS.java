@@ -110,6 +110,32 @@ public class PublicacionWS {
             throw new WebServiceException("Error al listar publicaciones por curso: " + ex.getMessage());
         }       
     }    
+    @WebMethod(operationName = "listarFavoritos")
+    public ArrayList<Publicacion> listarFavoritos(@WebParam(name = "idUsuario") int idUsuario){
+        try{
+            return publicacionService.listarFavoritos(idUsuario);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones favoritas " + ex.getMessage());
+        }       
+    }
+    @WebMethod(operationName = "agregarFavoritos")
+    public void agregarFavorito(@WebParam(name = "idUsuario")int idUsuario,
+            @WebParam(name = "idPublicacion")int idPublicacion){
+        try{
+            publicacionService.agregarFavorito(idUsuario, idPublicacion);
+        }catch (Exception ex) {
+            throw new WebServiceException("Error al agregar publicacion favorita" + ex.getMessage());
+        }
+    }
+     @WebMethod(operationName = "eliminarFavoritos")
+    public void eliminarFavorito(@WebParam(name = "idUsuario")int idUsuario,
+            @WebParam(name = "idPublicacion")int idPublicacion){
+        try{
+            publicacionService.eliminarFavorito(idUsuario, idPublicacion);
+        }catch (Exception ex) {
+            throw new WebServiceException("Error al eliminar publicacion favorita" + ex.getMessage());
+        }   
+    }
     
     //Esto iria en la parte de usuario
 //    @WebMethod(operationName = "marcarFavorito")
@@ -121,4 +147,5 @@ public class PublicacionWS {
 //            throw new WebServiceException("Error al eliminar publicación: " + ex.getMessage());
 //        }
 //    }
+    
 }

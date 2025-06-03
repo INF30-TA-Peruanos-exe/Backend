@@ -8,6 +8,7 @@ import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
 import com.pucp.da.publicaciones.PublicacionCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.PublicacionDAO;
 import java.util.ArrayList;
 
@@ -157,5 +158,42 @@ public class PublicacionServiceImpl implements PublicacionService{
     public ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception {
         return publicacionDAO.listarporCurso(idCurso);
     }
+
+    @Override
+    public void agregarFavorito(int idUsuario, int idPublicacion) throws Exception {
+        Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+        UsuarioCRUD usuario = new UsuarioCRUD();
+        if(publicacion == null){
+            throw new Exception("La publicacion no existe");
+        }
+        if(usuario.obtenerPorId(idUsuario)==null){
+            throw new Exception("El usuario no existe");
+        }
+        
+        publicacionDAO.agregarFavorito(idPublicacion, idUsuario);
+    }
+
+    @Override
+    public void eliminarFavorito(int idUsuario, int idPublicacion) throws Exception {
+       Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+       UsuarioCRUD usuario = new UsuarioCRUD();
+        if(publicacion == null){
+            throw new Exception("La publicacion no existe");
+        }
+        if(usuario.obtenerPorId(idUsuario)==null){
+            throw new Exception("El usuario no existe");
+        }
+        publicacionDAO.eliminarfavorito(idUsuario, idPublicacion);
+    }
+
+    @Override
+    public ArrayList<Publicacion> listarFavoritos(int idUsuario) throws Exception {
+        UsuarioCRUD usuario = new UsuarioCRUD();
+        if(usuario.obtenerPorId(idUsuario)==null){
+            throw new Exception("El usuario no existe");
+        }
+        return publicacionDAO.listarFavorito(idUsuario);
+    }
+    
     
 }
