@@ -8,6 +8,15 @@ package com.pucp.capadominio.categorias;
  *
  * @author Axel
  */
+
+//nuevo
+
+
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "facultad")
+@XmlType(propOrder = { "idFacultad", "nombre", "activo" })
 public class Facultad {
     //ATRIBUTOS
     private int idFacultad;
