@@ -194,6 +194,11 @@ public class PublicacionServiceImpl implements PublicacionService{
         }
         return publicacionDAO.listarFavorito(idUsuario);
     }
+
+    @Override
+    public boolean esFavorito(int idUsuario, int idPublicacion) throws Exception {
+        return publicacionDAO.esPublicacionFavorito(idUsuario, idPublicacion);
+    }
     
     
 }

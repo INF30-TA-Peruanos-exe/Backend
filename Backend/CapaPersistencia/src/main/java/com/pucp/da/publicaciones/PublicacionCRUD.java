@@ -309,4 +309,22 @@ public Publicacion obtenerPorId(int id) {
         return publicaciones;
     }
 
+    @Override
+    public boolean esPublicacionFavorito(int idUsuario, int idPublicacion) {
+       String sql ="{CALL esFavorito(?,?)}";
+       try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = conn.prepareCall(sql);) {
+           cs.setInt(1,idPublicacion);
+           cs.setInt(2, idUsuario);
+            try(ResultSet rs = cs.executeQuery()){
+                if (rs.next()) {
+                    return true;
+                }      
+            }
+       } catch (SQLException e) {
+            throw new RuntimeException("Error al decidir publicacion favorita", e);
+        }
+    
+    return false;
+    }
 }

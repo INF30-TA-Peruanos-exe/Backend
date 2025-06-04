@@ -22,4 +22,5 @@ public interface PublicacionDAO extends BaseDAO<Publicacion>{
     public void agregarFavorito(int idUsuario,int idPublicacion);
     public void eliminarfavorito(int idUsuario,int idPublicacion);
    ArrayList<Publicacion> listarFavorito(int idUsuario);
+   boolean esPublicacionFavorito(int idUsuario,int idPublicacion);
 }

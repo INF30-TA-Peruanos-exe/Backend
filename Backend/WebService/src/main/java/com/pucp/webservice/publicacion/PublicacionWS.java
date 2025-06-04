@@ -136,7 +136,15 @@ public class PublicacionWS {
             throw new WebServiceException("Error al eliminar publicacion favorita" + ex.getMessage());
         }   
     }
-    
+    @WebMethod(operationName = "esFavorito")
+    public boolean esFavorito(@WebParam(name = "idUsuario")int idUsuario,
+            @WebParam(name = "idPublicacion")int idPublicacion){
+        try{
+            return publicacionService.esFavorito(idUsuario, idPublicacion);
+        }catch (Exception ex) {
+            throw new WebServiceException("Error si es publicacion favorita" + ex.getMessage());
+        }
+    }
     //Esto iria en la parte de usuario
 //    @WebMethod(operationName = "marcarFavorito")
 //    public void marcarFavorito(@WebParam(name = "idPublicacion") int idPublicacion) {
