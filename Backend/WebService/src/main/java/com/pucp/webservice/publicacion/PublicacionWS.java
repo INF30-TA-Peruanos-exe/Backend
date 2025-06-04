@@ -145,17 +145,6 @@ public class PublicacionWS {
             throw new WebServiceException("Error si es publicacion favorita" + ex.getMessage());
         }
     }
-    
-    @WebMethod(operationName = "listarPublicacionConFavoritos")
-    public ArrayList<Publicacion> listarPublicacionConFavoritos(
-            @WebParam(name = "idUsuario") int idUsuario) {
-        try {
-            return publicacionService.listarPublicacionConFavoritos(idUsuario);
-        } catch (Exception ex) {
-            throw new WebServiceException("Error al listar publicaciones con favoritos: " + ex.getMessage());
-        }
-    }
-
     //Esto iria en la parte de usuario
 //    @WebMethod(operationName = "marcarFavorito")
 //    public void marcarFavorito(@WebParam(name = "idPublicacion") int idPublicacion) {

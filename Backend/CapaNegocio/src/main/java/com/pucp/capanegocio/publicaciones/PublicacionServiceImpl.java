@@ -200,14 +200,5 @@ public class PublicacionServiceImpl implements PublicacionService{
         return publicacionDAO.esPublicacionFavorito(idUsuario, idPublicacion);
     }
     
-    @Override
-    public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario) throws Exception {
-        ArrayList<Publicacion> publicaciones = publicacionDAO.listarTodos();
-        for (Publicacion p : publicaciones) {
-            boolean favorito = publicacionDAO.esPublicacionFavorito(idUsuario, p.getIdPublicacion());
-            p.setEsFavorito(favorito);
-        }
-        return publicaciones;
-    }
-
+    
 }

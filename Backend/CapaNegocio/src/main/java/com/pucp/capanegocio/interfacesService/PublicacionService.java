@@ -26,5 +26,4 @@ public interface PublicacionService {
     void eliminarFavorito(int idUsuario,int idPublicacion)throws Exception;
     ArrayList<Publicacion> listarFavoritos(int idUsuario)throws Exception;
     boolean esFavorito(int idUsuario,int idPublicacion)throws Exception;
-    public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario)throws Exception;
 }
