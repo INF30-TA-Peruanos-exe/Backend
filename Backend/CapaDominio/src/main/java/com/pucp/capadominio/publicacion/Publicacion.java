@@ -271,6 +271,17 @@ public class Publicacion {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    
+    @XmlElement
+    private boolean esFavorito;
+    
+    public boolean isEsFavorito(){
+        return esFavorito;
+    }
+    
+    public void setEsFavorito(boolean esFavorito){
+        this.esFavorito=esFavorito;
+    }
 
     @Override
     public String toString() {
