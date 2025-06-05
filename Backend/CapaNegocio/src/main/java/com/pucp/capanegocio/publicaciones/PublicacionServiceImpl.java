@@ -7,9 +7,14 @@ package com.pucp.capanegocio.publicaciones;
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
+import com.pucp.config.DBManager;
 import com.pucp.da.publicaciones.PublicacionCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.PublicacionDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -158,6 +163,39 @@ public class PublicacionServiceImpl implements PublicacionService{
     public ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception {
         return publicacionDAO.listarporCurso(idCurso);
     }
+    
+@Override
+public String getFechaPublicacionString(int idPublicacion) throws Exception {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String fechaFormateada = "Sin fecha";
+
+    try {
+        conn = DBManager.getInstance().obtenerConexion();
+        String sql = "SELECT fechapublicacion FROM publicacion WHERE idpublicacion = ?";
+        ps = conn.prepareStatement(sql);
+        ps.setInt(1, idPublicacion);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            java.sql.Date fecha = rs.getDate("fechapublicacion");
+            if (fecha != null) {
+                fechaFormateada = new java.text.SimpleDateFormat("dd/MM/yyyy").format(fecha);
+            }
+        }
+    } catch (SQLException e) {
+        throw new Exception("Error al obtener la fecha de publicación: " + e.getMessage());
+    } finally {
+        if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
+        if (ps != null) try { ps.close(); } catch (SQLException ignored) {}
+        if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
+    }
+
+    return fechaFormateada;
+}
+
+    
 
     @Override
     public void agregarFavorito(int idUsuario, int idPublicacion) throws Exception {

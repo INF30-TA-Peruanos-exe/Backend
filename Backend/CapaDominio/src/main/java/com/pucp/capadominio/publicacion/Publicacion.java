@@ -194,10 +194,11 @@ public class Publicacion {
         this.estado = estado;
     }
 
+    //Los getters de los arraylist deben retornar la lista original
+    
     public ArrayList<Comentario> getComentarios() {
-        return new ArrayList<>(comentarios);
+        return comentarios;
     }
-
     
     
     @XmlElementWrapper(name = "publicacionesCursos")
@@ -224,11 +225,11 @@ public class Publicacion {
     }
 
     public ArrayList<Notificacion> getNotificaciones() {
-        return new ArrayList<>(notificaciones);
+        return notificaciones;
     }
 
     public ArrayList<Denuncia> getPublicacionDenuncias() {
-        return new ArrayList<>(publicacionDenuncias);
+        return publicacionDenuncias;
     }
     
     public Date getFechaPublicacion() {
@@ -239,6 +240,16 @@ public class Publicacion {
         this.fechaPublicacion = fechaPublicacion;
     }
 
+    //Para poder enviar las fechas en un formato que entienda
+//    @XmlElement(name = "fechaPublicacionString")
+//    public String getFechaPublicacionString(){
+//        if(fechaPublicacion!=null){
+//            return new java.text.SimpleDateFormat("dd-MM-yyyy").format(fechaPublicacion);
+//        }
+//        return " ";
+//    }
+    
+    
     public Image getImagen() {
         return imagen;
     }

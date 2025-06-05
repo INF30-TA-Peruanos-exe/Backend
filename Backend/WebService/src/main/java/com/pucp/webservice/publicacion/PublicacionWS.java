@@ -145,6 +145,16 @@ public class PublicacionWS {
             throw new WebServiceException("Error si es publicacion favorita" + ex.getMessage());
         }
     }
+    
+    @WebMethod(operationName = "obtenerFechaPublicacionFormateada")
+    public String obtenerFechaPublicacionFormateada(@WebParam(name = "idPublicacion") int idPublicacion) {
+        try {
+            return publicacionService.getFechaPublicacionString(idPublicacion);
+        } catch (Exception ex) {
+            return "Error: " + ex.getMessage();
+        }
+    }
+
     //Esto iria en la parte de usuario
 //    @WebMethod(operationName = "marcarFavorito")
 //    public void marcarFavorito(@WebParam(name = "idPublicacion") int idPublicacion) {

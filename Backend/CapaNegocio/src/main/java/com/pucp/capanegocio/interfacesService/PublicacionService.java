@@ -18,7 +18,7 @@ public interface PublicacionService {
     void cambiarEstadoPublicacion(int idPublicacion, String estado) throws Exception;
     Publicacion obtenerPublicacion(int idPublicacion) throws Exception;
     ArrayList<Publicacion> listarPublicacion() throws Exception;
-    
+    String getFechaPublicacionString(int idPublicacion) throws Exception;
     ArrayList<Publicacion> listarPorFacultad(int idFacultad) throws Exception;
     ArrayList<Publicacion> listarPorEspecialidad(int idEspecialidad) throws Exception;
     ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception;
