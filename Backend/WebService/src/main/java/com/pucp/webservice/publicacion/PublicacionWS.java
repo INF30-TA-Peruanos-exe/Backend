@@ -11,6 +11,8 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.xml.ws.WebServiceException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -39,6 +41,7 @@ public class PublicacionWS {
     @WebMethod(operationName = "actualizarPublicacion")
     public void actualizarPublicacion(@WebParam(name = "publicacion") Publicacion publicacion){
         try{
+            //publicacion.setFechaPublicacion(new Date());
             publicacionService.actualizarPublicacion(publicacion);
         } catch (Exception ex) {
             throw new WebServiceException("Error al actualizar publicación: " + ex.getMessage());

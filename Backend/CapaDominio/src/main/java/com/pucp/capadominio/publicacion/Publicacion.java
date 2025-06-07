@@ -15,7 +15,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -69,7 +69,7 @@ public class Publicacion {
         this.publicacionesFacultades = new ArrayList<>();
         this.notificaciones = new ArrayList<>();
         this.publicacionDenuncias = new ArrayList<>();
-        this.fechaPublicacion = Date.valueOf(LocalDate.now());
+        this.fechaPublicacion = new Date();
     }
     
     
@@ -86,7 +86,7 @@ public class Publicacion {
         this.publicacionesFacultades = new ArrayList<>();
         this.notificaciones = new ArrayList<>();
         this.publicacionDenuncias = new ArrayList<>();
-        this.fechaPublicacion = Date.valueOf(LocalDate.now());
+        this.fechaPublicacion = new Date();
         this.usuario = usuario;
         this.activo = activo;
         
