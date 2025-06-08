@@ -1,9 +1,9 @@
-///*
-// * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-// * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
-// */
-//package com.pucp.capanegocio.test;
-//
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.pucp.capanegocio.test;
+
 //import com.pucp.capadominio.categorias.Curso;
 //import com.pucp.capanegocio.categorias.CursoServiceImpl;
 //import com.pucp.capanegocio.interfacesService.CursoService;
@@ -54,7 +54,7 @@
 //        cursoId = registrado.getIdCurso();
 //        assertEquals(curso.getNombre(), registrado.getNombre());
 //    }
-//
+
 //    @Test
 //    @Order(2)
 //    void obtenerCurso() throws Exception {
