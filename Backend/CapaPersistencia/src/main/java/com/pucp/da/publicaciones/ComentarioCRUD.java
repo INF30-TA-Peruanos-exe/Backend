@@ -41,7 +41,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, comentario.getContenido());
         cs.setInt(2, comentario.getValoracion());
-        cs.setDate(3, comentario.getFecha());
+        cs.setDate(3, new java.sql.Date(comentario.getFecha().getTime()));
         cs.setInt(4, comentario.getPublicacion().getIdPublicacion());
         cs.setInt(5, comentario.getComentador().getIdUsuario());
         cs.setBoolean(6, comentario.isActivo());
@@ -56,7 +56,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         cs.setInt(1, comentario.getIdComentario());
         cs.setString(2, comentario.getContenido());
         cs.setInt(3, comentario.getValoracion());
-        cs.setDate(4, comentario.getFecha());
+        cs.setDate(4,  new java.sql.Date(comentario.getFecha().getTime()));
         cs.setInt(5, comentario.getPublicacion().getIdPublicacion());
         cs.setInt(6, comentario.getComentador().getIdUsuario());
         cs.setBoolean(7, comentario.isActivo());
