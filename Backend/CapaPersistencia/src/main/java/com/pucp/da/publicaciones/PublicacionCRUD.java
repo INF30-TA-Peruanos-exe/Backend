@@ -296,11 +296,13 @@ public Publicacion obtenerPorId(int id) {
         String sql = "{CALL ListarPublicFavoritos(?)}";
         try (Connection conn = DBManager.getInstance().obtenerConexion();
              CallableStatement cs = conn.prepareCall(sql);) {
-            
+            Publicacion publicacion;
             cs.setInt(1,idUsuario);
             try(ResultSet rs = cs.executeQuery()){
                 while (rs.next()) {
-                    publicaciones.add(createFromResultSet(rs));
+                   
+                    publicacion= obtenerPorId(rs.getInt(1));
+                    publicaciones.add(publicacion);
                 }      
             }
         } catch (SQLException e) {
