@@ -66,4 +66,13 @@ public class UsuarioWS {
         }
     }
     
+    @WebMethod(operationName = "obtenerUsuarioPorCorreoYContra")
+    public Usuario obtenerUsuarioPorCorreoYContra(@WebParam(name = "correo") String correo, @WebParam(name = "contra") String contra) {
+        try {
+            return usuarioService.obtenerUsuarioPorCorreoYContra(correo, contra);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al obtener usuario: " + ex.getMessage());
+        }
+    }
+    
 }

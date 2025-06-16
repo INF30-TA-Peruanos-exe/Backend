@@ -17,4 +17,5 @@ public interface UsuarioService {
     boolean eliminarUsuario(int idUsuario) throws Exception;
     Usuario obtenerUsuario(int idUsuario) throws Exception;
     ArrayList<Usuario> listarUsuario() throws Exception;
+    Usuario obtenerUsuarioPorCorreoYContra(String correo, String contra) throws Exception;
 }

@@ -102,5 +102,14 @@ public class UsuarioServiceImpl implements UsuarioService{
     public ArrayList<Usuario> listarUsuario() throws Exception {
         return usuarioDAO.listarTodos();
     }
+
+    @Override
+    public Usuario obtenerUsuarioPorCorreoYContra(String correo, String contra) throws Exception {
+        Usuario usuario = usuarioDAO.obtenerPorCorreoYContrasena(correo, contra);
+        if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }
+        return usuario;
+    }
     
 }

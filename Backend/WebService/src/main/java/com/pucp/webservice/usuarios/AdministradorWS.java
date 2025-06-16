@@ -71,5 +71,13 @@ public class AdministradorWS {
         }
     }
     
+    @WebMethod(operationName = "obtenerAdministradorPorCorreoYContra")
+    public Administrador obtenerAdministradorPorCorreoYContra(@WebParam(name = "clave") String clave) {
+        try {
+            return administradorService.obtenerAdministradorPorCorreoYContra(clave);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al obtener administrador: " + ex.getMessage());
+        }
+    }
     
 }
