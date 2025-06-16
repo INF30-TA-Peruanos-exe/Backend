@@ -80,12 +80,13 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public void eliminarUsuario(int idUsuario) throws Exception {
+    public boolean eliminarUsuario(int idUsuario) throws Exception {
         Usuario usuario = usuarioDAO.obtenerPorId(idUsuario);
         if(usuario == null){
             throw new Exception("El usuario no existe");
         }
         usuarioDAO.eliminar(idUsuario);
+        return true;
     }
 
     @Override

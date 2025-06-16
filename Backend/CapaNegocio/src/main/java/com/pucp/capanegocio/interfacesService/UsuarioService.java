@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public interface UsuarioService {
     void registrarUsuario(Usuario usuario) throws Exception;
     void actualizarUsuario(Usuario usuario) throws Exception;
-    void eliminarUsuario(int idUsuario) throws Exception;
+    boolean eliminarUsuario(int idUsuario) throws Exception;
     Usuario obtenerUsuario(int idUsuario) throws Exception;
     ArrayList<Usuario> listarUsuario() throws Exception;
 }
