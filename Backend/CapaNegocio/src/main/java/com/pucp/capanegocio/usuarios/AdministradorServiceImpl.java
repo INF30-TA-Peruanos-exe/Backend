@@ -102,10 +102,20 @@ public class AdministradorServiceImpl implements AdministradorService{
         }
         return administrador;
     }
+    
 
     @Override
     public ArrayList<Administrador> listarAdministrador() throws Exception {
         return administradorDAO.listarTodos();
+    }
+
+    @Override
+    public Administrador obtenerAdministradorPorCorreoYContra(String clave) throws Exception {
+        Administrador administrador = administradorDAO.obtenerPorCorreoYContrasena(clave);
+        /*if(administrador == null){
+            throw new Exception("El administrador no existe");
+        }*/
+        return administrador;
     }
     
 }
