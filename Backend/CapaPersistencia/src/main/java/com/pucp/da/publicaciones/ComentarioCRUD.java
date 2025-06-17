@@ -6,6 +6,7 @@ package com.pucp.da.publicaciones;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.publicacion.Comentario;
+import com.pucp.config.DBManager;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.ComentarioDAO;
 import java.sql.CallableStatement;
@@ -14,6 +15,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -103,5 +107,23 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
     protected void setId(Comentario comentario, int id) {
         comentario.setIdComentario(id);
     }
-    
+     @Override
+    public ArrayList<Comentario> listarPorPublicacion(int idPublicacion){
+        ArrayList<Comentario> comentarios = new ArrayList<>();
+        String sql = "{CALL LISTAR_COMENTARIOS_X_PUBLI(?)}";
+    try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = conn.prepareCall(sql);) {        
+            cs.setInt(1, idPublicacion);
+        try(ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
+                    comentarios.add(createFromResultSet(rs));
+                }      
+            }
+        
+        
+    }   catch (SQLException e) {
+            throw new RuntimeException("Error al listar publicacion favoritas", e);
+    }
+        return comentarios;
+    }
 }

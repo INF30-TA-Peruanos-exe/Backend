@@ -17,4 +17,5 @@ public interface ComentarioService {
     void eliminarComentario(int idComentario) throws Exception;
     Comentario obtenerComentario(int idComentario) throws Exception;
     ArrayList<Comentario> listarComentario() throws Exception;
+     ArrayList<Comentario> listarComentario_X_PUBLI(int id_publicacion) throws Exception;
 }
