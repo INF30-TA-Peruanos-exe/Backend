@@ -7,12 +7,11 @@ package com.pucp.interfacesDAO;
 
 
 import com.pucp.capadominio.usuarios.Administrador;
-import java.sql.SQLException;
 
 /**
  *
  * @author SEBASTIAN
  */
 public interface AdministradorDAO extends BaseDAO<Administrador>{
-    Administrador obtenerPorCorreoYContrasena(String clave) throws SQLException;
+    
 }

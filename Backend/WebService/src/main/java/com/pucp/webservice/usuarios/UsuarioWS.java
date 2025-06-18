@@ -39,10 +39,9 @@ public class UsuarioWS {
     }
 
     @WebMethod(operationName = "eliminarUsuario")
-    public boolean eliminarUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+    public void eliminarUsuario(@WebParam(name = "idUsuario") int idUsuario) {
         try {
             usuarioService.eliminarUsuario(idUsuario);
-            return true;
         } catch (Exception ex) {
             throw new WebServiceException("Error al eliminar usuario: " + ex.getMessage());
         }
@@ -65,14 +64,4 @@ public class UsuarioWS {
             throw new WebServiceException("Error al listar usuarios: " + ex.getMessage());
         }
     }
-    
-    @WebMethod(operationName = "obtenerUsuarioPorCorreoYContra")
-    public Usuario obtenerUsuarioPorCorreoYContra(@WebParam(name = "correo") String correo, @WebParam(name = "contra") String contra) {
-        try {
-            return usuarioService.obtenerUsuarioPorCorreoYContra(correo, contra);
-        } catch (Exception ex) {
-            throw new WebServiceException("Error al obtener usuario: " + ex.getMessage());
-        }
-    }
-    
 }

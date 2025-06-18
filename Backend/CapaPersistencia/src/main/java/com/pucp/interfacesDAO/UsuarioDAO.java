@@ -6,11 +6,10 @@ package com.pucp.interfacesDAO;
 
 
 import com.pucp.capadominio.usuarios.Usuario;
-import java.sql.SQLException;
 /**
  *
  * @author SEBASTIAN
  */
 public interface UsuarioDAO extends BaseDAO<Usuario>{
-    Usuario obtenerPorCorreoYContrasena(String correo, String contrasena) throws SQLException;
+    
 }

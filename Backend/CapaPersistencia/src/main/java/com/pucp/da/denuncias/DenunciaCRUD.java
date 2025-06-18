@@ -46,7 +46,7 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
         cs.setInt(2, denuncia.getDenunciante().getIdUsuario());
         cs.setString(3, denuncia.getMotivo());
         cs.setDate(4, denuncia.getFechaDenuncia());
-        cs.setNull(5, java.sql.Types.INTEGER);
+        cs.setInt(5,denuncia.getAdmin().getIdUsuario());
         cs.setBoolean(6, denuncia.isActivo());
         cs.registerOutParameter(7, Types.INTEGER);
         return cs; 

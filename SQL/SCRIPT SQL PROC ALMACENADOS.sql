@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `Pucp_qatu_db`.`usuario` (
   `contrasena` VARCHAR(45) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `correo` VARCHAR(45) NOT NULL,
-  `estado` ENUM('HABILITADO', 'RESTRINGIDO') NOT NULL,
+  `estado` ENUM('HABILITADO', 'DESHABILITADO') NOT NULL,
   `activo` TINYINT NOT NULL,
   PRIMARY KEY (`id_usuario`))
 ENGINE = InnoDB

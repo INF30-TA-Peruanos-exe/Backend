@@ -17,5 +17,4 @@ public interface AdministradorService {
     void eliminarAdministrador(int idAdmin) throws Exception;
     Administrador obtenerAdministrador(int idAdmin) throws Exception;
     ArrayList<Administrador> listarAdministrador() throws Exception;
-    Administrador obtenerAdministradorPorCorreoYContra(String clave) throws Exception;
 }
