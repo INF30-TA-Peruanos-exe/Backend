@@ -71,4 +71,12 @@ public class ComentarioWS {
         }        
     }
     
+    @WebMethod(operationName = "listarComentarioPorPublicacion")
+    public ArrayList<Comentario> listarComentarioPorPublicacion(@WebParam(name = "idPublicacion")int id_publicacion){
+        try {
+            return comentarioService.listarComentario_X_PUBLI(id_publicacion);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar comentarios por publicacion: " + ex.getMessage());
+        }        
+    }
 }
