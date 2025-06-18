@@ -90,4 +90,8 @@ public class ComentarioServiceImpl implements ComentarioService{
         return comentarioDAO.listarTodos();
     }
     
+    @Override 
+    public ArrayList<Comentario> listarComentario_X_PUBLI(int id_publicacion) throws Exception {
+        return comentarioDAO.listarPorPublicacion(id_publicacion);
+    }
 }
