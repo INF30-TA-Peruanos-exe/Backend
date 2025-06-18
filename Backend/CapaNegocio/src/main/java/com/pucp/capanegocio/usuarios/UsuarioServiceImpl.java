@@ -80,12 +80,13 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public void eliminarUsuario(int idUsuario) throws Exception {
+    public boolean eliminarUsuario(int idUsuario) throws Exception {
         Usuario usuario = usuarioDAO.obtenerPorId(idUsuario);
         if(usuario == null){
             throw new Exception("El usuario no existe");
         }
         usuarioDAO.eliminar(idUsuario);
+        return true;
     }
 
     @Override
@@ -102,4 +103,12 @@ public class UsuarioServiceImpl implements UsuarioService{
         return usuarioDAO.listarTodos();
     }
     
+    @Override
+    public Usuario obtenerUsuarioPorCorreoYContra(String correo, String contra) throws Exception {
+        Usuario usuario = usuarioDAO.obtenerPorCorreoYContrasena(correo, contra);
+        /*if(usuario == null){
+            throw new Exception("El usuario no existe");
+        }*/
+        return usuario;
+    }
 }

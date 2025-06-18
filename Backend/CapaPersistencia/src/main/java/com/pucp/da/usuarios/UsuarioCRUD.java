@@ -7,6 +7,7 @@ package com.pucp.da.usuarios;
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.usuarios.EstadoUsuario;
 import com.pucp.capadominio.usuarios.Usuario;
+import com.pucp.config.DBManager;
 import com.pucp.interfacesDAO.UsuarioDAO;
 import java.sql.CallableStatement;
 
@@ -100,4 +101,27 @@ public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
         usuario.setIdUsuario(id);
     }
     
+        private CallableStatement getSelectByCorreoYContraCS(Connection conn, String correo, String contra) throws SQLException {
+        String sql = "{CALL OBTENER_USUARIO_X_CORREO_Y_CONTRASENA(?, ?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setString(1, correo);
+        cs.setString(2, contra);
+        return cs;
+    }
+
+    @Override
+    public Usuario obtenerPorCorreoYContrasena(String correo, String contrasena) throws SQLException{
+        
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = getSelectByCorreoYContraCS(conn, correo, contrasena);
+             ResultSet rs = cs.executeQuery()){
+
+            if (rs.next()) {
+                return createFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener entidad", e);
+        }
+        return null;
+    }
 }

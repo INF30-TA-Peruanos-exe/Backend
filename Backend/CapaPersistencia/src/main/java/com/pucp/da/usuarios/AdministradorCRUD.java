@@ -125,4 +125,27 @@ public class AdministradorCRUD extends BaseDAOImpl<Administrador> implements Adm
         administrador.setIdUsuario(id);
     }
     
+        private CallableStatement getSelectByCorreoYContraCS(Connection conn, String clave) throws SQLException {
+        String sql = "{CALL OBTENER_ADMINISTRADOR_X_CORREO_Y_CONTRASENA(?)}";
+        CallableStatement cs = conn.prepareCall(sql);
+        cs.setString(1, clave);
+        return cs;
+    }
+
+    @Override
+    public Administrador obtenerPorCorreoYContrasena(String clave){
+        try (Connection conn = DBManager.getInstance().obtenerConexion();
+             CallableStatement cs = getSelectByCorreoYContraCS(conn, clave);
+             ResultSet rs = cs.executeQuery()){
+
+            if (rs.next()) {
+                return createFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener entidad", e);
+        }
+        return null;
+    }
+    
+    
 }
