@@ -6,14 +6,12 @@ package com.pucp.interfacesDAO;
 
 
 import com.pucp.capadominio.publicacion.Comentario;
-import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
 public interface ComentarioDAO extends BaseDAO<Comentario>{
-     public ArrayList<Comentario> listarPorPublicacion(int idPublicacion);
-     
-     
+    
+    
 }
