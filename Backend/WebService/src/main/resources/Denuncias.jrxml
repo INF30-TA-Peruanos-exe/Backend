@@ -1,0 +1,91 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Denuncias" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b983c2e8-d369-4b90-8574-dc7bd1a36afd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PUCP_TA"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="publicacion_id" class="java.lang.Integer"/>
+	<query language="sql"><![CDATA[SELECT 
+    d.id_reporte,
+    d.motivo,
+    d.fecha_reporte,
+    reportante.nombreusuario AS nombre_reportante,
+    admin.nombreusuario AS nombre_administrador
+FROM denuncia d
+JOIN usuario reportante ON d.reportante = reportante.id_usuario
+LEFT JOIN administrador a ON d.id_administrador = a.id_administrador
+LEFT JOIN usuario admin ON a.id_administrador = admin.id_usuario
+WHERE d.autor = $P{publicacion_id} 
+
+]]></query>
+	<field name="id_reporte" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_reporte"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_reporte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="denuncia"/>
+	</field>
+	<field name="motivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="motivo"/>
+		<property name="com.jaspersoft.studio.field.label" value="motivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="denuncia"/>
+	</field>
+	<field name="fecha_reporte" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_reporte"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_reporte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="denuncia"/>
+	</field>
+	<field name="nombre_reportante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreusuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_reportante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="nombre_administrador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreusuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_administrador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<background splitType="Stretch"/>
+	<columnHeader height="40" splitType="Stretch">
+		<element kind="staticText" uuid="ddaaeb91-3c3c-4d73-b6ff-efe415b14bf6" mode="Opaque" x="0" y="10" width="70" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+			<text><![CDATA[ID_DENUNCIA]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99619180-948e-4e30-aadb-8bcffa7f8b14"/>
+		</element>
+		<element kind="staticText" uuid="5a189bf6-2299-4cc7-83f8-6cbbf2f905bd" mode="Opaque" x="70" y="10" width="120" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+			<text><![CDATA[MOTIVO]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b867cb05-d391-478b-82e2-6e6727902c04"/>
+		</element>
+		<element kind="staticText" uuid="166e6a5c-1dea-4dc0-bc07-edcdda2dfb09" mode="Opaque" x="190" y="10" width="90" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+			<text><![CDATA[FECHA]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8537d94-0965-41ab-989b-50999650a244"/>
+		</element>
+		<element kind="staticText" uuid="30b6e4b7-9dd3-4fa0-90f7-0e5915a31b7e" mode="Opaque" x="280" y="10" width="90" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+			<text><![CDATA[REPORTANTE]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aedbe404-f631-479e-b1fa-b7de73682f81"/>
+		</element>
+		<element kind="staticText" uuid="44c9a424-4dc6-4d33-b2d0-be95ad65e27a" mode="Opaque" x="370" y="10" width="90" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+			<text><![CDATA[ADMINISTRADOR]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="242b204d-76d3-4034-981d-d83eace4e37e"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="71" splitType="Stretch">
+			<element kind="textField" uuid="517e97ef-a4fa-424b-9942-c957c1e6ef5d" x="0" y="0" width="70" height="30">
+				<expression><![CDATA[$F{id_reporte}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99619180-948e-4e30-aadb-8bcffa7f8b14"/>
+			</element>
+			<element kind="textField" uuid="ca762994-9efe-4240-86b3-bac3a119858c" x="70" y="0" width="120" height="30">
+				<expression><![CDATA[$F{motivo}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b867cb05-d391-478b-82e2-6e6727902c04"/>
+			</element>
+			<element kind="textField" uuid="f7ff4573-e512-41ec-8367-9cff7c271353" x="190" y="0" width="90" height="30">
+				<expression><![CDATA[$F{fecha_reporte}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8537d94-0965-41ab-989b-50999650a244"/>
+			</element>
+			<element kind="textField" uuid="ceeb5a05-2665-407f-8427-13949af38ab6" x="280" y="0" width="90" height="30">
+				<expression><![CDATA[$F{nombre_reportante}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aedbe404-f631-479e-b1fa-b7de73682f81"/>
+			</element>
+			<element kind="textField" uuid="aa1f5c67-ccbf-48dc-bafd-85e60c8e3636" x="370" y="0" width="90" height="30">
+				<expression><![CDATA[$F{nombre_administrador}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="242b204d-76d3-4034-981d-d83eace4e37e"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>
