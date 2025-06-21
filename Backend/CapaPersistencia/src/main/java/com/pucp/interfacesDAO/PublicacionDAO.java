@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * @author SEBASTIAN
  */
 public interface PublicacionDAO extends BaseDAO<Publicacion>{
-    
     ArrayList<Publicacion> listarporFacultad(int idFacultad);
     ArrayList<Publicacion> listarporEspecialidad(int idEspecialidad);
     ArrayList<Publicacion> listarporCurso(int idCurso);
     
     public void agregarFavorito(int idUsuario,int idPublicacion);
     public void eliminarfavorito(int idUsuario,int idPublicacion);
-   ArrayList<Publicacion> listarFavorito(int idUsuario);
-   boolean esPublicacionFavorito(int idUsuario,int idPublicacion);
+    ArrayList<Publicacion> listarFavorito(int idUsuario);
+    boolean esPublicacionFavorito(int idUsuario,int idPublicacion);
+    public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario);
 }

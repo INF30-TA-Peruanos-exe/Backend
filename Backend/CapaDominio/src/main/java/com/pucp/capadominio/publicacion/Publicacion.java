@@ -40,7 +40,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "usuario",
     "publicacionesCursos",
     "publicacionesEspecialidades",
-    "publicacionesFacultades"
+    "publicacionesFacultades",
+    "esFavorito"        
 })
 //-------
 public class Publicacion {
@@ -61,6 +62,7 @@ public class Publicacion {
     //Nuevo
     private Image imagen;
     private String rutaImagen;
+    private boolean esFavorito;
 
     //CONSTRUCTORES
     public Publicacion() {
@@ -192,6 +194,15 @@ public class Publicacion {
 
     public void setEstado(EstadoPublicacion estado) {
         this.estado = estado;
+    }
+    
+    @XmlElement(name = "esFavorito")
+    public boolean getEsFavorito(){
+        return esFavorito;
+    }
+    
+    public void setEsFavorito(boolean esFavorito){
+        this.esFavorito = esFavorito;
     }
 
     //Los getters de los arraylist deben retornar la lista original

@@ -157,16 +157,14 @@ public class PublicacionWS {
             return "Error: " + ex.getMessage();
         }
     }
-
-    //Esto iria en la parte de usuario
-//    @WebMethod(operationName = "marcarFavorito")
-//    public void marcarFavorito(@WebParam(name = "idPublicacion") int idPublicacion) {
-//        try{
-//            publicacionService.eliminarPublicacion(idPublicacion);
-    //Falta implementar una funcion que llame a Add -> actualice
-//        } catch (Exception ex) {
-//            throw new WebServiceException("Error al eliminar publicación: " + ex.getMessage());
-//        }
-//    }
+    
+    @WebMethod(operationName = "listarPublicacionConFavoritos")
+    public ArrayList<Publicacion> listarPublicacionConFavoritos(@WebParam(name = "idUsuario") int idUsuario){
+        try{
+            return publicacionService.listarPublicacionConFavoritos(idUsuario);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar publicaciones con favoritos " + ex.getMessage());
+        }       
+    }
     
 }

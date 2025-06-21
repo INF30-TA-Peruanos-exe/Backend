@@ -238,5 +238,12 @@ public String getFechaPublicacionString(int idPublicacion) throws Exception {
         return publicacionDAO.esPublicacionFavorito(idUsuario, idPublicacion);
     }
     
-    
+    @Override
+    public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario) throws Exception {
+        UsuarioCRUD usuario = new UsuarioCRUD();
+        if(usuario.obtenerPorId(idUsuario)==null){
+            throw new Exception("El usuario no existe");
+        }
+        return publicacionDAO.listarPublicacionConFavoritos(idUsuario);
+    }
 }

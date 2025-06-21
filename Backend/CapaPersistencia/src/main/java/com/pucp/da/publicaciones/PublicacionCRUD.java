@@ -329,4 +329,32 @@ public Publicacion obtenerPorId(int id) {
     
     return false;
     }
+    
+    @Override
+    public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario) {
+        ArrayList<Publicacion> publicaciones = new ArrayList<>();
+        String sql = "{CALL LISTAR_PUBLICACIONES_CON_FAVORITOS(?)}";
+        try (Connection conn = DBManager.getInstance().obtenerConexion(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, idUsuario);
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    Publicacion publi = new Publicacion();
+                    publi.setIdPublicacion(rs.getInt("idpublicacion"));
+                    publi.setTitulo(rs.getString("titulo"));
+                    publi.setDescripcion(rs.getString("descripcion"));
+                    publi.setEstado(EstadoPublicacion.valueOf(rs.getString("estado")));
+                    publi.setFechaPublicacion(rs.getDate("fechapublicacion"));
+                    publi.setRutaImagen(rs.getString("url_imagen"));
+                    publi.setActivo(rs.getBoolean("activo"));
+                    publi.setUsuario(usuarioDAO.obtenerPorId(rs.getInt("id_usuario")));
+                    publi.setEsFavorito(rs.getBoolean("esFavorito"));
+                    publicaciones.add(publi);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar publicaciones con favoritos", e);
+        }
+        return publicaciones;
+    }
 }
+
