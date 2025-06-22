@@ -6,6 +6,7 @@ package com.pucp.capanegocio.publicaciones;
 
 import com.pucp.capadominio.publicacion.Comentario;
 import com.pucp.capanegocio.interfacesService.ComentarioService;
+import com.pucp.capanegocio.notificaciones.correoPorComentarios;
 import com.pucp.da.publicaciones.ComentarioCRUD;
 import com.pucp.interfacesDAO.ComentarioDAO;
 import java.util.ArrayList;
@@ -16,9 +17,11 @@ import java.util.ArrayList;
  */
 public class ComentarioServiceImpl implements ComentarioService{
     private final ComentarioDAO comentarioDAO;
+    private correoPorComentarios servicioCorreo;
     
     public ComentarioServiceImpl(){
         this.comentarioDAO = new ComentarioCRUD();
+        servicioCorreo = new correoPorComentarios();
     }
 
     @Override
@@ -40,6 +43,7 @@ public class ComentarioServiceImpl implements ComentarioService{
         }
         
         comentarioDAO.insertar(comentario);
+        servicioCorreo.enviarCorreoPorComentario(comentario);
     }
 
     @Override
