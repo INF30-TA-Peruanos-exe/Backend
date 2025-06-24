@@ -6,7 +6,9 @@ package com.pucp.capanegocio.publicaciones;
 
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
+import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
+import com.pucp.capanegocio.notificaciones.correoPorPubliGuardado;
 import com.pucp.config.DBManager;
 import com.pucp.da.publicaciones.PublicacionCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
@@ -21,40 +23,43 @@ import java.util.ArrayList;
  *
  * @author Axel
  */
-public class PublicacionServiceImpl implements PublicacionService{
+public class PublicacionServiceImpl implements PublicacionService {
+
     private final PublicacionDAO publicacionDAO;
-    
-    public PublicacionServiceImpl(){
+    private correoPorPubliGuardado servicioCorreo;
+
+    public PublicacionServiceImpl() {
         this.publicacionDAO = new PublicacionCRUD();
+        servicioCorreo = new correoPorPubliGuardado();
     }
 
     @Override
     public void registrarPublicacion(Publicacion publicacion) throws Exception {
-        if(publicacion.getDescripcion()==null || publicacion.getDescripcion().trim().isEmpty()){
+        if (publicacion.getDescripcion() == null || publicacion.getDescripcion().trim().isEmpty()) {
             throw new Exception("La descripcion no puede estar vacia");
         }
-        if(publicacion.getEstado()==null){
+        if (publicacion.getEstado() == null) {
             throw new Exception("El estado no puede estar vacia");
         }
-        if(publicacion.getFechaPublicacion()==null){
+        if (publicacion.getFechaPublicacion() == null) {
             throw new Exception("La fecha no puede ser nula");
         }
         //Validaciones de rutas
-        if(publicacion.getRutaImagen()==null || publicacion.getRutaImagen().trim().isEmpty()){
+        if (publicacion.getRutaImagen() == null || publicacion.getRutaImagen().trim().isEmpty()) {
             throw new Exception("La ruta de imagen no puede estar vacía");
         }
-        if(!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg") ||
-                publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))){
+        if (!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg")
+                || publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))) {
             throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
         }
-        
+
 //        if(publicacion.getImagen()==null){
 //            throw new Exception("La imagen no puede estar vacía");
 //        }
-        if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
+        if (publicacion.getTitulo() == null || publicacion.getTitulo().trim().isEmpty()) {
             throw new Exception("El titulo no puede estar vacio");
         }
-        if(publicacion.getUsuario()==null){
+        if (publicacion.getUsuario() == null) {
             throw new Exception("El usuario no puede estar vacio");
         }
 //        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
@@ -66,60 +71,60 @@ public class PublicacionServiceImpl implements PublicacionService{
 //        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
 //            throw new Exception("La lista de facultades no puede estar vacia");
 //        }
-        
+
         publicacionDAO.insertar(publicacion);
     }
 
     @Override
     public void actualizarPublicacion(Publicacion publicacion) throws Exception {
-        if(publicacionDAO.obtenerPorId(publicacion.getIdPublicacion())==null){
+        if (publicacionDAO.obtenerPorId(publicacion.getIdPublicacion()) == null) {
             throw new Exception("La publicacion no existe");
         }
-        
-        if(publicacion.getDescripcion()==null || publicacion.getDescripcion().trim().isEmpty()){
+
+        if (publicacion.getDescripcion() == null || publicacion.getDescripcion().trim().isEmpty()) {
             throw new Exception("La descripcion no puede estar vacia");
         }
-        if(publicacion.getEstado()==null){
+        if (publicacion.getEstado() == null) {
             throw new Exception("El estado no puede estar vacia");
         }
-        if(publicacion.getFechaPublicacion()==null){
+        if (publicacion.getFechaPublicacion() == null) {
             throw new Exception("La fecha no puede ser nula");
         }
         //Validaciones de rutas
-        if(publicacion.getRutaImagen()==null || publicacion.getRutaImagen().trim().isEmpty()){
+        if (publicacion.getRutaImagen() == null || publicacion.getRutaImagen().trim().isEmpty()) {
             throw new Exception("La ruta de imagen no puede estar vacía");
         }
-        if(!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg") ||
-                publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))){
+        if (!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg")
+                || publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))) {
             throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
         }
-        
+
 //        if(publicacion.getImagen()==null){
 //            throw new Exception("La imagen no puede estar vacía");
 //        }
-        if(publicacion.getTitulo()==null || publicacion.getTitulo().trim().isEmpty()){
+        if (publicacion.getTitulo() == null || publicacion.getTitulo().trim().isEmpty()) {
             throw new Exception("El titulo no puede estar vacio");
         }
-        if(publicacion.getUsuario()==null){
+        if (publicacion.getUsuario() == null) {
             throw new Exception("El usuario no puede estar vacio");
         }
-        if(publicacion.getPublicacionesCursos()==null || publicacion.getPublicacionesCursos().isEmpty()){
+        if (publicacion.getPublicacionesCursos() == null || publicacion.getPublicacionesCursos().isEmpty()) {
             throw new Exception("La lista de cursos no puede estar vacia");
         }
-        if(publicacion.getPublicacionesEspecialidades()==null || publicacion.getPublicacionesEspecialidades().isEmpty()){
+        if (publicacion.getPublicacionesEspecialidades() == null || publicacion.getPublicacionesEspecialidades().isEmpty()) {
             throw new Exception("La lista de especialidades no puede estar vacia");
         }
-        if(publicacion.getPublicacionesFacultades()==null || publicacion.getPublicacionesFacultades().isEmpty()){
+        if (publicacion.getPublicacionesFacultades() == null || publicacion.getPublicacionesFacultades().isEmpty()) {
             throw new Exception("La lista de facultades no puede estar vacia");
         }
-        
+
         publicacionDAO.actualizar(publicacion);
     }
 
     @Override
     public void eliminarPublicacion(int idPublicacion) throws Exception {
         Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
-        if(publicacion == null){
+        if (publicacion == null) {
             throw new Exception("La publicacion no existe");
         }
         publicacionDAO.eliminar(idPublicacion);
@@ -128,16 +133,16 @@ public class PublicacionServiceImpl implements PublicacionService{
     @Override
     public Publicacion obtenerPublicacion(int idPublicacion) throws Exception {
         Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
-        if(publicacion == null){
+        if (publicacion == null) {
             throw new Exception("La publicacion no existe");
         }
         return publicacion;
     }
-    
+
     @Override
     public void cambiarEstadoPublicacion(int idPublicacion, String estado) throws Exception {
         Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
-        if(publicacion == null){
+        if (publicacion == null) {
             throw new Exception("La publicacion no existe");
         }
         publicacion.setEstado(EstadoPublicacion.valueOf(estado));
@@ -163,62 +168,70 @@ public class PublicacionServiceImpl implements PublicacionService{
     public ArrayList<Publicacion> listarPorCurso(int idCurso) throws Exception {
         return publicacionDAO.listarporCurso(idCurso);
     }
-    
-@Override
-public String getFechaPublicacionString(int idPublicacion) throws Exception {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    String fechaFormateada = "Sin fecha";
 
-    try {
-        conn = DBManager.getInstance().obtenerConexion();
-        String sql = "SELECT fechapublicacion FROM publicacion WHERE idpublicacion = ?";
-        ps = conn.prepareStatement(sql);
-        ps.setInt(1, idPublicacion);
-        rs = ps.executeQuery();
+    @Override
+    public String getFechaPublicacionString(int idPublicacion) throws Exception {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String fechaFormateada = "Sin fecha";
 
-        if (rs.next()) {
-            java.sql.Date fecha = rs.getDate("fechapublicacion");
-            if (fecha != null) {
-                fechaFormateada = new java.text.SimpleDateFormat("dd/MM/yyyy").format(fecha);
+        try {
+            conn = DBManager.getInstance().obtenerConexion();
+            String sql = "SELECT fechapublicacion FROM publicacion WHERE idpublicacion = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, idPublicacion);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                java.sql.Date fecha = rs.getDate("fechapublicacion");
+                if (fecha != null) {
+                    fechaFormateada = new java.text.SimpleDateFormat("dd/MM/yyyy").format(fecha);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error al obtener la fecha de publicación: " + e.getMessage());
+        } finally {
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException ignored) {
+            }
+            if (ps != null) try {
+                ps.close();
+            } catch (SQLException ignored) {
+            }
+            if (conn != null) try {
+                conn.close();
+            } catch (SQLException ignored) {
             }
         }
-    } catch (SQLException e) {
-        throw new Exception("Error al obtener la fecha de publicación: " + e.getMessage());
-    } finally {
-        if (rs != null) try { rs.close(); } catch (SQLException ignored) {}
-        if (ps != null) try { ps.close(); } catch (SQLException ignored) {}
-        if (conn != null) try { conn.close(); } catch (SQLException ignored) {}
+
+        return fechaFormateada;
     }
-
-    return fechaFormateada;
-}
-
-    
 
     @Override
     public void agregarFavorito(int idUsuario, int idPublicacion) throws Exception {
         Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
-        UsuarioCRUD usuario = new UsuarioCRUD();
-        if(publicacion == null){
-            throw new Exception("La publicacion no existe");
+        UsuarioCRUD usuarioCRUD = new UsuarioCRUD();
+        if (publicacion == null) {
+            throw new Exception("La publicación no existe");
         }
-        if(usuario.obtenerPorId(idUsuario)==null){
+        Usuario usuario = usuarioCRUD.obtenerPorId(idUsuario);
+        if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
-        
         publicacionDAO.agregarFavorito(idPublicacion, idUsuario);
+        servicioCorreo.enviarCorreoPorGuardado(publicacion, usuario);
     }
 
     @Override
     public void eliminarFavorito(int idUsuario, int idPublicacion) throws Exception {
-       Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
-       UsuarioCRUD usuario = new UsuarioCRUD();
-        if(publicacion == null){
+        Publicacion publicacion = publicacionDAO.obtenerPorId(idPublicacion);
+        UsuarioCRUD usuario = new UsuarioCRUD();
+        if (publicacion == null) {
             throw new Exception("La publicacion no existe");
         }
-        if(usuario.obtenerPorId(idUsuario)==null){
+        if (usuario.obtenerPorId(idUsuario) == null) {
             throw new Exception("El usuario no existe");
         }
         publicacionDAO.eliminarfavorito(idUsuario, idPublicacion);
@@ -227,7 +240,7 @@ public String getFechaPublicacionString(int idPublicacion) throws Exception {
     @Override
     public ArrayList<Publicacion> listarFavoritos(int idUsuario) throws Exception {
         UsuarioCRUD usuario = new UsuarioCRUD();
-        if(usuario.obtenerPorId(idUsuario)==null){
+        if (usuario.obtenerPorId(idUsuario) == null) {
             throw new Exception("El usuario no existe");
         }
         return publicacionDAO.listarFavorito(idUsuario);
@@ -237,11 +250,11 @@ public String getFechaPublicacionString(int idPublicacion) throws Exception {
     public boolean esFavorito(int idUsuario, int idPublicacion) throws Exception {
         return publicacionDAO.esPublicacionFavorito(idUsuario, idPublicacion);
     }
-    
+
     @Override
     public ArrayList<Publicacion> listarPublicacionConFavoritos(int idUsuario) throws Exception {
         UsuarioCRUD usuario = new UsuarioCRUD();
-        if(usuario.obtenerPorId(idUsuario)==null){
+        if (usuario.obtenerPorId(idUsuario) == null) {
             throw new Exception("El usuario no existe");
         }
         return publicacionDAO.listarPublicacionConFavoritos(idUsuario);
