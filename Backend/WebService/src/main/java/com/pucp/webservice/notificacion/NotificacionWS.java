@@ -44,7 +44,7 @@ public class NotificacionWS {
         }
     }
     
-    @WebMethod(operationName = "eliminarDenuncia")
+    @WebMethod(operationName = "eliminarNotificacion")
     public void eliminarNotificacion(@WebParam(name = "idNotificacion") int idNotificacion){
         try {
             notificacionService.eliminarNotificacion(idNotificacion);
