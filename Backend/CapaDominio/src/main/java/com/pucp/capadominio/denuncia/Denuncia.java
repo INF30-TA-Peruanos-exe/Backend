@@ -7,7 +7,7 @@ package com.pucp.capadominio.denuncia;
 import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.capadominio.usuarios.Administrador;
 import com.pucp.capadominio.publicacion.Publicacion;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 
 /**
@@ -29,7 +29,7 @@ public class Denuncia {
         this.autor = new Publicacion();
         this.denunciante = new Usuario();
         this.admin = new Administrador();
-        this.fechaDenuncia = Date.valueOf(LocalDate.now());
+        this.fechaDenuncia = new Date();
     }
     
     //Falta implementar el constructor copia para PUBLICACION, USUARIO
@@ -39,7 +39,7 @@ public class Denuncia {
         this.autor = autor;
         this.denunciante = reportante;
         this.motivo = motivo;
-        this.fechaDenuncia = Date.valueOf(LocalDate.now());
+        this.fechaDenuncia = new Date();
         this.activo = activo;
         this.admin = admin;
     }

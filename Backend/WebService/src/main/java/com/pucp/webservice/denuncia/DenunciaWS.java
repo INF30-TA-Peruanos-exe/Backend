@@ -81,6 +81,7 @@ public class DenunciaWS {
         try {
             return denunciaService.listarDenuncia();
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new WebServiceException("Error al listar denuncias: " + ex.getMessage());
         }        
     }

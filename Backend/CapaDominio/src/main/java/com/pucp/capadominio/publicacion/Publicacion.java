@@ -12,11 +12,9 @@ import com.pucp.capadominio.notificacion.Notificacion;
 import com.pucp.capadominio.usuarios.Usuario;
 
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 

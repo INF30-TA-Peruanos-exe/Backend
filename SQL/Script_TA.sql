@@ -1082,8 +1082,28 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`atacantePeruano`@`%` PROCEDURE `LISTAR_DENUNCIA_TODOS`()
 BEGIN
-    SELECT * FROM denuncia WHERE activo=1;
-END ;;
+    SELECT 
+        d.id_reporte,
+        d.motivo,
+        d.fecha_reporte,
+        d.activo,
+
+        -- Datos del autor (publicación)
+        p.idpublicacion,
+        p.titulo AS titulo_publicacion,
+
+        -- Datos del reportante (usuario)
+        u.id_usuario AS id_reportante,
+        u.nombre AS nombre_reportante,
+
+        -- Solo ID del administrador
+        a.id_administrador
+
+    FROM denuncia d
+    INNER JOIN publicacion p ON d.autor = p.idpublicacion
+    INNER JOIN usuario u ON d.reportante = u.id_usuario
+    LEFT JOIN administrador a ON d.id_administrador = a.id_administrador;
+END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
