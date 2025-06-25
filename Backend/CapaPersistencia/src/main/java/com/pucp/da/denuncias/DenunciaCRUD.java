@@ -6,6 +6,9 @@ package com.pucp.da.denuncias;
 
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.denuncia.Denuncia;
+import com.pucp.capadominio.publicacion.Publicacion;
+import com.pucp.capadominio.usuarios.Administrador;
+import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.da.publicaciones.PublicacionCRUD;
 import com.pucp.da.usuarios.AdministradorCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
@@ -45,7 +48,7 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
         cs.setInt(1, denuncia.getAutor().getIdPublicacion());
         cs.setInt(2, denuncia.getDenunciante().getIdUsuario());
         cs.setString(3, denuncia.getMotivo());
-        cs.setDate(4, denuncia.getFechaDenuncia());
+        cs.setDate(4, new java.sql.Date(denuncia.getFechaDenuncia().getTime()));
         cs.setNull(5, java.sql.Types.INTEGER);
         cs.setBoolean(6, denuncia.isActivo());
         cs.registerOutParameter(7, Types.INTEGER);
@@ -60,7 +63,7 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
         cs.setInt(2, denuncia.getAutor().getIdPublicacion());
         cs.setInt(3, denuncia.getDenunciante().getIdUsuario());
         cs.setString(4, denuncia.getMotivo());
-        cs.setDate(5, denuncia.getFechaDenuncia());
+        cs.setDate(5, new java.sql.Date(denuncia.getFechaDenuncia().getTime()));
         cs.setInt(6,denuncia.getAdmin().getIdUsuario());
         cs.setBoolean(7, denuncia.isActivo());
         return cs; 
@@ -92,13 +95,31 @@ public class DenunciaCRUD extends BaseDAOImpl<Denuncia>implements DenunciaDAO{
     @Override
     protected Denuncia createFromResultSet(ResultSet rs) throws SQLException {
         Denuncia denun = new Denuncia();
-        denun.setIdDenuncia(rs.getInt("id_reporte"));
-        denun.setAutor(publicacionDAO.obtenerPorId(rs.getInt("autor")));
-        denun.setDenunciante(usuarioDAO.obtenerPorId(rs.getInt("reportante")));
-        denun.setMotivo(rs.getString("motivo"));
-        denun.setFechaDenuncia(rs.getDate("fecha_reporte"));
-        denun.setAdmin(administradorDAO.obtenerPorId(rs.getInt("id_administrador")));
-        denun.setActivo(rs.getBoolean("activo"));
+    denun.setIdDenuncia(rs.getInt("id_reporte"));
+    denun.setMotivo(rs.getString("motivo"));
+    denun.setFechaDenuncia(rs.getDate("fecha_reporte"));
+    denun.setActivo(rs.getBoolean("activo"));
+
+    // Autor (Publicación)
+    Publicacion pub = new Publicacion();
+    pub.setIdPublicacion(rs.getInt("idpublicacion"));
+    pub.setTitulo(rs.getString("titulo_publicacion"));
+    denun.setAutor(pub);
+
+    // Reportante (Usuario)
+    Usuario usuario = new Usuario();
+    usuario.setIdUsuario(rs.getInt("id_reportante"));
+    usuario.setNombre(rs.getString("nombre_reportante"));
+    denun.setDenunciante(usuario);
+    
+    // Administrador (opcional)
+    int idAdmin = rs.getInt("id_administrador");
+    if (!rs.wasNull()) {
+        Administrador admin = new Administrador();
+        admin.setIdUsuario(idAdmin);
+        denun.setAdmin(admin);
+    }
+    
         return denun;
     }
 
