@@ -6,12 +6,13 @@ package com.pucp.interfacesDAO;
 
 
 import com.pucp.capadominio.notificacion.Notificacion;
+import java.util.ArrayList;
 
 /**
  *
  * @author SEBASTIAN
  */
 public interface NotificacionDAO extends BaseDAO<Notificacion>{
-
+    ArrayList<Notificacion> listarNotificacionesUsuario(int id_usuario);
     
 }

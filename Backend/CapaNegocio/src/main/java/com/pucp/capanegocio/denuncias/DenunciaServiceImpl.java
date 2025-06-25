@@ -5,8 +5,14 @@
 package com.pucp.capanegocio.denuncias;
 
 import com.pucp.capadominio.denuncia.Denuncia;
+import com.pucp.capadominio.notificacion.Notificacion;
+import com.pucp.capadominio.notificacion.TipoNotificacion;
+import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capanegocio.interfacesService.DenunciaService;
+import com.pucp.capanegocio.notificaciones.NotificacionServiceImpl;
 import com.pucp.da.denuncias.DenunciaCRUD;
+import com.pucp.da.notificaciones.NotificacionCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.DenunciaDAO;
 import java.util.ArrayList;
 
@@ -43,6 +49,8 @@ public class DenunciaServiceImpl implements DenunciaService{
         }
         
         denunciaDAO.insertar(denuncia);
+       
+        
     }
 
     @Override

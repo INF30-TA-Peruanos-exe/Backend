@@ -8,13 +8,17 @@ import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.categorias.Curso;
 import com.pucp.capadominio.categorias.Especialidad;
 import com.pucp.capadominio.categorias.Facultad;
+import com.pucp.capadominio.notificacion.Notificacion;
+import com.pucp.capadominio.notificacion.TipoNotificacion;
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.config.DBManager;
 import com.pucp.da.categorias.CursoCRUD;
 import com.pucp.da.categorias.EspecialidadCRUD;
 import com.pucp.da.categorias.FacultadCRUD;
+import com.pucp.da.notificaciones.NotificacionCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
+import com.pucp.interfacesDAO.NotificacionDAO;
 import com.pucp.interfacesDAO.PublicacionDAO;
 import java.sql.CallableStatement;
 
@@ -268,6 +272,8 @@ public Publicacion obtenerPorId(int id) {
         } catch (SQLException e) {
         throw new RuntimeException("Error al agregar publicacion favorita en CRUD", e);
         }
+
+
         
     }
 

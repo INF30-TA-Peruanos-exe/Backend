@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  *
@@ -124,4 +125,25 @@ public class UsuarioCRUD extends BaseDAOImpl<Usuario> implements UsuarioDAO{
         }
         return null;
     }
+
+    @Override
+    public ArrayList<Usuario> listarUsuariosFavoritos(int idPublicacion) {
+       ArrayList<Usuario> usuarios = new ArrayList<>();
+        String sql = "{CALL ListarUsuarioXFavorito(?)}";
+        try (Connection conn = DBManager.getInstance().obtenerConexion(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, idPublicacion);
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    Usuario usuario;
+                    usuario = obtenerPorId(rs.getInt(1));
+                    usuarios.add(usuario);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar publicaciones con favoritos", e);
+        }
+        return usuarios;
+        
+    }
+    
 }

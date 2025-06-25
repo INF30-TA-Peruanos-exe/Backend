@@ -99,5 +99,9 @@ public class NotificacionServiceImpl implements NotificacionService{
     public ArrayList<Notificacion> listarNotificacion() throws Exception {
         return notificacionDAO.listarTodos();
     }
+    @Override
+     public ArrayList<Notificacion> listarNotificacionUsuario(int idUsuario) throws Exception {
+        return notificacionDAO.listarNotificacionesUsuario(idUsuario);
+    }
     
 }

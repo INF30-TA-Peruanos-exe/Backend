@@ -4,10 +4,16 @@
  */
 package com.pucp.capanegocio.publicaciones;
 
+import com.pucp.capadominio.notificacion.Notificacion;
+import com.pucp.capadominio.notificacion.TipoNotificacion;
 import com.pucp.capadominio.publicacion.Comentario;
+import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.capanegocio.interfacesService.ComentarioService;
+import com.pucp.capanegocio.notificaciones.NotificacionServiceImpl;
 import com.pucp.capanegocio.notificaciones.correoPorComentarios;
+import com.pucp.da.notificaciones.NotificacionCRUD;
 import com.pucp.da.publicaciones.ComentarioCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.ComentarioDAO;
 import java.util.ArrayList;
 
@@ -41,9 +47,23 @@ public class ComentarioServiceImpl implements ComentarioService{
         if(comentario.getValoracion()<=0){
             throw new Exception("La valoración no puede ser un número negativo");
         }
-        
         comentarioDAO.insertar(comentario);
         servicioCorreo.enviarCorreoPorComentario(comentario);
+         Usuario usuariodueno = comentario.getPublicacion().getUsuario();
+        
+        NotificacionServiceImpl notificacionDAO = new NotificacionServiceImpl();
+        
+        
+        Notificacion notificacion = new Notificacion();
+    notificacion.setMensaje("Un usuario ha comentado tu publicación: \"" + comentario.getContenido()+ "\"");
+    notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
+    notificacion.setCantidad(1);
+    notificacion.setActivo(true);
+    notificacion.setNotificador(usuariodueno); // quien guardó
+    notificacion.setAutor(comentario.getPublicacion());   // publicación afectada
+    
+    notificacionDAO.registrarNotificacion(notificacion);
+        
     }
 
     @Override

@@ -25,8 +25,8 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
     
     //CAMBIO----------------------
     /**
-     * Por defecto no se recupera ningún ID generado.
-     * Las subclases pueden sobrescribir este método si usan parámetros OUT para devolver IDs.
+     * Por defecto no se recupera ningún ID generado.Las subclases pueden sobrescribir este método si usan parámetros OUT para devolver IDs.
+     * @return
      */
     protected int obtenerIdGenerado(CallableStatement cs) throws SQLException {
         return -1; // Valor por defecto: no hay OUT

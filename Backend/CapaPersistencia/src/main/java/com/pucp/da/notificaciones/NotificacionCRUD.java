@@ -7,6 +7,7 @@ package com.pucp.da.notificaciones;
 import com.pucp.base.BaseDAOImpl;
 import com.pucp.capadominio.notificacion.Notificacion;
 import com.pucp.capadominio.notificacion.TipoNotificacion;
+import com.pucp.config.DBManager;
 import com.pucp.da.publicaciones.PublicacionCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.NotificacionDAO;
@@ -15,6 +16,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -43,7 +46,7 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         cs.setString(1, notificacion.getMensaje());
         cs.setString(2, notificacion.getTipoNotificacion().name());
         cs.setInt(3, notificacion.getCantidad());
-        cs.setDate(4, notificacion.getFecha());
+        cs.setTimestamp(4, new java.sql.Timestamp(notificacion.getFecha().getTime()));
         cs.setInt(5, notificacion.getAutor().getIdPublicacion());
         cs.setInt(6, notificacion.getNotificador().getIdUsuario());
         cs.setBoolean(7, notificacion.isActivo());
@@ -59,7 +62,7 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         cs.setString(2, notificacion.getMensaje());
         cs.setString(3, notificacion.getTipoNotificacion().name());
         cs.setInt(4, notificacion.getCantidad());
-        cs.setDate(5, notificacion.getFecha());
+        cs.setTimestamp(5, new java.sql.Timestamp(notificacion.getFecha().getTime()));
         cs.setInt(6, notificacion.getAutor().getIdPublicacion());
         cs.setInt(7, notificacion.getNotificador().getIdUsuario());
         cs.setBoolean(8, notificacion.isActivo());
@@ -96,7 +99,7 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
         noti.setMensaje(rs.getString("mensaje"));
         noti.setTipoNotificacion(TipoNotificacion.valueOf(rs.getString("tipo_notificacion")));
         noti.setCantidad(rs.getInt("cantidad"));
-        noti.setFecha(rs.getDate("fecha"));
+       noti.setFecha(rs.getTimestamp("fecha"));
         noti.setAutor(publicacionDAO.obtenerPorId(rs.getInt("id_publicacion")));
         noti.setNotificador(usuarioDAO.obtenerPorId(rs.getInt("id_usuario")));
         noti.setActivo(rs.getBoolean("activo"));
@@ -107,5 +110,24 @@ public class NotificacionCRUD extends BaseDAOImpl<Notificacion> implements Notif
     protected void setId(Notificacion notificacion, int id) {
         notificacion.setIdNotificacion(id);
     }
+
+    @Override
+    public ArrayList<Notificacion> listarNotificacionesUsuario(int idUsuario) {
+        ArrayList<Notificacion> notificaciones = new ArrayList<>();
+        String sql = "{CALL ListarNotificacionesUsuario(?)}";
+        try (Connection conn = DBManager.getInstance().obtenerConexion(); CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, idUsuario);
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                      notificaciones.add(createFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al listar notificaciones de usuario", e);
+        }
+        return notificaciones;
+    
+    }
+    
     
 }

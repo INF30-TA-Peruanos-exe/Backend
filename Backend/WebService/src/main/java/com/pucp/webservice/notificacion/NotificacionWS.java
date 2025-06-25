@@ -70,5 +70,12 @@ public class NotificacionWS {
             throw new WebServiceException("Error al listar notificaciones: " + ex.getMessage());
         }        
     }
-    
+    @WebMethod(operationName = "listarNotificacionUsuario")
+     public ArrayList<Notificacion> listarNotificacionPorUsuario(@WebParam(name = "idUsuario")int idUsuario){
+        try {
+            return notificacionService.listarNotificacionUsuario(idUsuario);
+        } catch (Exception ex) {
+            throw new WebServiceException("Error al listar notificaciones por usuario: " + ex.getMessage());
+        }        
+    }
 }

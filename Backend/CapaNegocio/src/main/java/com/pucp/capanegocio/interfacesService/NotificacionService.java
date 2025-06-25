@@ -17,4 +17,5 @@ public interface NotificacionService {
     void eliminarNotificacion(int idNotificacion) throws Exception;
     Notificacion obtenerNotificacion(int idNotificacion) throws Exception;
     ArrayList<Notificacion> listarNotificacion() throws Exception;
+    ArrayList<Notificacion> listarNotificacionUsuario(int idUsuario) throws Exception;
 }

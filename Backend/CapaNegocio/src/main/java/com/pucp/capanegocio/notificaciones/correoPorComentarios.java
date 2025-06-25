@@ -7,6 +7,7 @@ import com.pucp.capadominio.publicacion.Comentario;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Usuario;
 import com.pucp.da.publicaciones.PublicacionCRUD;
+import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.PublicacionDAO;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
@@ -15,6 +16,7 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -75,4 +77,33 @@ public class correoPorComentarios {
             System.err.println("Error al enviar correo: " + ex.getMessage());
         }
     }
+    public void enviarCorreoPorGuardadoNoVisible(Publicacion publicacion) {
+    UsuarioCRUD usuarioCRUD = new UsuarioCRUD();
+    ArrayList<Usuario> usuarios = usuarioCRUD.listarUsuariosFavoritos(publicacion.getIdPublicacion());
+
+    Session session = getEmailSession();
+
+    for (Usuario usuario : usuarios) {
+        try {
+            Message mensaje = new MimeMessage(session);
+            mensaje.setFrom(new InternetAddress(EMAIL_FROM));
+
+            String destinatario = usuario.getCorreo();
+            mensaje.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
+
+            String asunto = "Una de tus publicaciones guardadas ya no está disponible";
+            mensaje.setSubject(asunto);
+
+            String textoCuerpo = "Tu publicación guardada \"" + publicacion.getTitulo() + 
+                "\" ya no es visible porque se marcó como OCULTO o RESTRINGIDO." + "\n\n" +
+                "Este mensaje fue generado automáticamente desde la aplicación PUCPQhatu.";
+
+            mensaje.setText(textoCuerpo);
+            Transport.send(mensaje);
+        } catch (Exception ex) {
+            System.err.println("Error al enviar correo a " + usuario.getCorreo() + ": " + ex.getMessage());
+        }
+    }
+}
+
 }

@@ -4,12 +4,18 @@
  */
 package com.pucp.capanegocio.publicaciones;
 
+import com.pucp.capadominio.notificacion.Notificacion;
+import com.pucp.capadominio.notificacion.TipoNotificacion;
+import com.pucp.capanegocio.notificaciones.correoPorComentarios;
 import com.pucp.capadominio.publicacion.EstadoPublicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capadominio.usuarios.Usuario;
+import com.pucp.capanegocio.interfacesService.NotificacionService;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
+import com.pucp.capanegocio.notificaciones.NotificacionServiceImpl;
 import com.pucp.capanegocio.notificaciones.correoPorPubliGuardado;
 import com.pucp.config.DBManager;
+import com.pucp.da.notificaciones.NotificacionCRUD;
 import com.pucp.da.publicaciones.PublicacionCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.PublicacionDAO;
@@ -26,12 +32,15 @@ import java.util.ArrayList;
 public class PublicacionServiceImpl implements PublicacionService {
 
     private final PublicacionDAO publicacionDAO;
-    private correoPorPubliGuardado servicioCorreo;
-
-    public PublicacionServiceImpl() {
+    private final correoPorComentarios servicioCorreoOculto;
+    private final correoPorPubliGuardado servicioCorreoGuardado;
+    
+    public PublicacionServiceImpl(){
         this.publicacionDAO = new PublicacionCRUD();
-        servicioCorreo = new correoPorPubliGuardado();
-    }
+        this.servicioCorreoOculto= new correoPorComentarios();
+        this.servicioCorreoGuardado= new correoPorPubliGuardado();
+        
+  }
 
     @Override
     public void registrarPublicacion(Publicacion publicacion) throws Exception {
@@ -77,7 +86,13 @@ public class PublicacionServiceImpl implements PublicacionService {
 
     @Override
     public void actualizarPublicacion(Publicacion publicacion) throws Exception {
-        if (publicacionDAO.obtenerPorId(publicacion.getIdPublicacion()) == null) {
+
+        
+
+        Publicacion publicacionAntigua;
+        publicacionAntigua=publicacionDAO.obtenerPorId(publicacion.getIdPublicacion());
+        if(publicacionAntigua==null){
+
             throw new Exception("La publicacion no existe");
         }
 
@@ -94,8 +109,12 @@ public class PublicacionServiceImpl implements PublicacionService {
         if (publicacion.getRutaImagen() == null || publicacion.getRutaImagen().trim().isEmpty()) {
             throw new Exception("La ruta de imagen no puede estar vacía");
         }
-        if (!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg")
-                || publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))) {
+
+        
+
+        if(!(publicacion.getRutaImagen().endsWith(".jpg") || publicacion.getRutaImagen().endsWith(".jpeg")  ||
+                publicacion.getRutaImagen().endsWith(".png") || publicacion.getRutaImagen().endsWith(".gif"))){
+
             throw new Exception("La ruta debe apuntar a un archivo de imagen válido (.jpg, .png, etc.)");
         }
 
@@ -116,6 +135,10 @@ public class PublicacionServiceImpl implements PublicacionService {
         }
         if (publicacion.getPublicacionesFacultades() == null || publicacion.getPublicacionesFacultades().isEmpty()) {
             throw new Exception("La lista de facultades no puede estar vacia");
+        }
+
+        if((publicacionAntigua.getEstado()==EstadoPublicacion.VISIBLE) && (publicacion.getEstado()==EstadoPublicacion.OCULTO || publicacion.getEstado()==EstadoPublicacion.RESTRINGIDO)){
+            servicioCorreoOculto.enviarCorreoPorGuardadoNoVisible(publicacion);
         }
 
         publicacionDAO.actualizar(publicacion);
@@ -217,11 +240,18 @@ public class PublicacionServiceImpl implements PublicacionService {
             throw new Exception("La publicación no existe");
         }
         Usuario usuario = usuarioCRUD.obtenerPorId(idUsuario);
+        
         if (usuario == null) {
             throw new Exception("El usuario no existe");
         }
+        NotificacionServiceImpl notificacionDAO = new NotificacionServiceImpl();
         publicacionDAO.agregarFavorito(idPublicacion, idUsuario);
-        servicioCorreo.enviarCorreoPorGuardado(publicacion, usuario);
+        servicioCorreoGuardado.enviarCorreoPorGuardado(publicacion, usuario);
+        
+        
+
+
+        
     }
 
     @Override
