@@ -16,6 +16,7 @@ import com.pucp.da.publicaciones.ComentarioCRUD;
 import com.pucp.da.usuarios.UsuarioCRUD;
 import com.pucp.interfacesDAO.ComentarioDAO;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -49,21 +50,21 @@ public class ComentarioServiceImpl implements ComentarioService{
         }
         comentarioDAO.insertar(comentario);
         servicioCorreo.enviarCorreoPorComentario(comentario);
-         Usuario usuariodueno = comentario.getPublicacion().getUsuario();
-        
+        Usuario usuariodueno = comentario.getPublicacion().getUsuario();
+
         NotificacionServiceImpl notificacionDAO = new NotificacionServiceImpl();
-        
-        
+
         Notificacion notificacion = new Notificacion();
-    notificacion.setMensaje("Un usuario ha comentado tu publicación: \"" + comentario.getContenido()+ "\"");
-    notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
-    notificacion.setCantidad(1);
-    notificacion.setActivo(true);
-    notificacion.setNotificador(usuariodueno); // quien guardó
-    notificacion.setAutor(comentario.getPublicacion());   // publicación afectada
-    
-    notificacionDAO.registrarNotificacion(notificacion);
-        
+        notificacion.setMensaje("Un usuario ha comentado tu publicación: \"" + comentario.getContenido() + "\"");
+        notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
+        notificacion.setCantidad(1);
+        notificacion.setActivo(true);
+        notificacion.setFecha(new Date());
+        notificacion.setNotificador(usuariodueno); 
+        notificacion.setAutor(comentario.getPublicacion());       
+
+        notificacionDAO.registrarNotificacion(notificacion);
+
     }
 
     @Override
