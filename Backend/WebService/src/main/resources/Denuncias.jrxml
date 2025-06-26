@@ -43,15 +43,15 @@ WHERE d.autor = $P{publicacion_id}
 	</field>
 	<background splitType="Stretch"/>
 	<columnHeader height="40" splitType="Stretch">
-		<element kind="staticText" uuid="ddaaeb91-3c3c-4d73-b6ff-efe415b14bf6" mode="Opaque" x="0" y="10" width="70" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+		<element kind="staticText" uuid="ddaaeb91-3c3c-4d73-b6ff-efe415b14bf6" mode="Opaque" x="0" y="10" width="80" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
 			<text><![CDATA[ID_DENUNCIA]]></text>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99619180-948e-4e30-aadb-8bcffa7f8b14"/>
 		</element>
-		<element kind="staticText" uuid="5a189bf6-2299-4cc7-83f8-6cbbf2f905bd" mode="Opaque" x="70" y="10" width="120" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+		<element kind="staticText" uuid="5a189bf6-2299-4cc7-83f8-6cbbf2f905bd" mode="Opaque" x="80" y="10" width="120" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
 			<text><![CDATA[MOTIVO]]></text>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b867cb05-d391-478b-82e2-6e6727902c04"/>
 		</element>
-		<element kind="staticText" uuid="166e6a5c-1dea-4dc0-bc07-edcdda2dfb09" mode="Opaque" x="190" y="10" width="90" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
+		<element kind="staticText" uuid="166e6a5c-1dea-4dc0-bc07-edcdda2dfb09" mode="Opaque" x="200" y="10" width="80" height="30" forecolor="#FFFFFF" backcolor="#9EF7CE" bold="true">
 			<text><![CDATA[FECHA]]></text>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8537d94-0965-41ab-989b-50999650a244"/>
 		</element>
@@ -66,15 +66,15 @@ WHERE d.autor = $P{publicacion_id}
 	</columnHeader>
 	<detail>
 		<band height="71" splitType="Stretch">
-			<element kind="textField" uuid="517e97ef-a4fa-424b-9942-c957c1e6ef5d" x="0" y="0" width="70" height="30">
+			<element kind="textField" uuid="517e97ef-a4fa-424b-9942-c957c1e6ef5d" x="0" y="0" width="80" height="30">
 				<expression><![CDATA[$F{id_reporte}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99619180-948e-4e30-aadb-8bcffa7f8b14"/>
 			</element>
-			<element kind="textField" uuid="ca762994-9efe-4240-86b3-bac3a119858c" x="70" y="0" width="120" height="30">
+			<element kind="textField" uuid="ca762994-9efe-4240-86b3-bac3a119858c" x="80" y="0" width="120" height="30">
 				<expression><![CDATA[$F{motivo}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b867cb05-d391-478b-82e2-6e6727902c04"/>
 			</element>
-			<element kind="textField" uuid="f7ff4573-e512-41ec-8367-9cff7c271353" x="190" y="0" width="90" height="30">
+			<element kind="textField" uuid="f7ff4573-e512-41ec-8367-9cff7c271353" x="200" y="0" width="80" height="30" pattern="dd/MM/yyyy">
 				<expression><![CDATA[$F{fecha_reporte}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a8537d94-0965-41ab-989b-50999650a244"/>
 			</element>
@@ -83,7 +83,9 @@ WHERE d.autor = $P{publicacion_id}
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aedbe404-f631-479e-b1fa-b7de73682f81"/>
 			</element>
 			<element kind="textField" uuid="aa1f5c67-ccbf-48dc-bafd-85e60c8e3636" x="370" y="0" width="90" height="30">
-				<expression><![CDATA[$F{nombre_administrador}]]></expression>
+				<expression><![CDATA[($F{nombre_administrador} == null || "null".equalsIgnoreCase($F{nombre_administrador})) ? "" : $F{nombre_administrador}
+
+]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="242b204d-76d3-4034-981d-d83eace4e37e"/>
 			</element>
 		</band>

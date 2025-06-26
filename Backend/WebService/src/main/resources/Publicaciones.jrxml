@@ -85,7 +85,7 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 				<expression><![CDATA[$F{descripcion}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d9821c3-9bbe-43e5-b1d0-2bdbcbd1a8af"/>
 			</element>
-			<element kind="textField" uuid="d298f64d-c8bc-462d-aa78-c61aeb53c9bf" x="360" y="0" width="90" height="30">
+			<element kind="textField" uuid="d298f64d-c8bc-462d-aa78-c61aeb53c9bf" x="360" y="0" width="90" height="30" pattern="dd/MM/yyyy">
 				<expression><![CDATA[$F{fechapublicacion}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="50e360d1-403b-4383-bfa9-f0944385bc1b"/>
 			</element>
@@ -95,7 +95,7 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 			</element>
 			<element kind="subreport" uuid="1c2a172d-811f-44d9-b20e-69a5fa6855f2" x="40" y="30" width="430" height="50">
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<expression><![CDATA[$P{SUBREPORT_DIR} + "Denuncias.jasper"]]></expression>
+				<expression><![CDATA["Denuncias.jasper"]]></expression>
 				<parameter name="publicacion_id">
 					<expression><![CDATA[$F{idpublicacion}]]></expression>
 				</parameter>
@@ -112,5 +112,4 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 		</element>
 	</pageFooter>
 	<summary height="42" splitType="Stretch"/>
-    <parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 </jasperReport>
