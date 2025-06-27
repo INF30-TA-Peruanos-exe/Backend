@@ -36,6 +36,7 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 		<property name="com.jaspersoft.studio.field.label" value="autor"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
+        <parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<background splitType="Stretch"/>
 	<title height="92" splitType="Stretch">
 		<element kind="staticText" uuid="d9640e78-96a1-4ecb-8330-6315be449921" x="177" y="32" width="200" height="30" markup="none" fontSize="14.0" bold="true" hTextAlign="Center">
@@ -95,7 +96,7 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 			</element>
 			<element kind="subreport" uuid="1c2a172d-811f-44d9-b20e-69a5fa6855f2" x="40" y="30" width="430" height="50">
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<expression><![CDATA["Denuncias.jasper"]]></expression>
+				<expression><![CDATA[$P{SUBREPORT_DIR} + "Denuncias.jasper"]]></expression>
 				<parameter name="publicacion_id">
 					<expression><![CDATA[$F{idpublicacion}]]></expression>
 				</parameter>
