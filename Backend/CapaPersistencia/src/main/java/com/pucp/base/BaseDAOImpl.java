@@ -82,6 +82,7 @@ public abstract class BaseDAOImpl<T> implements BaseDAO<T>{
                 return createFromResultSet(rs);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Error al obtener entidad", e);
         }
         return null;

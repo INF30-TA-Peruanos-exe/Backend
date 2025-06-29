@@ -93,7 +93,7 @@ public class UsuarioWS {
     public byte[] reporteUsuarios(){
         try{
             Map<String, Object> params = new HashMap<>(); 
-            params.put("logo",ImageIO.read(new File(getFileResource("pucp_logo.png"))));
+            params.put("logo", ImageIO.read(getClass().getClassLoader().getResourceAsStream("QhatuPucp.png")));
             
             String fileXML = getFileResource("Top_Usuarios.jrxml");
 

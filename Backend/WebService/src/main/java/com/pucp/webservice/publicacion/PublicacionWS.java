@@ -29,11 +29,13 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+import  jakarta.xml.ws.soap.MTOM;
 
 /**
  *
  * @author Axel
  */
+@MTOM(enabled = true, threshold = 1024 * 16)
 @WebService(serviceName = "PublicacionWS", targetNamespace = "com.pucp.pucpqhatu")
 public class PublicacionWS {
 
@@ -185,7 +187,7 @@ public class PublicacionWS {
     public byte[] reportePublicaciones(){
         try{
             Map<String, Object> params = new HashMap<>(); 
-            params.put("logo",ImageIO.read(new File(getFileResource("pucp_logo.png"))));
+            params.put("logo", ImageIO.read(getClass().getClassLoader().getResourceAsStream("QhatuPucp.png")));
             
             String fileXML = getFileResource("Top_Publicaciones.jrxml");
 

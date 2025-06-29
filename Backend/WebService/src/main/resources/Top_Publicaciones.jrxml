@@ -152,6 +152,7 @@ LIMIT 3;]]></query>
 		</group>
 	</dataset>
 	<parameter name="REPORT_DATE" class="java.util.Date"/>
+	<parameter name="logo" class="java.awt.Image"/>
 	<query language="sql"><![CDATA[SELECT p.titulo, p.idPublicacion, AVG(c.valoracion) AS promedio_valoracion
 FROM publicacion p
 JOIN comentario c ON p.idpublicacion = c.id_publicacion
@@ -174,19 +175,17 @@ LIMIT 5;]]></query>
 		<property name="com.jaspersoft.studio.field.label" value="promedio_valoracion"/>
 	</field>
 	<background splitType="Stretch"/>
-	<title height="51" splitType="Stretch">
-		<element kind="image" uuid="3083bb4f-a2f0-4a66-af3a-a4f807cf7d5b" x="10" y="0" width="150" height="50">
-			<expression><![CDATA["/resources/QhatuPucp.png"]]></expression>
-		</element>
+	<title height="52" splitType="Stretch">
 		<element kind="staticText" uuid="91b61c6d-655a-42be-aa70-65f227043407" x="164" y="10" width="233" height="30" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Reporte Publicaciones]]></text>
 		</element>
-		<element kind="textField" uuid="c96eb625-6c40-4020-938c-0e493c0f3079" x="400" y="10" width="142" height="30" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-			<expression><![CDATA[$P{REPORT_DATE}]]></expression>
+		<element kind="image" uuid="e528abf6-4c93-41fd-adff-ba286517a361" x="0" y="2" width="150" height="50" linkType="None" linkTarget="Self">
+			<expression><![CDATA[$P{logo}]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
 		</element>
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>
 	</title>
-	<summary height="732">
+	<summary height="703">
 		<element kind="component" uuid="84e644dd-cb8a-4e74-ae4e-5e3da45f4299" stretchType="ElementGroupHeight" x="40" y="40" width="480" height="60">
 			<component kind="table">
 				<datasetRun uuid="6bf666ce-2671-43c1-bc18-5b50c115a3fe" subDataset="Valoraciones">
@@ -284,7 +283,7 @@ LIMIT 5;]]></query>
 		<element kind="staticText" uuid="8c764708-9dff-4ed5-be08-2d0c493a95b2" x="41" y="245" width="310" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Top Filtros Más Usados en Publicaciones]]></text>
 		</element>
-		<element kind="chart" chartType="bar" uuid="cdd1ac2a-fa51-4b18-b0de-0545e723858f" x="41" y="275" width="480" height="130" evaluationTime="Report" theme="generic">
+		<element kind="chart" chartType="bar" uuid="cdd1ac2a-fa51-4b18-b0de-0545e723858f" x="41" y="275" width="480" height="130" evaluationTime="Report" theme="default">
 			<dataset kind="category">
 				<datasetRun uuid="b90e43c7-6f36-4b01-9821-e0024c72d8f5" subDataset="Cursos"/>
 				<series>
@@ -298,7 +297,7 @@ LIMIT 5;]]></query>
 				<itemLabel/>
 			</plot>
 		</element>
-		<element kind="chart" chartType="bar" uuid="0a0694ca-e9ee-4d50-af19-ca37afc31a49" x="41" y="420" width="480" height="130" evaluationTime="Report" theme="generic">
+		<element kind="chart" chartType="bar" uuid="0a0694ca-e9ee-4d50-af19-ca37afc31a49" x="41" y="420" width="480" height="130" evaluationTime="Report" theme="default">
 			<dataset kind="category">
 				<datasetRun uuid="8e194185-ba73-4b06-82e2-f01d5c635634" subDataset="Especialidades"/>
 				<series>
@@ -313,7 +312,7 @@ LIMIT 5;]]></query>
 			</plot>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</element>
-		<element kind="chart" chartType="bar" uuid="cc026f64-480a-499c-9e74-5968cf17be5f" x="42" y="570" width="478" height="130" evaluationTime="Report" theme="generic">
+		<element kind="chart" chartType="bar" uuid="cc026f64-480a-499c-9e74-5968cf17be5f" x="42" y="570" width="478" height="130" evaluationTime="Report" theme="default">
 			<dataset kind="category">
 				<datasetRun uuid="3ece0add-960a-4d86-9a02-be1f790444a6" subDataset="Facultades"/>
 				<series>
