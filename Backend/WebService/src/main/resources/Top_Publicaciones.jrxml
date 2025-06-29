@@ -1,0 +1,332 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Publicaciones" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9a89101a-8a6b-41fd-9736-61c72d86ae99">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<dataset name="Valoraciones" uuid="1e6c6deb-f1a9-49ba-ab9e-6de7c2277fa9">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Adapter"/>
+		<query language="SQL"><![CDATA[SELECT 
+    p.titulo,
+    p.idPublicacion,
+    ROUND(AVG(c.valoracion), 2) AS promedio_valoracion,
+    COUNT(c.id_comentario) AS total_comentarios,
+    COUNT(DISTINCT c.id_usuario) AS usuarios_interactuaron
+FROM publicacion p
+JOIN comentario c ON p.idpublicacion = c.id_publicacion
+WHERE 
+    p.activo = 1
+    AND c.activo = 1
+    AND c.valoracion IS NOT NULL
+GROUP BY p.idpublicacion
+ORDER BY promedio_valoracion DESC
+LIMIT 5;]]></query>
+		<field name="titulo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="titulo"/>
+			<property name="com.jaspersoft.studio.field.label" value="titulo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="publicacion"/>
+		</field>
+		<field name="idPublicacion" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="idpublicacion"/>
+			<property name="com.jaspersoft.studio.field.label" value="idPublicacion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="publicacion"/>
+		</field>
+		<field name="promedio_valoracion" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="promedio_valoracion"/>
+			<property name="com.jaspersoft.studio.field.label" value="promedio_valoracion"/>
+		</field>
+		<field name="total_comentarios" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="total_comentarios"/>
+			<property name="com.jaspersoft.studio.field.label" value="total_comentarios"/>
+		</field>
+		<field name="usuarios_interactuaron" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="usuarios_interactuaron"/>
+			<property name="com.jaspersoft.studio.field.label" value="usuarios_interactuaron"/>
+		</field>
+		<group name="promedio_valoracion">
+			<expression><![CDATA[$F{promedio_valoracion}]]></expression>
+		</group>
+	</dataset>
+	<dataset name="Cursos" uuid="b291d477-0bc1-4398-abbf-548f6ef23ee9">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Adapter"/>
+		<query language="SQL"><![CDATA[SELECT 
+    c.nombre AS nombre_filtro,
+    c.id_curso,
+    COUNT(pc.publicacion_idpublicacion) AS total_publicaciones
+FROM curso c
+JOIN publicacion_curso pc ON pc.curso_id_curso = c.id_curso
+JOIN publicacion p ON p.idpublicacion = pc.publicacion_idpublicacion
+WHERE p.activo = 1
+GROUP BY c.id_curso
+ORDER BY total_publicaciones DESC
+LIMIT 3;]]></query>
+		<field name="id_curso" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id_curso"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_curso"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="curso"/>
+		</field>
+		<field name="nombre_filtro" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombre_filtro"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="curso"/>
+		</field>
+		<field name="total_publicaciones" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="total_publicaciones"/>
+			<property name="com.jaspersoft.studio.field.label" value="total_publicaciones"/>
+		</field>
+		<group name="total_publicaciones">
+			<expression><![CDATA[$F{total_publicaciones}]]></expression>
+		</group>
+	</dataset>
+	<dataset name="Especialidades" uuid="8fbbc7cf-00e3-41fd-9654-4346a3a77504">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Adapter"/>
+		<query language="SQL"><![CDATA[SELECT 
+    e.nombre AS nombre_filtro,
+    e.id_especialidad,
+    COUNT(pe.publicacion_idpublicacion) AS total_publicaciones
+FROM especialidad e
+JOIN publicacion_especialidad pe ON pe.especialidad_id_especialidad = e.id_especialidad
+JOIN publicacion p ON p.idpublicacion = pe.publicacion_idpublicacion
+WHERE p.activo = 1
+GROUP BY e.id_especialidad
+ORDER BY total_publicaciones DESC
+LIMIT 3;]]></query>
+		<field name="id_especialidad" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id_especialidad"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_especialidad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="especialidad"/>
+		</field>
+		<field name="nombre_filtro" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombre_filtro"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="especialidad"/>
+		</field>
+		<field name="total_publicaciones" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="total_publicaciones"/>
+			<property name="com.jaspersoft.studio.field.label" value="total_publicaciones"/>
+		</field>
+		<group name="total_publicaciones">
+			<expression><![CDATA[$F{total_publicaciones}]]></expression>
+		</group>
+	</dataset>
+	<dataset name="Facultades" uuid="824c3a70-f278-4bd1-8db7-c8d3cc0a50e7">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_Adapter"/>
+		<query language="SQL"><![CDATA[SELECT 
+    f.nombre AS nombre_filtro,
+    f.id_facultad, 
+    COUNT(pf.publicacion_idpublicacion) AS total_publicaciones
+FROM facultad f
+JOIN publicacion_facultad pf ON pf.facultad_id_facultad = f.id_facultad
+JOIN publicacion p ON p.idpublicacion = pf.publicacion_idpublicacion
+WHERE p.activo = 1
+GROUP BY f.id_facultad
+ORDER BY total_publicaciones DESC
+LIMIT 3;]]></query>
+		<field name="id_facultad" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id_facultad"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_facultad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="facultad"/>
+		</field>
+		<field name="nombre_filtro" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombre_filtro"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="facultad"/>
+		</field>
+		<field name="total_publicaciones" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="total_publicaciones"/>
+			<property name="com.jaspersoft.studio.field.label" value="total_publicaciones"/>
+		</field>
+		<group name="total_publicaciones">
+			<expression><![CDATA[$F{total_publicaciones}]]></expression>
+		</group>
+	</dataset>
+	<parameter name="REPORT_DATE" class="java.util.Date"/>
+	<parameter name="logo" class="java.awt.Image"/>
+	<query language="sql"><![CDATA[SELECT p.titulo, p.idPublicacion, AVG(c.valoracion) AS promedio_valoracion
+FROM publicacion p
+JOIN comentario c ON p.idpublicacion = c.id_publicacion
+WHERE c.valoracion IS NOT NULL
+GROUP BY p.idpublicacion
+ORDER BY promedio_valoracion DESC
+LIMIT 5;]]></query>
+	<field name="titulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.label" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="publicacion"/>
+	</field>
+	<field name="idPublicacion" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idpublicacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="idPublicacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="publicacion"/>
+	</field>
+	<field name="promedio_valoracion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="promedio_valoracion"/>
+		<property name="com.jaspersoft.studio.field.label" value="promedio_valoracion"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="52" splitType="Stretch">
+		<element kind="staticText" uuid="91b61c6d-655a-42be-aa70-65f227043407" x="164" y="10" width="233" height="30" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Reporte Publicaciones]]></text>
+		</element>
+		<element kind="image" uuid="e528abf6-4c93-41fd-adff-ba286517a361" x="0" y="2" width="150" height="50" linkType="None" linkTarget="Self">
+			<expression><![CDATA[$P{logo}]]></expression>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</title>
+	<summary height="703">
+		<element kind="component" uuid="84e644dd-cb8a-4e74-ae4e-5e3da45f4299" stretchType="ElementGroupHeight" x="40" y="40" width="480" height="60">
+			<component kind="table">
+				<datasetRun uuid="6bf666ce-2671-43c1-bc18-5b50c115a3fe" subDataset="Valoraciones">
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				</datasetRun>
+				<column kind="single" uuid="ab1dd98b-54ce-45a0-84bc-d644f5ca2153" width="40">
+					<columnHeader height="30" style="Table_CH">
+						<element kind="staticText" uuid="4bdf8e75-5873-4d82-a92b-cefe7a1230c7" x="0" y="0" width="40" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<text><![CDATA[ID]]></text>
+						</element>
+					</columnHeader>
+					<detailCell height="30">
+						<element kind="textField" uuid="dbdfc3df-f487-430c-b26c-8644eb60fe05" x="0" y="0" width="40" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{idPublicacion}]]></expression>
+							<box>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+							</box>
+						</element>
+					</detailCell>
+					<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+				</column>
+				<column kind="single" uuid="2d7e4059-1cf5-4214-acf4-f8f9fdc885c7" width="200">
+					<columnHeader height="30" style="Table_CH">
+						<element kind="staticText" uuid="6ff3ccde-13c8-4c8f-8ce3-b9f53d709642" x="0" y="0" width="200" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<text><![CDATA[Titulo]]></text>
+						</element>
+					</columnHeader>
+					<detailCell height="30">
+						<element kind="textField" uuid="7d650f6a-15f0-4f5c-9575-e6526fb1c993" x="0" y="0" width="200" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{titulo}]]></expression>
+							<box padding="0">
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+							</box>
+						</element>
+					</detailCell>
+					<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+				</column>
+				<column kind="single" uuid="52445351-b415-4f61-baee-d878ae1ece4b" width="70">
+					<columnHeader height="30" style="Table_CH">
+						<element kind="staticText" uuid="dd68a2ca-0642-4582-a992-5429ef30442e" x="0" y="0" width="70" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<text><![CDATA[Promedio de valoración]]></text>
+						</element>
+					</columnHeader>
+					<detailCell height="30">
+						<element kind="textField" uuid="1e8b14dd-9754-4c97-a614-817ebcd59cd0" x="0" y="0" width="70" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{promedio_valoracion}]]></expression>
+							<box>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+							</box>
+						</element>
+					</detailCell>
+					<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+				</column>
+				<column kind="single" uuid="e34bc020-606f-4c39-9d06-185adec10fd5" width="70">
+					<columnHeader height="30" style="Table_CH">
+						<element kind="staticText" uuid="0a6bdb81-a78d-4c95-a2da-0e8026cdc4c2" x="0" y="0" width="70" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<text><![CDATA[#Comentarios]]></text>
+						</element>
+					</columnHeader>
+					<detailCell height="30">
+						<element kind="textField" uuid="f6e584ae-c9de-4181-a150-93302303763d" x="0" y="0" width="70" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{total_comentarios}]]></expression>
+							<box>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+							</box>
+						</element>
+					</detailCell>
+					<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+				</column>
+				<column kind="single" uuid="08de1717-9560-48be-9e89-30728cf14fb0" width="100">
+					<columnHeader height="30" style="Table_CH">
+						<element kind="staticText" uuid="6f7b4472-2fed-450d-a812-bbe5d70a07e2" x="0" y="0" width="100" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<text><![CDATA[#Interacciones por Usuario]]></text>
+						</element>
+					</columnHeader>
+					<detailCell height="30">
+						<element kind="textField" uuid="0e8f38e7-b073-4555-a165-d9eb9729aaae" x="0" y="0" width="100" height="30" hTextAlign="Center" vTextAlign="Middle">
+							<expression><![CDATA[$F{usuarios_interactuaron}]]></expression>
+							<box>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+							</box>
+						</element>
+					</detailCell>
+					<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+				</column>
+			</component>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+			<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+			<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+		</element>
+		<element kind="staticText" uuid="6c6cc08e-2b18-46d6-b792-aeca6ffac5a2" x="40" y="10" width="310" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Top 5 Publicaciones con mejor valoración]]></text>
+		</element>
+		<element kind="staticText" uuid="8c764708-9dff-4ed5-be08-2d0c493a95b2" x="41" y="245" width="310" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Top Filtros Más Usados en Publicaciones]]></text>
+		</element>
+		<element kind="chart" chartType="bar" uuid="cdd1ac2a-fa51-4b18-b0de-0545e723858f" x="41" y="275" width="480" height="130" evaluationTime="Report" theme="default">
+			<dataset kind="category">
+				<datasetRun uuid="b90e43c7-6f36-4b01-9821-e0024c72d8f5" subDataset="Cursos"/>
+				<series>
+					<seriesExpression><![CDATA["Curso"]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{nombre_filtro}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{total_publicaciones}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nombre_filtro}]]></labelExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000">
+				<itemLabel/>
+			</plot>
+		</element>
+		<element kind="chart" chartType="bar" uuid="0a0694ca-e9ee-4d50-af19-ca37afc31a49" x="41" y="420" width="480" height="130" evaluationTime="Report" theme="default">
+			<dataset kind="category">
+				<datasetRun uuid="8e194185-ba73-4b06-82e2-f01d5c635634" subDataset="Especialidades"/>
+				<series>
+					<seriesExpression><![CDATA["Especialidad"]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{nombre_filtro}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{total_publicaciones}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nombre_filtro}]]></labelExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000">
+				<itemLabel/>
+			</plot>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="chart" chartType="bar" uuid="cc026f64-480a-499c-9e74-5968cf17be5f" x="42" y="570" width="478" height="130" evaluationTime="Report" theme="default">
+			<dataset kind="category">
+				<datasetRun uuid="3ece0add-960a-4d86-9a02-be1f790444a6" subDataset="Facultades"/>
+				<series>
+					<seriesExpression><![CDATA["Facultades"]]></seriesExpression>
+					<categoryExpression><![CDATA[$F{nombre_filtro}]]></categoryExpression>
+					<valueExpression><![CDATA[$F{total_publicaciones}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nombre_filtro}]]></labelExpression>
+				</series>
+			</dataset>
+			<plot categoryAxisLabelColor="#000000" categoryAxisTickLabelColor="#000000" categoryAxisLineColor="#000000" valueAxisLabelColor="#000000" valueAxisTickLabelColor="#000000" valueAxisLineColor="#000000">
+				<itemLabel/>
+			</plot>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+	</summary>
+</jasperReport>

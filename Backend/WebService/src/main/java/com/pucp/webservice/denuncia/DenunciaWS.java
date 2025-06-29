@@ -50,9 +50,10 @@ public class DenunciaWS {
     }
     
     @WebMethod(operationName = "actualizarDenuncia")
-    public void actualizarDenuncia(@WebParam(name = "denuncia") Denuncia denuncia){
+    public boolean actualizarDenuncia(@WebParam(name = "denuncia") Denuncia denuncia){
         try {
             denunciaService.actualizarDenuncia(denuncia);
+            return true;
         } catch (Exception ex) {
             throw new WebServiceException("Error al actualizar facultad: " + ex.getMessage());
         }
@@ -72,6 +73,7 @@ public class DenunciaWS {
         try {
             return denunciaService.obtenerDenuncia(idDenuncia);
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new WebServiceException("Error al obtener denuncia: " + ex.getMessage());
         }        
     }

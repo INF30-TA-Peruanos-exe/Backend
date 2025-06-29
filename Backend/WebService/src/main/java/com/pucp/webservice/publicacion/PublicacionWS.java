@@ -7,19 +7,35 @@ package com.pucp.webservice.publicacion;
 import com.pucp.capadominio.publicacion.Publicacion;
 import com.pucp.capanegocio.interfacesService.PublicacionService;
 import com.pucp.capanegocio.publicaciones.PublicacionServiceImpl;
+import com.pucp.config.DBManager;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.xml.ws.WebServiceException;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
+import  jakarta.xml.ws.soap.MTOM;
 
 /**
  *
  * @author Axel
  */
+@MTOM(enabled = true, threshold = 1024 * 16)
 @WebService(serviceName = "PublicacionWS", targetNamespace = "com.pucp.pucpqhatu")
 public class PublicacionWS {
 
@@ -167,4 +183,37 @@ public class PublicacionWS {
         }       
     }
     
+    @WebMethod(operationName = "reportePublicaciones")
+    public byte[] reportePublicaciones(){
+        try{
+            Map<String, Object> params = new HashMap<>(); 
+            params.put("logo", ImageIO.read(getClass().getClassLoader().getResourceAsStream("QhatuPucp.png")));
+            
+            String fileXML = getFileResource("Top_Publicaciones.jrxml");
+
+            return generarBufferFromJP(fileXML, params);
+        }catch(Exception ex){
+            throw new WebServiceException("Error al generar report: " + ex.getMessage());
+        }
+    }
+    
+    private String getFileResource(String fileName){ 
+        String filePath = getClass().getClassLoader().getResource(fileName).getPath();
+        filePath = filePath.replace("%20", " ");
+        return filePath;
+    }
+    
+    private byte[] generarBufferFromJP(String inFileXML, Map<String, Object> params) throws JRException, SQLException {
+        // Compilar reporte principal si no existe
+        String fileJasper = inFileXML.replace(".jrxml", ".jasper");
+        if (!new File(fileJasper).exists()) {
+            JasperCompileManager.compileReportToFile(inFileXML, fileJasper);
+        }
+
+        // Cargar y llenar el reporte
+        JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile(fileJasper);
+        Connection conn = DBManager.getInstance().obtenerConexion();
+        JasperPrint jp = JasperFillManager.fillReport(jr, params, conn);
+        return JasperExportManager.exportReportToPdf(jp);
+    }
 }
