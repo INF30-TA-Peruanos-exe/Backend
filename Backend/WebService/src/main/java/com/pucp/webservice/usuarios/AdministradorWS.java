@@ -27,9 +27,10 @@ public class AdministradorWS {
     }
     
     @WebMethod(operationName = "registrarAdministrador")
-    public void registrarAdministrador(@WebParam(name = "administrador") Administrador administrador){
+    public boolean registrarAdministrador(@WebParam(name = "administrador") Administrador administrador){
         try {
             administradorService.registrarAdministrador(administrador);
+            return true;
         } catch (Exception ex) {
             throw new WebServiceException("Error al registrar administrador: " + ex.getMessage());
         }       
