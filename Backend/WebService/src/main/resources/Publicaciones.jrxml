@@ -36,6 +36,7 @@ JOIN usuario u ON p.id_usuario = u.id_usuario
 		<property name="com.jaspersoft.studio.field.label" value="autor"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
 	</field>
+        <parameter name="logo" class="java.awt.Image"/>
         <parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<background splitType="Stretch"/>
 	<title height="92" splitType="Stretch">
