@@ -92,7 +92,7 @@ public class DenunciaWS {
     public byte[] reporteIncidencias(){
         try{
             Map<String, Object> params = new HashMap<>(); 
-            params.put("logo",ImageIO.read(new File(getFileResource("QhatuPucp.png"))));
+            params.put("logo", ImageIO.read(getClass().getClassLoader().getResourceAsStream("QhatuPucp.png")));
             
             String fileXML = getFileResource("Publicaciones.jrxml");
             
