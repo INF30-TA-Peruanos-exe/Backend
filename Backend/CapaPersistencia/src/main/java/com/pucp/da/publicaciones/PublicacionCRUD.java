@@ -56,7 +56,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         cs.setString(1, publicacion.getTitulo());
         cs.setString(2, publicacion.getDescripcion());
         cs.setString(3, publicacion.getEstado().name());
-        cs.setDate(4, new java.sql.Date(publicacion.getFechaPublicacion().getTime()));
+        cs.setTimestamp(4, new java.sql.Timestamp(publicacion.getFechaPublicacion().getTime()));
         cs.setString(5, publicacion.getRutaImagen());
         cs.setInt(6, publicacion.getUsuario().getIdUsuario());
         cs.setBoolean(7, publicacion.isActivo());
@@ -72,7 +72,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         cs.setString(2, publicacion.getTitulo());
         cs.setString(3, publicacion.getDescripcion());
         cs.setString(4, publicacion.getEstado().name());
-        cs.setDate(5, new java.sql.Date(publicacion.getFechaPublicacion().getTime()));
+        cs.setTimestamp(5, new java.sql.Timestamp(publicacion.getFechaPublicacion().getTime()));
         cs.setString(6, publicacion.getRutaImagen());
         cs.setInt(7, publicacion.getUsuario().getIdUsuario());
         cs.setBoolean(8, publicacion.isActivo());
@@ -109,7 +109,7 @@ public class PublicacionCRUD extends BaseDAOImpl<Publicacion> implements Publica
         publi.setTitulo(rs.getString("titulo"));
         publi.setDescripcion(rs.getString("descripcion"));
         publi.setEstado(EstadoPublicacion.valueOf(rs.getString("estado")));
-        publi.setFechaPublicacion(rs.getDate("fechaPublicacion"));
+        publi.setFechaPublicacion(rs.getTimestamp("fechaPublicacion"));
         publi.setRutaImagen(rs.getString("url_imagen"));
         publi.setUsuario(usuarioDAO.obtenerPorId(rs.getInt("id_usuario")));
         publi.setActivo(rs.getBoolean("activo"));
@@ -349,7 +349,7 @@ public Publicacion obtenerPorId(int id) {
                     publi.setTitulo(rs.getString("titulo"));
                     publi.setDescripcion(rs.getString("descripcion"));
                     publi.setEstado(EstadoPublicacion.valueOf(rs.getString("estado")));
-                    publi.setFechaPublicacion(rs.getDate("fechapublicacion"));
+                    publi.setFechaPublicacion(rs.getTimestamp("fechapublicacion"));
                     publi.setRutaImagen(rs.getString("url_imagen"));
                     publi.setActivo(rs.getBoolean("activo"));
                     publi.setUsuario(usuarioDAO.obtenerPorId(rs.getInt("id_usuario")));

@@ -43,7 +43,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         CallableStatement cs = conn.prepareCall(sql);
         cs.setString(1, comentario.getContenido());
         cs.setInt(2, comentario.getValoracion());
-        cs.setDate(3, new java.sql.Date(comentario.getFecha().getTime()));
+        cs.setTimestamp(3, new java.sql.Timestamp(comentario.getFecha().getTime()));
         cs.setInt(4, comentario.getPublicacion().getIdPublicacion());
         cs.setInt(5, comentario.getComentador().getIdUsuario());
         cs.setBoolean(6, comentario.isActivo());
@@ -58,7 +58,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         cs.setInt(1, comentario.getIdComentario());
         cs.setString(2, comentario.getContenido());
         cs.setInt(3, comentario.getValoracion());
-        cs.setDate(4,  new java.sql.Date(comentario.getFecha().getTime()));
+        cs.setTimestamp(4,  new java.sql.Timestamp(comentario.getFecha().getTime()));
         cs.setInt(5, comentario.getPublicacion().getIdPublicacion());
         cs.setInt(6, comentario.getComentador().getIdUsuario());
         cs.setBoolean(7, comentario.isActivo());
@@ -94,7 +94,7 @@ public class ComentarioCRUD extends BaseDAOImpl<Comentario> implements Comentari
         comen.setIdComentario(rs.getInt("id_comentario"));
         comen.setContenido(rs.getString("contenido"));
         comen.setValoracion(rs.getInt("valoracion"));
-        comen.setFecha(rs.getDate("fecha"));
+        comen.setFecha(rs.getTimestamp("fecha"));
         comen.setPublicacion(publicacionDAO.obtenerPorId(rs.getInt("id_publicacion")));
         comen.setComentador(usuarioDAO.obtenerPorId(rs.getInt("id_usuario")));
         comen.setActivo(rs.getBoolean("activo"));

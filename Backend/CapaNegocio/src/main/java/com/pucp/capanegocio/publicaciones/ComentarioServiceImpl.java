@@ -45,7 +45,7 @@ public class ComentarioServiceImpl implements ComentarioService{
         if(comentario.getPublicacion()==null){
             throw new Exception("El comentario debe tener una publicación de referencia");
         }
-        if(comentario.getValoracion()<=0){
+        if(comentario.getValoracion()<0){
             throw new Exception("La valoración no puede ser un número negativo");
         }
         comentarioDAO.insertar(comentario);
@@ -55,7 +55,7 @@ public class ComentarioServiceImpl implements ComentarioService{
         NotificacionServiceImpl notificacionDAO = new NotificacionServiceImpl();
 
         Notificacion notificacion = new Notificacion();
-        notificacion.setMensaje("Un usuario ha comentado tu publicación: \"" + comentario.getContenido() + "\"");
+        notificacion.setMensaje("Un usuario ha comentado una de tus publicaciones con: \"" + comentario.getContenido() + "\"");
         notificacion.setTipoNotificacion(TipoNotificacion.COMENTADA);
         notificacion.setCantidad(1);
         notificacion.setActivo(true);
@@ -85,7 +85,7 @@ public class ComentarioServiceImpl implements ComentarioService{
         if(comentario.getPublicacion()==null){
             throw new Exception("El comentario debe tener una publicación de referencia");
         }
-        if(comentario.getValoracion()<=0){
+        if(comentario.getValoracion()<0){
             throw new Exception("La valoración no puede ser un número negativo");
         }
         
